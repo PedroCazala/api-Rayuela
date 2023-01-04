@@ -3,6 +3,7 @@ import { ProductsRoutes } from './products.routes'
 
 const IndexRouter = express.Router()
 IndexRouter.use('/api/products',ProductsRoutes)
+
 IndexRouter.get('/',(_,res)=>{
     res.status(200).json({message:'Api de Rayuela',documentation_swagger:'Aquí ira la url'})
 })

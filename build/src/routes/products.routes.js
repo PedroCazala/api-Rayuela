@@ -11,3 +11,6 @@ exports.ProductsRoutes = ProductsRoutes;
 ProductsRoutes.get('/:id?', (req, res) => {
     products_controller_1.ProductsController.getProducts(req, res);
 });
+ProductsRoutes.post('/', (req, res) => {
+    products_controller_1.ProductsController.createProduct(req, res);
+});

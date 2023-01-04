@@ -6,4 +6,10 @@ ProductsRoutes.get('/:id?',(req,res)=>{
     ProductsController.getProducts(req,res)
 })
 
+ProductsRoutes.post('/',(req,res)=>{
+    ProductsController.createProduct(req,res)
+})
+
+
+
 export {ProductsRoutes}
