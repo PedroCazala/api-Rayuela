@@ -5,8 +5,8 @@ export interface IProduct {
     price: number;
     category: string;
     brand?: string;
-    creationDate: number;
-    lastModifiedDate: number;
+    creationDate: Date;
+    lastModifiedDate: Date;
     types: ITypeItem[];
 }
 export interface ITypeItem {

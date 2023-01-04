@@ -14,14 +14,37 @@ const product_model_1 = require("../models/product.model");
 class ProductsDaoMongo {
     static getAllProducts() {
         return __awaiter(this, void 0, void 0, function* () {
-            const allProducts = yield product_model_1.ProductModel.find(); //[{name:"perro",price:23},{name:"gato",price:23}]
-            console.log('allProducts', allProducts);
+            const allProducts = yield product_model_1.ProductModel.find();
             return allProducts;
+        });
+    }
+    static getOneById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const product = yield product_model_1.ProductModel.find({ _id: id });
+            return product;
+        });
+    }
+    static getForCategory(category) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const products = yield product_model_1.ProductModel.find({ category: category });
+            return products;
+        });
+    }
+    static getForBrand(brand) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const products = yield product_model_1.ProductModel.find({ brand: brand });
+            return products;
         });
     }
     static postAProduct(newProduct) {
         return __awaiter(this, void 0, void 0, function* () {
             const product = yield product_model_1.ProductModel.create(newProduct);
+            return product;
+        });
+    }
+    static deleteProduct(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const product = yield product_model_1.ProductModel.deleteOne({ _id: id });
             return product;
         });
     }

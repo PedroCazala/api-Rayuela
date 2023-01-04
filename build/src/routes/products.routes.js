@@ -11,6 +11,15 @@ exports.ProductsRoutes = ProductsRoutes;
 ProductsRoutes.get('/:id?', (req, res) => {
     products_controller_1.ProductsController.getProducts(req, res);
 });
+ProductsRoutes.get('/category/:category', (req, res) => {
+    products_controller_1.ProductsController.getProductsForCategory(req, res);
+});
+ProductsRoutes.get('/brand/:brand', (req, res) => {
+    products_controller_1.ProductsController.getProductsForBrand(req, res);
+});
 ProductsRoutes.post('/', (req, res) => {
     products_controller_1.ProductsController.createProduct(req, res);
+});
+ProductsRoutes.delete('/:id', (req, res) => {
+    products_controller_1.ProductsController.deleteProduct(req, res);
 });

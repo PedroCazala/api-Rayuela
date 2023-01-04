@@ -16,30 +16,73 @@ class ProductsController {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             if (id) {
-                res.send(id);
+                const product = yield products_services_1.ProductsService.getOneProduct(id);
+                product
+                    ? res.status(200).json(product)
+                    : res.status(404).json(`Product with id: ${id}, don't exist`);
             }
             else {
                 const products = yield products_services_1.ProductsService.getAllProducts();
-                if (products[0]) {
-                    res.status(200).json(products);
-                }
-                else {
-                    res.status(404).json({ message: `No found products in database` });
-                }
+                products[0]
+                    ? res.status(200).json(products)
+                    : res.status(404).json({ message: `No found products in database` });
             }
+        });
+    }
+    static getProductsForCategory(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const category = req.params.category;
+            const products = yield products_services_1.ProductsService.getForCategory(category);
+            products
+                ? res.status(200).json(products)
+                : res.status(404).json({ message: `No found products with category: ${category} in database` });
+        });
+    }
+    static getProductsForBrand(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const brand = req.params.brand;
+            const products = yield products_services_1.ProductsService.getForBrand(brand);
+            products
+                ? res.status(200).json(products)
+                : res.status(404).json({ message: `No found products with brand: ${brand} in database` });
         });
     }
     static createProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('holi');
+            const data = req.body;
             try {
-                const data = req.body;
                 const product = yield products_services_1.ProductsService.createProduct(data);
-                res.status(200).json({ product, message: `El producto fué creado con el id $ {product._id}` });
+                product && res.status(200).json({
+                    product,
+                    message: `El producto fué creado con el id ${product._id}`,
+                });
             }
             catch (error) {
-                console.log('enttro al catch');
                 res.status(500).json({ message: `error`, error });
+            }
+        });
+    }
+    static deleteProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            try {
+                const product = yield products_services_1.ProductsService.deleteProduct(id);
+                if (product.deletedCount > 0) {
+                    res.status(200).json({
+                        message: `Product with id: ${id} was deleted`,
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        message: `Product with id: ${id} was not found, it is probably that this product was delete before`,
+                    });
+                }
+            }
+            catch (error) {
+                res.status(404).json({
+                    message: `Product with id: ${id} was not found`,
+                    error
+                });
             }
         });
     }
