@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsService = void 0;
 const products_dao_mongo_1 = require("../daos/products.dao.mongo");
 // import { IProduct } from "../interfaces/products.interface";
+// import { IProduct } from "../interfaces/products.interface";
 class ProductsService {
     static getAllProducts() {
         const products = products_dao_mongo_1.ProductsDaoMongo.getAllProducts();
@@ -53,15 +54,14 @@ class ProductsService {
             }
         });
     }
-    static createProduct(data) {
-        const date = new Date();
-        const newProduct = Object.assign(Object.assign({}, data), { creationDate: date });
-        const product = products_dao_mongo_1.ProductsDaoMongo.postAProduct(newProduct);
-        return product;
-    }
-    static deleteProduct(id) {
-        const product = products_dao_mongo_1.ProductsDaoMongo.deleteProduct(id);
-        return product;
-    }
 }
 exports.ProductsService = ProductsService;
+// interface PropsUpdate{
+//     idProduct:String,
+//     newData:Object
+// }
+// interface PropsUpdateType{
+//     idProduct:String,
+//     idType:String,
+//     newData:Object
+// }

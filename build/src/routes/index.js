@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IndexRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const products_routes_1 = require("./products.routes");
+const subproducts_routes_1 = require("./subproducts.routes");
 const IndexRouter = express_1.default.Router();
 exports.IndexRouter = IndexRouter;
 IndexRouter.use('/api/products', products_routes_1.ProductsRoutes);
+IndexRouter.use('/api/subproducts', subproducts_routes_1.SubProductsRoutes);
 IndexRouter.get('/', (_, res) => {
     res.status(200).json({ message: 'Api de Rayuela', documentation_swagger: 'Aquí ira la url' });
 });

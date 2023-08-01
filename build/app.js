@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 9000;
 //---- Server corriendo ----
 const server = app.listen(PORT, () => console.log(`🔥The server is running in http://localhost:${PORT}`));
 server.on('error', (error) => console.log(`Error en el servidor ${error}`));
+//---- Cors para porder realizar peticiones desde otros puertos ----
+const cors_1 = __importDefault(require("cors"));
+app.use((0, cors_1.default)());
 //---- Rutas ----
 const routes_1 = require("./src/routes");
 app.use('/', routes_1.IndexRouter);

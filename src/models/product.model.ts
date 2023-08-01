@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
-import { IProduct } from '../interfaces/products.interface';
+import { IProduct,ISubProduct } from '../interfaces/products.interface';
 
 const productsCollection = 'Products';
+const subProductsCollection = 'subProducts';
 
 const productsSchema = new mongoose.Schema({
     name:{type:String,required:true},
@@ -9,17 +10,22 @@ const productsSchema = new mongoose.Schema({
     price:{type:Number, required:true},
     category:{type:String,require:true},
     brand: {type:String},
-    creationDate:{type:Number, required:true},
-    lastModifiedDate:{type:Number},
-    types: [{
-        img: [{ type: String,required:true }],
-        barcode: { type: String },
-        color: { type: String, required: true },
-        quantity: { type: Number, required: true },
-        stock: { type: Number, required: true },
-        size: { type: Number },
-        weight: { type: Number }
-    }]
+    creationDate:{type:Date, required:true},
+    lastModifiedDate:{type:Date},
+    size: { type: Number },
+    weight: { type: Number },
+    IDSubProducts: [{ type: mongoose.Types.ObjectId, ref: subProductsCollection }],
+})
+const subProductsSchema = new mongoose.Schema({
+    img: [{ type: String,required:true }],
+    barcode: { type: String },
+    color: { type: String, required: true },
+    quantity: { type: Number},
+    stock: { type: Number, required: true },
+    creationDate:{type:Date, required:true},
+    lastModifiedDate:{type:Date},
+    _id:{type:String,required:true}
 })
 
 export const ProductModel = mongoose.model<IProduct>(productsCollection,productsSchema) 
+export const SubProductsModel = mongoose.model<ISubProduct>(subProductsCollection,subProductsSchema) 

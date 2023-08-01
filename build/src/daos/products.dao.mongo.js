@@ -12,41 +12,48 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsDaoMongo = void 0;
 const product_model_1 = require("../models/product.model");
 class ProductsDaoMongo {
+    // Traer todos los productos
     static getAllProducts() {
         return __awaiter(this, void 0, void 0, function* () {
             const allProducts = yield product_model_1.ProductModel.find();
             return allProducts;
         });
     }
-    static getOneById(id) {
+    // Traer todos los subproductos 
+    static getAllSubProducts() {
         return __awaiter(this, void 0, void 0, function* () {
-            const product = yield product_model_1.ProductModel.find({ _id: id });
-            return product;
+            const allProducts = yield product_model_1.SubProductsModel.find();
+            return allProducts;
         });
     }
+    //traer productos por CATEGORÍA
     static getForCategory(category) {
         return __awaiter(this, void 0, void 0, function* () {
             const products = yield product_model_1.ProductModel.find({ category: category });
             return products;
         });
     }
+    //traer productos por MARCA
     static getForBrand(brand) {
         return __awaiter(this, void 0, void 0, function* () {
             const products = yield product_model_1.ProductModel.find({ brand: brand });
             return products;
         });
     }
-    static postAProduct(newProduct) {
+    static getOneById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const product = yield product_model_1.ProductModel.create(newProduct);
-            return product;
-        });
-    }
-    static deleteProduct(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const product = yield product_model_1.ProductModel.deleteOne({ _id: id });
+            const product = yield product_model_1.ProductModel.findOne({ _id: id });
             return product;
         });
     }
 }
 exports.ProductsDaoMongo = ProductsDaoMongo;
+// interface IPropsUpdateProduct{
+//     idProduct:String,
+//     newData:Object
+// }
+// interface PropsUpdateTypeProduct{
+//     idProduct:String,
+//     idType:String,
+//     newData:Object
+// }

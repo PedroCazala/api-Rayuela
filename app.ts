@@ -15,6 +15,14 @@ const PORT = process.env.PORT || 9000
 const server = app.listen(PORT,()=>console.log(`🔥The server is running in http://localhost:${PORT}`))
 server.on('error',(error:Error )=>console.log(`Error en el servidor ${error}`))
 
+
+//---- Cors para porder realizar peticiones desde otros puertos ----
+import cors from 'cors'
+app.use(
+    cors()
+)
+
+
 //---- Rutas ----
 import { IndexRouter } from './src/routes'
 app.use('/',IndexRouter)

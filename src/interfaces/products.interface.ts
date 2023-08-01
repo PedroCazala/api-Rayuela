@@ -6,16 +6,20 @@ export interface IProduct {
     category: string;
     brand?: string;
     creationDate: Date;
-    lastModifiedDate: Date;
-    types: ITypeItem[];
+    lastModifiedDate?: Date;
+    size?: number;
+    weight?: number;
+    discount?:number;
+    IDSubProducts?: ISubProduct['_id'][];
+    // subProducts?:ISubProduct[]
 }
-export interface ITypeItem {
-    // _id: string; //eliminar luego!!
+export interface ISubProduct {
+    _id?: string; 
     img: string[];
     barcode?: string;
     color: string;
-    quantity: number;
     stock: number;
-    size?: number;
-    weight?: number;
+    quantity?: number;
+    creationDate:Date,
+    lastModifiedDate?:Date
 }
