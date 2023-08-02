@@ -10,16 +10,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubProductsController = void 0;
+const subProducts_services_1 = require("../services/subProducts.services");
 // import { IProduct } from "../interfaces/products.interface";
 class SubProductsController {
     static getSubProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             if (id) {
-                const product = yield SubProductsService.getOneProduct(id);
-                product
-                    ? res.status(200).json(product)
-                    : res.status(404).json(`Product with id: ${id}, don't exist`);
+                const subProduct = yield subProducts_services_1.SubProductsService.getOneSubProduct(id);
+                subProduct
+                    ? res.status(200).json(subProduct)
+                    : res.status(404).json(`SubProduct with id: ${id}, don't exist`);
             }
             // else {
             //     const products = await SubProductsService.getAllProducts();

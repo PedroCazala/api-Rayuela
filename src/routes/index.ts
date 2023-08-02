@@ -1,6 +1,6 @@
 import express from 'express'
 import { ProductsRoutes } from './products.routes'
-import { SubProductsRoutes } from './subproducts.routes'
+import { SubProductsRoutes } from './subProducts.routes'
 
 const IndexRouter = express.Router()
 IndexRouter.use('/api/products',ProductsRoutes)

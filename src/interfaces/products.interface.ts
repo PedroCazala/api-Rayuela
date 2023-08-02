@@ -10,7 +10,8 @@ export interface IProduct {
     size?: number;
     weight?: number;
     discount?:number;
-    IDSubProducts?: ISubProduct['_id'][];
+    minimumStock?:number,
+    IDSubProducts: ISubProduct['_id'][];
     // subProducts?:ISubProduct[]
 }
 export interface ISubProduct {

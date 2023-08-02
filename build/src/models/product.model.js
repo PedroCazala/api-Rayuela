@@ -17,7 +17,9 @@ const productsSchema = new mongoose_1.default.Schema({
     lastModifiedDate: { type: Date },
     size: { type: Number },
     weight: { type: Number },
-    IDSubProducts: [{ type: mongoose_1.default.Types.ObjectId, ref: subProductsCollection }],
+    discount: { type: Number },
+    minimumStock: { type: Number },
+    IDSubProducts: [{ type: mongoose_1.default.Types.ObjectId, ref: subProductsCollection, required: true }],
 });
 const subProductsSchema = new mongoose_1.default.Schema({
     img: [{ type: String, required: true }],

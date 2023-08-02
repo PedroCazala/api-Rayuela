@@ -4,7 +4,7 @@ import { IProduct,ISubProduct } from '../interfaces/products.interface';
 const productsCollection = 'Products';
 const subProductsCollection = 'subProducts';
 
-const productsSchema = new mongoose.Schema({
+const productsSchema = new mongoose.Schema <IProduct>({
     name:{type:String,required:true},
     description:{type:String,required:true},
     price:{type:Number, required:true},
@@ -14,9 +14,11 @@ const productsSchema = new mongoose.Schema({
     lastModifiedDate:{type:Date},
     size: { type: Number },
     weight: { type: Number },
-    IDSubProducts: [{ type: mongoose.Types.ObjectId, ref: subProductsCollection }],
+    discount:{ type: Number },
+    minimumStock:{ type: Number },
+    IDSubProducts: [{ type: mongoose.Types.ObjectId, ref: subProductsCollection, required:true }],
 })
-const subProductsSchema = new mongoose.Schema({
+const subProductsSchema = new mongoose.Schema<ISubProduct>({
     img: [{ type: String,required:true }],
     barcode: { type: String },
     color: { type: String, required: true },
