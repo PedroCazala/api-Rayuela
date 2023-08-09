@@ -15,7 +15,7 @@ export interface IProduct {
     // subProducts?:ISubProduct[]
 }
 export interface ISubProduct {
-    _id?: string; 
+    _id: string; 
     img: string[];
     barcode?: string;
     color: string;

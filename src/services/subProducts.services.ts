@@ -1,6 +1,3 @@
-// import { IProduct } from "../interfaces/products.interface";
-// import { IProduct } from "../interfaces/products.interface";
-
 import { SubProductsDaoMongo } from "../daos/subProducts.dao.mongo";
 
 export class SubProductsService{

@@ -30,6 +30,15 @@ class ProductsController {
             }
         });
     }
+    static getSubProductsOfAProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            const subProducts = yield products_services_1.ProductsService.getSubProductsOfAProduct(id);
+            subProducts
+                ? res.status(200).json(subProducts)
+                : res.status(404).json(`Product with id: ${id}, don't exist`);
+        });
+    }
     static getProductsForCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const category = req.params.category;

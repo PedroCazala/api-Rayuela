@@ -6,7 +6,7 @@ export class SubProductsController {
     static async getSubProduct(req: Request, res: Response) {
         const id = req.params.id;
         if (id) {
-            const subProduct = await SubProductsService.getOneSubProduct(id);
+            const subProduct = await SubProductsService.getOneSubProduct(id);            
             subProduct
                 ? res.status(200).json(subProduct)
                 : res.status(404).json(`SubProduct with id: ${id}, don't exist`);

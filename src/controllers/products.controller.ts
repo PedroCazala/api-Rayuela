@@ -8,14 +8,22 @@ export class ProductsController {
         if (id) {
             const product = await ProductsService.getOneProduct(id);
             product
-                ? res.status(200).json(product)
-                : res.status(404).json(`Product with id: ${id}, don't exist`);
+            ? res.status(200).json(product)
+            : res.status(404).json(`Product with id: ${id}, don't exist`);
         } else {
             const products = await ProductsService.getAllProducts();
             products[0]
-                ? res.status(200).json(products)
-                : res.status(404).json({ message: `No found products in database` });
+            ? res.status(200).json(products)
+            : res.status(404).json({ message: `No found products in database` });
         }
+    }
+    static async getSubProductsOfAProduct(req: Request, res: Response){
+        const id =req.params.id
+        const subProducts =await ProductsService.getSubProductsOfAProduct(id)
+
+        subProducts
+        ? res.status(200).json(subProducts)
+        : res.status(404).json(`Product with id: ${id}, don't exist`);
     }
     static async getProductsForCategory(req: Request, res: Response) {
         const category = req.params.category;

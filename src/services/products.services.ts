@@ -1,37 +1,68 @@
 import { ProductsDaoMongo } from "../daos/products.dao.mongo";
+import { SubProductsDaoMongo } from "../daos/subProducts.dao.mongo";
+import { IProduct, ISubProduct } from "../interfaces/products.interface";
 // import { IProduct } from "../interfaces/products.interface";
 // import { IProduct } from "../interfaces/products.interface";
 
-export class ProductsService{
-    static getAllProducts(){
-        const products = ProductsDaoMongo.getAllProducts()
-        return products
+export class ProductsService {
+    static getAllProducts() {
+        const products = ProductsDaoMongo.getAllProducts();
+        return products;
     }
-    static async getOneProduct(id:string){
+    static async getOneProduct(id: string) {
         try {
-            const product = await ProductsDaoMongo.getOneById(id)   
-            return product
+            const product = await ProductsDaoMongo.getOneById(id);
+            return product;
         } catch (error) {
             console.log(error);
-            return false
+            return false;
         }
     }
-    static async getForCategory(category:string){
+    // traer todos los subproductos de un determinado producto
+    static async getSubProductsOfAProduct(id: string) {
         try {
-            const products = await ProductsDaoMongo.getForCategory(category)        
-            return products
-        } catch (error) { 
+            const product: IProduct | null = await ProductsDaoMongo.getOneById(
+                id
+            );
+            const idSubProducts = product?.IDSubProducts;
+
+            let subProducts: ISubProduct[] = [];
+            if(idSubProducts){
+                for (const id of idSubProducts){
+                    const subProduct = await SubProductsDaoMongo.getOneById(id);
+                    if(subProduct){
+                        subProducts = [...subProducts, subProduct]
+                        // console.log(subProducts);
+                    }  
+                }
+            }
+
+            console.log('services idSub : ',idSubProducts);
+            console.log('services : ',subProducts);
+
+            return subProducts;
+        } catch (error) {
             console.log(error);
-            return false
+            return false;
         }
     }
-    static async getForBrand(brand:string){
+
+    static async getForCategory(category: string) {
         try {
-            const products = await ProductsDaoMongo.getForBrand(brand)        
-            return products
-        } catch (error) { 
+            const products = await ProductsDaoMongo.getForCategory(category);
+            return products;
+        } catch (error) {
             console.log(error);
-            return false
+            return false;
+        }
+    }
+    static async getForBrand(brand: string) {
+        try {
+            const products = await ProductsDaoMongo.getForBrand(brand);
+            return products;
+        } catch (error) {
+            console.log(error);
+            return false;
         }
     }
     // static createProduct(data:IProduct){
@@ -46,7 +77,7 @@ export class ProductsService{
     // }
     // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
     //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
-        
+
     //     return product
     // }
     // static deleteProduct(id:String){

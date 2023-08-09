@@ -5,6 +5,9 @@ const ProductsRoutes = express.Router()
 ProductsRoutes.get('/:id?',(req,res)=>{
     ProductsController.getProducts(req,res)
 })
+ProductsRoutes.get('/subproducts/:id?',(req,res)=>{
+    ProductsController.getSubProductsOfAProduct(req,res)
+})
 ProductsRoutes.get('/category/:category',(req,res)=>{
     ProductsController.getProductsForCategory(req,res)
 })

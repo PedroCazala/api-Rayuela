@@ -5,10 +5,7 @@ import { SubProductsModel } from "../models/product.model"
 export class SubProductsDaoMongo {
 
     static async getOneById(id:String){
-        console.log('ENTRO');
-        
         const subProduct =await SubProductsModel.findOne({_id:id})
-        
         return subProduct
     }
 
@@ -74,7 +71,7 @@ export class SubProductsDaoMongo {
     // }
 }
 // interface IPropsUpdateProduct{
-//     idProduct:String,
+//     idProduct:String, 
 //     newData:Object
 // }
 // interface PropsUpdateTypeProduct{

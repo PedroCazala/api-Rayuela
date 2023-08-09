@@ -14,7 +14,6 @@ const product_model_1 = require("../models/product.model");
 class SubProductsDaoMongo {
     static getOneById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('ENTRO');
             const subProduct = yield product_model_1.SubProductsModel.findOne({ _id: id });
             return subProduct;
         });
@@ -22,7 +21,7 @@ class SubProductsDaoMongo {
 }
 exports.SubProductsDaoMongo = SubProductsDaoMongo;
 // interface IPropsUpdateProduct{
-//     idProduct:String,
+//     idProduct:String, 
 //     newData:Object
 // }
 // interface PropsUpdateTypeProduct{

@@ -29,7 +29,6 @@ const subProductsSchema = new mongoose_1.default.Schema({
     stock: { type: Number, required: true },
     creationDate: { type: Date, required: true },
     lastModifiedDate: { type: Date },
-    _id: { type: String, required: true }
 });
 exports.ProductModel = mongoose_1.default.model(productsCollection, productsSchema);
 exports.SubProductsModel = mongoose_1.default.model(subProductsCollection, subProductsSchema);

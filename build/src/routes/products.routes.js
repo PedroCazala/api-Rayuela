@@ -11,6 +11,9 @@ exports.ProductsRoutes = ProductsRoutes;
 ProductsRoutes.get('/:id?', (req, res) => {
     products_controller_1.ProductsController.getProducts(req, res);
 });
+ProductsRoutes.get('/subproducts/:id?', (req, res) => {
+    products_controller_1.ProductsController.getSubProductsOfAProduct(req, res);
+});
 ProductsRoutes.get('/category/:category', (req, res) => {
     products_controller_1.ProductsController.getProductsForCategory(req, res);
 });
