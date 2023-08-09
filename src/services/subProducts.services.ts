@@ -1,4 +1,5 @@
 import { SubProductsDaoMongo } from "../daos/subProducts.dao.mongo";
+import { ISubProduct } from "../interfaces/products.interface";
 
 export class SubProductsService{
     // static getAllProducts(){
@@ -14,12 +15,13 @@ export class SubProductsService{
             return false
         }
     }
-    // static createProduct(data:IProduct){
-    //     const date:Date = new Date();
-    //     const newProduct:IProduct = {...data,creationDate:date}
-    //     // const product = ProductsDaoMongo.postAProduct(newProduct)
-    //     // return product
-    // }
+    static async createSubProducts(data:ISubProduct[]){
+        const newSubProducts= await SubProductsDaoMongo.CreateSubProducts(data)
+        return newSubProducts
+        // const date:Date = new Date();
+        // const product = ProductsDaoMongo.postAProduct(newProduct)
+        // return product
+    }
     // static updateProduct({idProduct,newData}:PropsUpdate){
     //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
     //     return product
@@ -29,10 +31,10 @@ export class SubProductsService{
         
     //     return product
     // }
-    // static deleteProduct(id:String){
-    //     const product = ProductsDaoMongo.deleteProduct(id)
-    //     return product
-    // }
+    static deleteSubProduct(id:String){
+        const product = SubProductsDaoMongo.deleteSubProduct(id)
+        return product
+    }
 }
 
 // interface PropsUpdate{

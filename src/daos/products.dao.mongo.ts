@@ -1,3 +1,4 @@
+import { IProduct } from "../interfaces/products.interface"
 import { ProductModel, SubProductsModel } from "../models/product.model"
 
 
@@ -26,6 +27,12 @@ export class ProductsDaoMongo {
 
     static async getOneById(id:String){
         const product =await ProductModel.findOne({_id:id})
+        return product
+    }
+
+    //Crear un producto
+    static async postAProduct(newProduct:IProduct){
+        const product =await ProductModel.create(newProduct)
         return product
     }
 
@@ -85,10 +92,10 @@ export class ProductsDaoMongo {
         
     //     return product
     // }
-    // static async deleteProduct(id:String){
-    //     const product =await ProductModel.deleteOne({_id:id})
-    //     return product
-    // }
+    static async deleteProduct(id:String){
+        const product =await ProductModel.deleteOne({_id:id})
+        return product
+    }
 }
 // interface IPropsUpdateProduct{
 //     idProduct:String,

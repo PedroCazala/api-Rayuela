@@ -81,6 +81,24 @@ class ProductsService {
             }
         });
     }
+    static createProduct(data) {
+        // const date:Date = new Date();
+        const newProduct = data;
+        const product = products_dao_mongo_1.ProductsDaoMongo.postAProduct(newProduct);
+        return product;
+    }
+    // static updateProduct({idProduct,newData}:PropsUpdate){
+    //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
+    //     return product
+    // }
+    // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
+    //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
+    //     return product
+    // }
+    static deleteProduct(id) {
+        const product = products_dao_mongo_1.ProductsDaoMongo.deleteProduct(id);
+        return product;
+    }
 }
 exports.ProductsService = ProductsService;
 // interface PropsUpdate{

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
 const products_services_1 = require("../services/products.services");
+const subProducts_services_1 = require("../services/subProducts.services");
 // import { IProduct } from "../interfaces/products.interface";
 class ProductsController {
     static getProducts(req, res) {
@@ -26,7 +27,9 @@ class ProductsController {
                 const products = yield products_services_1.ProductsService.getAllProducts();
                 products[0]
                     ? res.status(200).json(products)
-                    : res.status(404).json({ message: `No found products in database` });
+                    : res
+                        .status(404)
+                        .json({ message: `No found products in database` });
             }
         });
     }
@@ -45,7 +48,9 @@ class ProductsController {
             const products = yield products_services_1.ProductsService.getForCategory(category);
             products
                 ? res.status(200).json(products)
-                : res.status(404).json({ message: `No found products with category: ${category} in database` });
+                : res.status(404).json({
+                    message: `No found products with category: ${category} in database`,
+                });
         });
     }
     static getProductsForBrand(req, res) {
@@ -54,7 +59,98 @@ class ProductsController {
             const products = yield products_services_1.ProductsService.getForBrand(brand);
             products
                 ? res.status(200).json(products)
-                : res.status(404).json({ message: `No found products with brand: ${brand} in database` });
+                : res.status(404).json({
+                    message: `No found products with brand: ${brand} in database`,
+                });
+        });
+    }
+    static createProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = req.body;
+            try {
+                const subProducts = yield subProducts_services_1.SubProductsService.createSubProducts(data.subProducts);
+                let IDSubProds = [];
+                subProducts.forEach((sub) => (IDSubProds = [...IDSubProds, sub._id]));
+                const product = yield products_services_1.ProductsService.createProduct(Object.assign(Object.assign({}, data), { IDSubProducts: IDSubProds }));
+                subProducts &&
+                    res.status(200).json({
+                        // product,
+                        // subProducts,
+                        message1: `El producto se creó con el id: ${product._id}`,
+                        message2: `Los subproductos fueron creados con los id: ${IDSubProds}`,
+                    });
+            }
+            catch (error) {
+                res.status(500).json({ message: `error`, error });
+            }
+        });
+    }
+    //     static async updateProduct(req: Request, res: Response) {
+    //         const {idProduct} = req.params;
+    //         const newData = req.body;
+    //         try {
+    //             const product = await ProductsService.updateProduct({idProduct,newData});
+    //             if (product) {
+    //                 res.status(200).json({
+    //                     message: `Product with id: ${idProduct} was modified`,product,
+    //                 });
+    //             } else {
+    //                 res.status(404).json({
+    //                     message: `Product with id: ${idProduct} was not found`,
+    //                 });
+    //             }
+    //         } catch (error) {
+    //             res.status(404).json({
+    //                 message: `Product with id: ${idProduct} was not found`,
+    //                 error
+    //             });
+    //         }
+    //     }
+    //     static async updateTypeProduct(req: Request, res: Response) {
+    //         const {idProduct,idType} = req.params;
+    //         const newData = req.body;
+    //         console.log('hjola');
+    //         try {
+    //             const product = await ProductsService.updateTypeProduct({idProduct,idType,newData});
+    //             res.status(200).json({
+    //                 message: `Product with id: ${idProduct} was modified`,product,
+    //             });
+    //         } catch (error) {
+    //             res.status(404).json({
+    //                 message: `Product with id: ${idProduct} was not found`,
+    //                 error
+    //             });
+    //         }
+    //     }
+    static deleteProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            try {
+                const subProds = yield products_services_1.ProductsService.getSubProductsOfAProduct(id);
+                let IDSubProds = [];
+                subProds &&
+                    subProds.map((sub) => __awaiter(this, void 0, void 0, function* () {
+                        yield subProducts_services_1.SubProductsService.deleteSubProduct(sub._id);
+                        // IDSubProds = [...IDSubProds, ;
+                    }));
+                const product = yield products_services_1.ProductsService.deleteProduct(id);
+                if (product.deletedCount > 0) {
+                    res.status(200).json({
+                        message: `Product with id: ${id} was deleted`,
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        message: `Product with id: ${id} was not found, it is probably that this product was delete before`,
+                    });
+                }
+            }
+            catch (error) {
+                res.status(404).json({
+                    message: `Product with id: ${id} was not found`,
+                    error,
+                });
+            }
         });
     }
 }

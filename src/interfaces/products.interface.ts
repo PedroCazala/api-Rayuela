@@ -24,3 +24,7 @@ export interface ISubProduct {
     creationDate:Date,
     lastModifiedDate?:Date
 }
+
+export interface ICompleteProduct extends IProduct {
+    subProducts: ISubProduct[];
+}

@@ -28,6 +28,27 @@ class SubProductsService {
             }
         });
     }
+    static createSubProducts(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newSubProducts = yield subProducts_dao_mongo_1.SubProductsDaoMongo.CreateSubProducts(data);
+            return newSubProducts;
+            // const date:Date = new Date();
+            // const product = ProductsDaoMongo.postAProduct(newProduct)
+            // return product
+        });
+    }
+    // static updateProduct({idProduct,newData}:PropsUpdate){
+    //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
+    //     return product
+    // }
+    // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
+    //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
+    //     return product
+    // }
+    static deleteSubProduct(id) {
+        const product = subProducts_dao_mongo_1.SubProductsDaoMongo.deleteSubProduct(id);
+        return product;
+    }
 }
 exports.SubProductsService = SubProductsService;
 // interface PropsUpdate{

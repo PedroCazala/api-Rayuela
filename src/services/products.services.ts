@@ -65,12 +65,12 @@ export class ProductsService {
             return false;
         }
     }
-    // static createProduct(data:IProduct){
-    //     const date:Date = new Date();
-    //     const newProduct:IProduct = {...data,creationDate:date}
-    //     // const product = ProductsDaoMongo.postAProduct(newProduct)
-    //     // return product
-    // }
+    static createProduct(data:IProduct){
+        // const date:Date = new Date();
+        const newProduct:IProduct = data
+        const product = ProductsDaoMongo.postAProduct(newProduct)
+        return product
+    }
     // static updateProduct({idProduct,newData}:PropsUpdate){
     //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
     //     return product
@@ -80,10 +80,10 @@ export class ProductsService {
 
     //     return product
     // }
-    // static deleteProduct(id:String){
-    //     const product = ProductsDaoMongo.deleteProduct(id)
-    //     return product
-    // }
+    static deleteProduct(id:String){
+        const product = ProductsDaoMongo.deleteProduct(id)
+        return product
+    }
 }
 
 // interface PropsUpdate{
