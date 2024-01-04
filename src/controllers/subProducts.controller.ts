@@ -5,6 +5,7 @@ import { SubProductsService } from "../services/subProducts.services";
 export class SubProductsController {
     static async getSubProduct(req: Request, res: Response) {
         const id = req.params.id;
+        
         if (id) {
             const subProduct = await SubProductsService.getOneSubProduct(id);            
             subProduct

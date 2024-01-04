@@ -23,9 +23,9 @@ ProductsRoutes.get('/brand/:brand', (req, res) => {
 ProductsRoutes.post('/', (req, res) => {
     products_controller_1.ProductsController.createProduct(req, res);
 });
-// ProductsRoutes.put('/:id',(req,res)=>{    
-//     ProductsController.updateProduct(req,res)
-// })
+ProductsRoutes.put('/:idProduct', (req, res) => {
+    products_controller_1.ProductsController.updateProduct(req, res);
+});
 // ProductsRoutes.put('/:idProduct/:idType',(req,res)=>{    
 //     ProductsController.updateTypeProduct(req,res)
 // })

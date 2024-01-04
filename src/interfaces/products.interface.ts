@@ -7,7 +7,7 @@ export interface IProduct {
     brand?: string;
     creationDate: Date;
     lastModifiedDate?: Date;
-    size?: number;
+    size?: string;
     weight?: number;
     discount?:number;
     minimumStock?:number,

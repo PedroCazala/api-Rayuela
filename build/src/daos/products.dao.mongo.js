@@ -50,6 +50,7 @@ class ProductsDaoMongo {
     static postAProduct(newProduct) {
         return __awaiter(this, void 0, void 0, function* () {
             const product = yield product_model_1.ProductModel.create(newProduct);
+            console.log(product);
             return product;
         });
     }
@@ -71,10 +72,12 @@ class ProductsDaoMongo {
     //     const product: Promise<IProduct>= await ProductModel.create({newProduct,types:arrayTypes})
     //     return product
     // }
-    // static async updateProduct({idProduct,newData}:IPropsUpdateProduct){
-    //     const product =await ProductModel.findByIdAndUpdate(idProduct,newData,{new:true})
-    //     return product
-    // }
+    static updateProduct({ idProduct, newData }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const product = yield product_model_1.ProductModel.findByIdAndUpdate(idProduct, newData, { new: true });
+            return product;
+        });
+    }
     // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateTypeProduct){
     //     console.log(newData);
     //     const productType = await ProductModel.findById(idProduct,{},{
@@ -111,10 +114,6 @@ class ProductsDaoMongo {
     }
 }
 exports.ProductsDaoMongo = ProductsDaoMongo;
-// interface IPropsUpdateProduct{
-//     idProduct:String,
-//     newData:Object
-// }
 // interface PropsUpdateTypeProduct{
 //     idProduct:String,
 //     idType:String,

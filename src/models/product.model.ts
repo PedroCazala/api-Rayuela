@@ -12,7 +12,7 @@ const productsSchema = new mongoose.Schema <IProduct>({
     brand: {type:String},
     creationDate:{type:Date, required:true},
     lastModifiedDate:{type:Date},
-    size: { type: Number },
+    size: { type: String },
     weight: { type: Number },
     discount:{ type: Number },
     minimumStock:{ type: Number },

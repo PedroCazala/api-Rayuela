@@ -10,7 +10,7 @@ const productEjemplo : IProduct = {
     creationDate:new Date('2023-07-31T12:30:00Z'),
     lastModifiedDate:new Date('2023-07-31T12:30:00Z'),
 
-    size: 23,
+    size: '23',
     weight: 43,
     discount:10,
     IDSubProducts: ['1a','1b'],

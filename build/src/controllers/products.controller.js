@@ -67,6 +67,7 @@ class ProductsController {
     static createProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
+            console.log('entro a crear producto', data);
             try {
                 const subProducts = yield subProducts_services_1.SubProductsService.createSubProducts(data.subProducts);
                 let IDSubProds = [];
@@ -85,27 +86,31 @@ class ProductsController {
             }
         });
     }
-    //     static async updateProduct(req: Request, res: Response) {
-    //         const {idProduct} = req.params;
-    //         const newData = req.body;
-    //         try {
-    //             const product = await ProductsService.updateProduct({idProduct,newData});
-    //             if (product) {
-    //                 res.status(200).json({
-    //                     message: `Product with id: ${idProduct} was modified`,product,
-    //                 });
-    //             } else {
-    //                 res.status(404).json({
-    //                     message: `Product with id: ${idProduct} was not found`,
-    //                 });
-    //             }
-    //         } catch (error) {
-    //             res.status(404).json({
-    //                 message: `Product with id: ${idProduct} was not found`,
-    //                 error
-    //             });
-    //         }
-    //     }
+    static updateProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProduct } = req.params;
+            const newData = req.body;
+            try {
+                const product = yield products_services_1.ProductsService.updateProduct({ idProduct, newData });
+                if (product) {
+                    res.status(200).json({
+                        message: `Product with id: ${idProduct} was modified`, product,
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        message: `Product with id: ${idProduct} was not found`,
+                    });
+                }
+            }
+            catch (error) {
+                res.status(404).json({
+                    message: `Product with id: ${idProduct} was not found`,
+                    error
+                });
+            }
+        });
+    }
     //     static async updateTypeProduct(req: Request, res: Response) {
     //         const {idProduct,idType} = req.params;
     //         const newData = req.body;
@@ -127,11 +132,9 @@ class ProductsController {
             const { id } = req.params;
             try {
                 const subProds = yield products_services_1.ProductsService.getSubProductsOfAProduct(id);
-                let IDSubProds = [];
                 subProds &&
                     subProds.map((sub) => __awaiter(this, void 0, void 0, function* () {
                         yield subProducts_services_1.SubProductsService.deleteSubProduct(sub._id);
-                        // IDSubProds = [...IDSubProds, ;
                     }));
                 const product = yield products_services_1.ProductsService.deleteProduct(id);
                 if (product.deletedCount > 0) {

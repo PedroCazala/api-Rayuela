@@ -47,8 +47,6 @@ class ProductsService {
                         }
                     }
                 }
-                console.log('services idSub : ', idSubProducts);
-                console.log('services : ', subProducts);
                 return subProducts;
             }
             catch (error) {
@@ -84,13 +82,14 @@ class ProductsService {
     static createProduct(data) {
         // const date:Date = new Date();
         const newProduct = data;
+        console.log(newProduct);
         const product = products_dao_mongo_1.ProductsDaoMongo.postAProduct(newProduct);
         return product;
     }
-    // static updateProduct({idProduct,newData}:PropsUpdate){
-    //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
-    //     return product
-    // }
+    static updateProduct({ idProduct, newData }) {
+        const product = products_dao_mongo_1.ProductsDaoMongo.updateProduct({ idProduct, newData });
+        return product;
+    }
     // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
     //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
     //     return product
@@ -101,10 +100,6 @@ class ProductsService {
     }
 }
 exports.ProductsService = ProductsService;
-// interface PropsUpdate{
-//     idProduct:String,
-//     newData:Object
-// }
 // interface PropsUpdateType{
 //     idProduct:String,
 //     idType:String,

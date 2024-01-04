@@ -15,7 +15,7 @@ const productsSchema = new mongoose_1.default.Schema({
     brand: { type: String },
     creationDate: { type: Date, required: true },
     lastModifiedDate: { type: Date },
-    size: { type: Number },
+    size: { type: String },
     weight: { type: Number },
     discount: { type: Number },
     minimumStock: { type: Number },

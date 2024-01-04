@@ -33,6 +33,8 @@ export class ProductsDaoMongo {
     //Crear un producto
     static async postAProduct(newProduct:IProduct){
         const product =await ProductModel.create(newProduct)
+        console.log(product);
+        
         return product
     }
 
@@ -57,10 +59,10 @@ export class ProductsDaoMongo {
     //     const product: Promise<IProduct>= await ProductModel.create({newProduct,types:arrayTypes})
     //     return product
     // }
-    // static async updateProduct({idProduct,newData}:IPropsUpdateProduct){
-    //     const product =await ProductModel.findByIdAndUpdate(idProduct,newData,{new:true})
-    //     return product
-    // }
+    static async updateProduct({idProduct,newData}:IPropsUpdateProduct){
+        const product =await ProductModel.findByIdAndUpdate(idProduct,newData,{new:true})
+        return product
+    }
     // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateTypeProduct){
     //     console.log(newData);
         
@@ -97,10 +99,10 @@ export class ProductsDaoMongo {
         return product
     }
 }
-// interface IPropsUpdateProduct{
-//     idProduct:String,
-//     newData:Object
-// }
+interface IPropsUpdateProduct{
+    idProduct:String,
+    newData:IProduct
+}
 // interface PropsUpdateTypeProduct{
 //     idProduct:String,
 //     idType:String,
