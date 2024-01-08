@@ -13,6 +13,10 @@ export class SubProductsDaoMongo {
         const subProducts =await SubProductsModel.create(data)
         return subProducts
     }
+    static async updateSubproducts({idSubProduct,newData}:IPropsUpdateSubProduct){
+        const subProducts =await SubProductsModel.findByIdAndUpdate(idSubProduct,newData)
+        return subProducts
+    }
 
 
     // static createTypeProduct(types:[],creationDate:String){
@@ -79,10 +83,10 @@ export class SubProductsDaoMongo {
         return product
     }
 }
-// interface IPropsUpdateProduct{
-//     idProduct:String, 
-//     newData:Object
-// }
+interface IPropsUpdateSubProduct{
+    idSubProduct:String, 
+    newData:Object
+}
 // interface PropsUpdateTypeProduct{
 //     idProduct:String,
 //     idType:String,

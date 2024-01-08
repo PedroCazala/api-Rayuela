@@ -1,4 +1,4 @@
-import { ICompleteProduct } from "../interfaces/products.interface";
+import { ICompleteProduct, ISubProduct } from "../interfaces/products.interface";
 import { ProductsService } from "../services/products.services";
 import { Request, Response /*, NextFunction */ } from "express";
 import { SubProductsService } from "../services/subProducts.services";
@@ -44,13 +44,12 @@ export class ProductsController {
         products
             ? res.status(200).json(products)
             : res.status(404).json({
-                  message: `No found products with brand: ${brand} in database`,
-              });
+                message: `No found products with brand: ${brand} in database`,
+            });
     }
     static async createProduct(req: Request, res: Response) {
         
         const data: ICompleteProduct = req.body;
-        console.log('entro a crear producto',data);
         try {
             const subProducts = await SubProductsService.createSubProducts(
                 data.subProducts
@@ -64,7 +63,9 @@ export class ProductsController {
                 ...data,
                 IDSubProducts: IDSubProds,
             });
-
+            subProducts.forEach(async (sub:ISubProduct) => {
+                await SubProductsService.updateSubProducts({idSubProduct:sub._id,newData:{sub,IDProduct:product._id}})
+            })
             subProducts &&
                 res.status(200).json({
                     // product,

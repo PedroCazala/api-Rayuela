@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsService = void 0;
 const products_dao_mongo_1 = require("../daos/products.dao.mongo");
+const subProducts_dao_mongo_1 = require("../daos/subProducts.dao.mongo");
 // import { IProduct } from "../interfaces/products.interface";
 // import { IProduct } from "../interfaces/products.interface";
 class ProductsService {
@@ -23,6 +24,30 @@ class ProductsService {
             try {
                 const product = yield products_dao_mongo_1.ProductsDaoMongo.getOneById(id);
                 return product;
+            }
+            catch (error) {
+                console.log(error);
+                return false;
+            }
+        });
+    }
+    // traer todos los subproductos de un determinado producto
+    static getSubProductsOfAProduct(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const product = yield products_dao_mongo_1.ProductsDaoMongo.getOneById(id);
+                const idSubProducts = product === null || product === void 0 ? void 0 : product.IDSubProducts;
+                let subProducts = [];
+                if (idSubProducts) {
+                    for (const id of idSubProducts) {
+                        const subProduct = yield subProducts_dao_mongo_1.SubProductsDaoMongo.getOneById(id);
+                        if (subProduct) {
+                            subProducts = [...subProducts, subProduct];
+                            // console.log(subProducts);
+                        }
+                    }
+                }
+                return subProducts;
             }
             catch (error) {
                 console.log(error);
@@ -54,12 +79,27 @@ class ProductsService {
             }
         });
     }
+    static createProduct(data) {
+        // const date:Date = new Date();
+        const newProduct = data;
+        console.log(newProduct);
+        const product = products_dao_mongo_1.ProductsDaoMongo.postAProduct(newProduct);
+        return product;
+    }
+    static updateProduct({ idProduct, newData }) {
+        const product = products_dao_mongo_1.ProductsDaoMongo.updateProduct({ idProduct, newData });
+        return product;
+    }
+    // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
+    //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
+    //     return product
+    // }
+    static deleteProduct(id) {
+        const product = products_dao_mongo_1.ProductsDaoMongo.deleteProduct(id);
+        return product;
+    }
 }
 exports.ProductsService = ProductsService;
-// interface PropsUpdate{
-//     idProduct:String,
-//     newData:Object
-// }
 // interface PropsUpdateType{
 //     idProduct:String,
 //     idType:String,

@@ -20,11 +20,13 @@ export interface ISubProduct {
     barcode?: string;
     color: string;
     stock: number;
-    quantity?: number;
     creationDate:Date,
     lastModifiedDate?:Date
+    IDProduct: IProduct['_id'];
+
 }
 
 export interface ICompleteProduct extends IProduct {
     subProducts: ISubProduct[];
+    quantity:number
 }

@@ -22,6 +22,10 @@ export class SubProductsService{
         // const product = ProductsDaoMongo.postAProduct(newProduct)
         // return product
     }
+    static updateSubProducts({idSubProduct,newData}:PropsUpdate){
+        const subProds = SubProductsDaoMongo.updateSubproducts({idSubProduct,newData})
+        return subProds
+    }
     // static updateProduct({idProduct,newData}:PropsUpdate){
     //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
     //     return product
@@ -37,10 +41,10 @@ export class SubProductsService{
     }
 }
 
-// interface PropsUpdate{
-//     idProduct:String,
-//     newData:Object
-// }
+interface PropsUpdate{
+    idSubProduct:String,
+    newData:Object
+}
 // interface PropsUpdateType{
 //     idProduct:String,
 //     idType:String,

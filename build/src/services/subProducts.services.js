@@ -37,6 +37,10 @@ class SubProductsService {
             // return product
         });
     }
+    static updateSubProducts({ idSubProduct, newData }) {
+        const subProds = subProducts_dao_mongo_1.SubProductsDaoMongo.updateSubproducts({ idSubProduct, newData });
+        return subProds;
+    }
     // static updateProduct({idProduct,newData}:PropsUpdate){
     //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
     //     return product
@@ -51,10 +55,6 @@ class SubProductsService {
     }
 }
 exports.SubProductsService = SubProductsService;
-// interface PropsUpdate{
-//     idProduct:String,
-//     newData:Object
-// }
 // interface PropsUpdateType{
 //     idProduct:String,
 //     idType:String,

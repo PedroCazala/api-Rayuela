@@ -6,7 +6,7 @@ import { ProductModel, SubProductsModel } from "../models/product.model"
 export class ProductsDaoMongo {
     // Traer todos los productos
     static async getAllProducts()/* :Promise<IProduct[]> */{
-        const allProducts =await ProductModel.find()
+        const allProducts =await ProductModel.find().populate("IDSubProducts")
         return allProducts
     }
     // Traer todos los subproductos 
@@ -16,12 +16,12 @@ export class ProductsDaoMongo {
     }
     //traer productos por CATEGORÍA
     static async getForCategory(category:String){
-        const products =await ProductModel.find({category:category})
+        const products =await ProductModel.find({category:category}).populate("IDSubProducts")
         return products
     }
     //traer productos por MARCA
     static async getForBrand(brand:String){
-        const products =await ProductModel.find({brand:brand})
+        const products =await ProductModel.find({brand:brand}).populate("IDSubProducts")
         return products
     }
 

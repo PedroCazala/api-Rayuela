@@ -15,7 +15,7 @@ class ProductsDaoMongo {
     // Traer todos los productos
     static getAllProducts() {
         return __awaiter(this, void 0, void 0, function* () {
-            const allProducts = yield product_model_1.ProductModel.find();
+            const allProducts = yield product_model_1.ProductModel.find().populate("IDSubProducts");
             return allProducts;
         });
     }
@@ -29,14 +29,14 @@ class ProductsDaoMongo {
     //traer productos por CATEGORÍA
     static getForCategory(category) {
         return __awaiter(this, void 0, void 0, function* () {
-            const products = yield product_model_1.ProductModel.find({ category: category });
+            const products = yield product_model_1.ProductModel.find({ category: category }).populate("IDSubProducts");
             return products;
         });
     }
     //traer productos por MARCA
     static getForBrand(brand) {
         return __awaiter(this, void 0, void 0, function* () {
-            const products = yield product_model_1.ProductModel.find({ brand: brand });
+            const products = yield product_model_1.ProductModel.find({ brand: brand }).populate("IDSubProducts");
             return products;
         });
     }

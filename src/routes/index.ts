@@ -1,10 +1,12 @@
 import express from 'express'
 import { ProductsRoutes } from './products.routes'
 import { SubProductsRoutes } from './subProducts.routes'
+import { CartsRoutes } from './carts.routes'
 
 const IndexRouter = express.Router()
 IndexRouter.use('/api/products',ProductsRoutes)
 IndexRouter.use('/api/subproducts',SubProductsRoutes)
+IndexRouter.use('/api/carts',CartsRoutes)
 
 IndexRouter.get('/',(_,res)=>{
     res.status(200).json({message:'Api de Rayuela',documentation_swagger:'Aquí ira la url'})

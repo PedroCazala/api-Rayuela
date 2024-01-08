@@ -25,10 +25,10 @@ const subProductsSchema = new mongoose_1.default.Schema({
     img: [{ type: String, required: true }],
     barcode: { type: String },
     color: { type: String, required: true },
+    quantity: { type: Number },
     stock: { type: Number, required: true },
     creationDate: { type: Date, required: true },
     lastModifiedDate: { type: Date },
-    IDProduct: [{ type: mongoose_1.default.Types.ObjectId, ref: productsCollection, required: true }]
 });
 exports.ProductModel = mongoose_1.default.model(productsCollection, productsSchema);
 exports.SubProductsModel = mongoose_1.default.model(subProductsCollection, subProductsSchema);

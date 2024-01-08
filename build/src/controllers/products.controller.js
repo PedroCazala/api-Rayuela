@@ -67,12 +67,14 @@ class ProductsController {
     static createProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
-            console.log('entro a crear producto', data);
             try {
                 const subProducts = yield subProducts_services_1.SubProductsService.createSubProducts(data.subProducts);
                 let IDSubProds = [];
                 subProducts.forEach((sub) => (IDSubProds = [...IDSubProds, sub._id]));
                 const product = yield products_services_1.ProductsService.createProduct(Object.assign(Object.assign({}, data), { IDSubProducts: IDSubProds }));
+                subProducts.forEach((sub) => __awaiter(this, void 0, void 0, function* () {
+                    yield subProducts_services_1.SubProductsService.updateSubProducts({ idSubProduct: sub._id, newData: { sub, IDProduct: product._id } });
+                }));
                 subProducts &&
                     res.status(200).json({
                         // product,

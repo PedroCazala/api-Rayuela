@@ -65,7 +65,6 @@ export class ProductsService {
     static createProduct(data:IProduct){
         // const date:Date = new Date();
         const newProduct:IProduct = data
-        console.log(newProduct);
         
         const product = ProductsDaoMongo.postAProduct(newProduct)
         return product

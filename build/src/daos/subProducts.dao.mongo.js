@@ -24,6 +24,12 @@ class SubProductsDaoMongo {
             return subProducts;
         });
     }
+    static updateSubproducts({ idSubProduct, newData }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const subProducts = yield product_model_1.SubProductsModel.findByIdAndUpdate(idSubProduct, newData);
+            return subProducts;
+        });
+    }
     // static createTypeProduct(types:[],creationDate:String){
     //     types.map(async type=>{
     //         const typeProduct= await ProductTypeModel.create({type,creationDate})
@@ -86,10 +92,6 @@ class SubProductsDaoMongo {
     }
 }
 exports.SubProductsDaoMongo = SubProductsDaoMongo;
-// interface IPropsUpdateProduct{
-//     idProduct:String, 
-//     newData:Object
-// }
 // interface PropsUpdateTypeProduct{
 //     idProduct:String,
 //     idType:String,

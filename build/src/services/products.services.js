@@ -82,7 +82,6 @@ class ProductsService {
     static createProduct(data) {
         // const date:Date = new Date();
         const newProduct = data;
-        console.log(newProduct);
         const product = products_dao_mongo_1.ProductsDaoMongo.postAProduct(newProduct);
         return product;
     }
