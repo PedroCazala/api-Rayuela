@@ -17,21 +17,12 @@ CartsRoutes.get('/:idCart', (req, res) => {
 CartsRoutes.post('/add-subproducts/:idCart', (req, res) => {
     carts_controller_1.CartsController.addSubProduct(req, res);
 });
-// CartsRoutes.get('/category/:category',(req,res)=>{
-//     CartsController.getProductsForCategory(req,res)
-// })
-// CartsRoutes.get('/brand/:brand',(req,res)=>{
-//     CartsController.getProductsForBrand(req,res)
-// })
-// CartsRoutes.post('/',(req,res)=>{
-//     CartsController.createProduct(req,res)
-// })
-// CartsRoutes.put('/:idProduct',(req,res)=>{    
-//     CartsController.updateProduct(req,res)
-// })
-// CartsRoutes.put('/:idProduct/:idType',(req,res)=>{    
-//     CartsController.updateTypeProduct(req,res)
-// })
+CartsRoutes.delete('/clear-cart/:idCart', (req, res) => {
+    carts_controller_1.CartsController.clearCart(req, res);
+});
+CartsRoutes.delete('/deleteProductOfCart/:idCart', (req, res) => {
+    carts_controller_1.CartsController.deleteProductOfCart(req, res);
+});
 CartsRoutes.delete('/:idCart', (req, res) => {
     carts_controller_1.CartsController.deleteCart(req, res);
 });

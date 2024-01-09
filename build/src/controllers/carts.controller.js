@@ -24,20 +24,26 @@ class CartsController {
                 res.status(200).json({ message: `carrito creado`, cart });
             }
             catch (error) {
-                res.status(500).json({ message: "No se pudo crear el carrito", error });
+                res.status(500).json({
+                    message: "No se pudo crear el carrito",
+                    error,
+                });
             }
         });
     }
     static getCart(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCart } = req.params;
-            console.log('el id del carro que se busca es: ', idCart);
+            console.log("el id del carro que se busca es: ", idCart);
             try {
                 const cart = yield carts_services_1.CartsServices.getCart(idCart);
                 res.status(200).json(cart);
             }
             catch (error) {
-                res.status(500).json({ message: "No se pudo crear el carrito", error });
+                res.status(500).json({
+                    message: "No se pudo crear el carrito",
+                    error,
+                });
             }
         });
     }
@@ -46,11 +52,16 @@ class CartsController {
             const { idCart } = req.params;
             try {
                 yield carts_services_1.CartsServices.delete(idCart);
-                res.status(200).json({ message: `Se borró el carrito con el id: ${idCart}.` });
+                res.status(200).json({
+                    message: `Se borró el carrito con el id: ${idCart}.`,
+                });
             }
             catch (error) {
-                console.log('entro al catch');
-                res.status(500).json({ message: "No se pudo eliminar el carrito", error });
+                console.log("entro al catch");
+                res.status(500).json({
+                    message: "No se pudo eliminar el carrito",
+                    error,
+                });
             }
         });
     }
@@ -59,11 +70,53 @@ class CartsController {
             const { idCart } = req.params;
             const { idSubProduct, quantity } = req.body;
             try {
-                const SubProductAddedOrModified = yield carts_services_1.CartsServices.addProductToCart({ idCart, idSubProduct, quantity });
-                res.status(200).json({ SubProductAddedOrModified });
+                const SubProductAddedOrModified = yield carts_services_1.CartsServices.addProductToCart({
+                    idCart,
+                    idSubProduct,
+                    quantity,
+                });
+                SubProductAddedOrModified
+                    ? res.status(200).json({ SubProductAddedOrModified })
+                    : res.status(500).json({
+                        message: "No se pudo agragar el subProd al cart",
+                    });
             }
             catch (error) {
-                res.status(500).json({ message: 'No se pudo agragar el subProd al cart', error });
+                res.status(500).json({
+                    message: "No se pudo agragar el subProd al cart",
+                    error,
+                });
+            }
+        });
+    }
+    static clearCart(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCart } = req.params;
+            try {
+                yield carts_services_1.CartsServices.clearCart(idCart);
+                res.status(200).json({ message: `Se vació el cart con id: ${idCart}` });
+            }
+            catch (error) {
+                res.status(500).json({
+                    message: `No se pudo vaciar el cart con id: ${idCart}`,
+                    error,
+                });
+            }
+        });
+    }
+    static deleteProductOfCart(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCart } = req.params;
+            const { idSubProduct } = req.body;
+            try {
+                yield carts_services_1.CartsServices.deleteProductOfCart({ idCart, idSubProduct });
+                res.status(200).json({ message: `Se borró el subProd: ${idSubProduct} del cart ${idCart}` });
+            }
+            catch (error) {
+                res.status(500).json({
+                    message: `No se pudo borrar el subProd: ${idSubProduct} del cart ${idCart}`,
+                    error,
+                });
             }
         });
     }

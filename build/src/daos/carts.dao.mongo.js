@@ -45,16 +45,12 @@ class CartsDaoMongo {
             }
         });
     }
-    static modifiedProductToCart({ idCart, subProduct }) {
+    static modifiedProductToCart({ idCart, subProducts }) {
         return __awaiter(this, void 0, void 0, function* () {
             // const updated = await CartModel.findOneAndUpdate({_id:idCart},cart)
-            const updated = yield cart_model_1.CartModel.findOneAndUpdate({ _id: idCart }, { $push: { products: subProduct } });
+            const updated = yield cart_model_1.CartModel.findOneAndUpdate({ _id: idCart }, { products: subProducts });
             return updated;
         });
     }
 }
 exports.CartsDaoMongo = CartsDaoMongo;
-// interface IModifiedProductOfCart {
-//     idCart: string;
-//     cart: ICart;
-// }

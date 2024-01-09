@@ -14,7 +14,7 @@ const product_model_1 = require("../models/product.model");
 class SubProductsDaoMongo {
     static getOneById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const subProduct = yield product_model_1.SubProductsModel.findOne({ _id: id });
+            const subProduct = yield product_model_1.SubProductsModel.findOne({ _id: id }).populate('IDProduct');
             return subProduct;
         });
     }

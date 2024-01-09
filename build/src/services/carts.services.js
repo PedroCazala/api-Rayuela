@@ -47,7 +47,7 @@ class CartsServices {
             try {
                 const cart = yield this.getCart(idCart);
                 console.log("cart: ", cart === null || cart === void 0 ? void 0 : cart.products);
-                const subProduct = cart === null || cart === void 0 ? void 0 : cart.products.find(subProd => subProd._id == idSubProduct);
+                const subProduct = cart === null || cart === void 0 ? void 0 : cart.products.find((subProd) => subProd._id == idSubProduct);
                 console.log("subProduct", subProduct);
                 return subProduct;
             }
@@ -68,21 +68,25 @@ class CartsServices {
                     idSubProduct,
                     quantity,
                 });
-                console.log("exist: ", exist);
                 if (exist) {
-                    // const add = await this.modifiedQuantityProductToCart({idCart,})
-                    // return add
-                    return "acomodar logica para modificar";
+                    yield this.modifiedQuantityProductToCart({
+                        idCart,
+                        idSubProduct,
+                        quantity,
+                    });
+                    const cart = yield CartsServices.getCart(idCart);
+                    return cart;
                 }
                 else {
                     const subProd = yield subProducts_services_1.SubProductsService.getOneSubProduct(idSubProduct);
                     if (subProd) {
                         const subProduct = Object.assign(Object.assign({}, subProd.toObject()), { quantity });
-                        const add = yield carts_dao_mongo_1.CartsDaoMongo.addSubprodctToCart({
+                        yield carts_dao_mongo_1.CartsDaoMongo.addSubprodctToCart({
                             idCart,
                             subProduct,
                         });
-                        return add;
+                        const cart = yield CartsServices.getCart(idCart);
+                        return cart;
                     }
                 }
                 return undefined;
@@ -96,21 +100,41 @@ class CartsServices {
     static modifiedQuantityProductToCart({ idCart, idSubProduct, quantity, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const cart = yield this.getCart(idCart);
-            const subProduct = cart === null || cart === void 0 ? void 0 : cart.products.find((sub) => sub._id === idSubProduct);
-            if (subProduct) {
-                subProduct.quantity = quantity;
+            const subProducts = cart === null || cart === void 0 ? void 0 : cart.products.map((sub) => {
+                if (sub._id == idSubProduct) {
+                    sub.quantity = quantity;
+                }
+                return sub;
+            });
+            if (subProducts) {
                 const modified = carts_dao_mongo_1.CartsDaoMongo.modifiedProductToCart({
                     idCart,
-                    subProduct,
+                    subProducts,
                 });
                 return modified;
             }
             return undefined;
         });
     }
+    static clearCart(idCart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const subProducts = [];
+            const deleted = yield carts_dao_mongo_1.CartsDaoMongo.modifiedProductToCart({ idCart, subProducts });
+            return deleted;
+        });
+    }
+    static deleteProductOfCart({ idCart, idSubProduct }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const cart = yield carts_dao_mongo_1.CartsDaoMongo.getOneById(idCart);
+            const subProducts = cart === null || cart === void 0 ? void 0 : cart.products;
+            if (subProducts) {
+                // =-====-=-=-= VOY POR ACÁ =_=--=-=-=====-
+                subProducts.splice(subProd => subProd._id == idSubProduct);
+                const edited = yield carts_dao_mongo_1.CartsDaoMongo.modifiedProductToCart({ idCart, subProducts });
+                return edited;
+            }
+            return undefined;
+        });
+    }
 }
 exports.CartsServices = CartsServices;
-// interface IModifiedProductOfCart{
-//     SubProduct:ICompleteSubProductToCart,
-//     quantity:number
-// }

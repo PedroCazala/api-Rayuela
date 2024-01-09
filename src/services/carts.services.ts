@@ -1,6 +1,6 @@
 import { CartsDaoMongo } from "../daos/carts.dao.mongo";
 import { ICart } from "../interfaces/carts.interface";
-import { ICompleteSubProductToCart } from "../interfaces/products.interface";
+import { ICompleteSubProductToCart, ISubProduct } from "../interfaces/products.interface";
 import { SubProductsService } from "./subProducts.services";
 
 export class CartsServices {
@@ -35,25 +35,25 @@ export class CartsServices {
         try {
             const cart = await this.getCart(idCart);
             console.log("cart: ", cart?.products);
-
+            
             const subProduct = cart?.products.find(
-                subProd => subProd._id == idSubProduct
-            );
-            console.log("subProduct", subProduct);
-
-            return subProduct;
-        } catch (error) {
-            console.log(error);
-            throw new Error(
-                "Ocurrió un error en el servicio get one Product of cart by id"
-            );
-        }
-    }
-    // static async productExistInCart({idCart,idSubProduct,quantity}:IProductOfCart){
-    //     let productsOfCart = await this.getProductsOfCart(idCart)
-    // }
-    static async addProductToCart({
-        idCart,
+                (subProd) => subProd._id == idSubProduct
+                );
+                console.log("subProduct", subProduct);
+                
+                return subProduct;
+            } catch (error) {
+                console.log(error);
+                throw new Error(
+                    "Ocurrió un error en el servicio get one Product of cart by id"
+                    );
+                }
+            }
+            // static async productExistInCart({idCart,idSubProduct,quantity}:IProductOfCart){
+                //     let productsOfCart = await this.getProductsOfCart(idCart)
+                // }
+                static async addProductToCart({
+                    idCart,
         idSubProduct,
         quantity,
     }: IProductOfCart) {
@@ -63,12 +63,15 @@ export class CartsServices {
                 idSubProduct,
                 quantity,
             });
-            console.log("exist: ", exist);
 
             if (exist) {
-                // const add = await this.modifiedQuantityProductToCart({idCart,})
-                // return add
-                return "acomodar logica para modificar";
+                await this.modifiedQuantityProductToCart({
+                    idCart,
+                    idSubProduct,
+                    quantity,
+                });
+                const cart = await CartsServices.getCart(idCart);
+                return cart;
             } else {
                 const subProd = await SubProductsService.getOneSubProduct(
                     idSubProduct
@@ -78,14 +81,16 @@ export class CartsServices {
                         ...subProd.toObject(),
                         quantity,
                     };
-                    const add = await CartsDaoMongo.addSubprodctToCart({
+                    await CartsDaoMongo.addSubprodctToCart({
                         idCart,
                         subProduct,
                     });
-                    return add;
+                    const cart = await CartsServices.getCart(idCart);
+
+                    return cart;
                 }
             }
-            return undefined;
+            return undefined
         } catch (error) {
             console.log(error);
             throw new Error(
@@ -99,106 +104,48 @@ export class CartsServices {
         quantity,
     }: IProductOfCart) {
         const cart = await this.getCart(idCart);
-        const subProduct = cart?.products.find(
-            (sub) => sub._id === idSubProduct
-        );
-        if (subProduct) {
-            subProduct.quantity = quantity;
+        const subProducts = cart?.products.map((sub) => {
+            if (sub._id == idSubProduct) {
+                sub.quantity = quantity;
+            }
+            return sub
+        });
+
+        if (subProducts) {
             const modified = CartsDaoMongo.modifiedProductToCart({
                 idCart,
-                subProduct,
+                subProducts,
             });
             return modified;
         }
         return undefined;
     }
+    static async clearCart(idCart:string){
+        const subProducts:ICompleteSubProductToCart[] = []
+        const deleted = await CartsDaoMongo.modifiedProductToCart({idCart,subProducts})
+        return deleted
+    }
+    static async deleteProductOfCart({idCart,idSubProduct}:IIdsNecessaries){
+        const cart =await CartsDaoMongo.getOneById(idCart)
+        const subProducts = cart?.products
+        if (subProducts) {
+            // =-====-=-=-= VOY POR ACÁ =_=--=-=-=====-
+            subProducts.splice(subProd => subProd._id == idSubProduct)
+            const edited = await CartsDaoMongo.modifiedProductToCart({idCart,subProducts})
+            return edited
+        }
+        return undefined
+    }
 
-    // static async getOneProduct(id: string) {
-    //     try {
-    //         const product = await CartsDaoMongo.getOneById(id);
-    //         return product;
-    //     } catch (error) {
-    //         console.log(error);
-    //         return false;
-    //     }
-    // }
-    // // traer todos los subproductos de un determinado producto
-    // static async getSubProductsOfAProduct(id: string) {
-    //     try {
-    //         const product: IProduct | null = await CartsDaoMongo.getOneById(
-    //             id
-    //         );
-    //         const idSubProducts = product?.IDSubProducts;
-
-    //         let subProducts: ISubProduct[] = [];
-    //         if(idSubProducts){
-    //             for (const id of idSubProducts){
-    //                 const subProduct = await SubCartsDaoMongo.getOneById(id);
-    //                 if(subProduct){
-    //                     subProducts = [...subProducts, subProduct]
-    //                     // console.log(subProducts);
-    //                 }
-    //             }
-    //         }
-
-    //         return subProducts;
-    //     } catch (error) {
-    //         console.log(error);
-    //         return false;
-    //     }
-    // }
-
-    // static async getForCategory(category: string) {
-    //     try {
-    //         const products = await CartsDaoMongo.getForCategory(category);
-    //         return products;
-    //     } catch (error) {
-    //         console.log(error);
-    //         return false;
-    //     }
-    // }
-    // static async getForBrand(brand: string) {
-    //     try {
-    //         const products = await CartsDaoMongo.getForBrand(brand);
-    //         return products;
-    //     } catch (error) {
-    //         console.log(error);
-    //         return false;
-    //     }
-    // }
-    // static createProduct(data:IProduct){
-    //     // const date:Date = new Date();
-    //     const newProduct:IProduct = data
-    //     console.log(newProduct);
-
-    //     const product = CartsDaoMongo.postAProduct(newProduct)
-    //     return product
-    // }
-    // static updateProduct({idProduct,newData}:PropsUpdate){
-    //     const product = CartsDaoMongo.updateProduct({idProduct,newData})
-    //     return product
-    // }
-    // // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
-    // //     const product = await CartsDaoMongo.updateTypeProduct({idProduct,idType,newData})
-
-    // //     return product
-    // // }
-    // static deleteProduct(id:String){
-    //     const product = CartsDaoMongo.deleteProduct(id)
-    //     return product
-    // }
 }
 
-// interface PropsUpdate{
-//     idProduct:String,
-//     newData:IProduct
-// }
+
 interface IProductOfCart {
     idSubProduct: string;
     idCart: string;
     quantity: number;
 }
-// interface IModifiedProductOfCart{
-//     SubProduct:ICompleteSubProductToCart,
-//     quantity:number
-// }
+interface IIdsNecessaries {
+    idSubProduct: string;
+    idCart: string;
+}

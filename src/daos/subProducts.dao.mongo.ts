@@ -6,7 +6,7 @@ import { SubProductsModel } from "../models/product.model"
 export class SubProductsDaoMongo {
 
     static async getOneById(id:String){
-        const subProduct =await SubProductsModel.findOne({_id:id})
+        const subProduct =await SubProductsModel.findOne({_id:id}).populate('IDProduct')
         return subProduct
     }
     static async CreateSubProducts(data:ISubProduct[]){
