@@ -8,9 +8,9 @@ CartsRoutes.post('/',(req,res)=>{
 CartsRoutes.get('/:idCart',(req,res)=>{
     CartsController.getCart(req,res)
 })
-// CartsRoutes.post('/add-subproducts',(req,res)=>{
-//     CartsController.addSubProduct(req,res)
-// })
+CartsRoutes.post('/add-subproducts/:idCart',(req,res)=>{
+    CartsController.addSubProduct(req,res)
+})
 // CartsRoutes.get('/category/:category',(req,res)=>{
 //     CartsController.getProductsForCategory(req,res)
 // })

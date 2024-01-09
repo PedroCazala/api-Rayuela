@@ -32,14 +32,29 @@ class CartsDaoMongo {
             return cart;
         });
     }
+    static addSubprodctToCart({ idCart, subProduct }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updated = yield cart_model_1.CartModel.findOneAndUpdate({ _id: idCart }, { $push: { products: subProduct } });
+                // const updated = await CartModel.findOne({ _id: idCart });
+                return updated;
+            }
+            catch (error) {
+                console.log(error);
+                return error;
+            }
+        });
+    }
+    static modifiedProductToCart({ idCart, subProduct }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // const updated = await CartModel.findOneAndUpdate({_id:idCart},cart)
+            const updated = yield cart_model_1.CartModel.findOneAndUpdate({ _id: idCart }, { $push: { products: subProduct } });
+            return updated;
+        });
+    }
 }
 exports.CartsDaoMongo = CartsDaoMongo;
-// interface IPropsUpdateProduct {
-//     idProduct: String;
-//     newData: IProduct;
-// }
-// interface PropsUpdateTypeProduct{
-//     idProduct:String,
-//     idType:String,
-//     newData:Object
+// interface IModifiedProductOfCart {
+//     idCart: string;
+//     cart: ICart;
 // }

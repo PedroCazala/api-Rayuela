@@ -1,4 +1,7 @@
 import { ICart } from "../interfaces/carts.interface";
+import {
+    ICompleteSubProductToCart,
+} from "../interfaces/products.interface";
 import { CartModel } from "../models/cart.model";
 
 export class CartsDaoMongo {
@@ -7,15 +10,35 @@ export class CartsDaoMongo {
         const cart = await CartModel.findOne({ _id: id });
         return cart;
     }
-    static async createCart(newCart:ICart) {
-        const cart = await CartModel.create(newCart);        
+    static async createCart(newCart: ICart) {
+        const cart = await CartModel.create(newCart);
         return cart;
     }
-    static async deleteCart(idCart:string) {
-        
-        const cart = await CartModel.deleteOne({_id:idCart});
+    static async deleteCart(idCart: string) {
+        const cart = await CartModel.deleteOne({ _id: idCart });
         console.log(cart);
         return cart;
+    }
+    static async addSubprodctToCart({ idCart, subProduct }: IAddSubProduct) {
+        try {
+            const updated =  await CartModel.findOneAndUpdate(
+                { _id: idCart },
+                { $push: { products: subProduct } }
+            )
+            // const updated = await CartModel.findOne({ _id: idCart });
+            return updated;
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    }
+    static async modifiedProductToCart({ idCart, subProduct }: IAddSubProduct) {
+        // const updated = await CartModel.findOneAndUpdate({_id:idCart},cart)
+        const updated =  await CartModel.findOneAndUpdate(
+            { _id: idCart },
+            { $push: { products: subProduct } }
+        )
+        return updated;
     }
     // static async getAllProducts()/* :Promise<IProduct[]> */{
     //     const allProducts =await ProductModel.find()
@@ -118,4 +141,13 @@ export class CartsDaoMongo {
 //     idProduct:String,
 //     idType:String,
 //     newData:Object
+// }
+
+interface IAddSubProduct {
+    idCart: string;
+    subProduct: ICompleteSubProductToCart;
+}
+// interface IModifiedProductOfCart {
+//     idCart: string;
+//     cart: ICart;
 // }

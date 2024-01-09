@@ -12,7 +12,6 @@ export interface IProduct {
     discount?:number;
     minimumStock?:number,
     IDSubProducts: ISubProduct['_id'][];
-    // subProducts?:ISubProduct[]
 }
 export interface ISubProduct {
     _id: string; 
@@ -25,8 +24,11 @@ export interface ISubProduct {
     IDProduct: IProduct['_id'];
 
 }
-
 export interface ICompleteProduct extends IProduct {
-    subProducts: ISubProduct[];
+    subProducts :[ISubProduct]
+
+}
+
+export interface ICompleteSubProductToCart extends ISubProduct {
     quantity:number
 }

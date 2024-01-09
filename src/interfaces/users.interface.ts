@@ -1,4 +1,4 @@
-import { ICompleteProduct } from "./products.interface";
+import { ICompleteSubProductToCart } from "./products.interface";
 
 export interface IUser {
     _id: string;
@@ -6,5 +6,5 @@ export interface IUser {
     // state:'inProgress'|'Enviado';
     creationDate: Date;
     lastModifiedDate?: Date;
-    products:[ICompleteProduct] | [];
+    products:[ICompleteSubProductToCart] | [];
 }

@@ -54,5 +54,18 @@ class CartsController {
             }
         });
     }
+    static addSubProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCart } = req.params;
+            const { idSubProduct, quantity } = req.body;
+            try {
+                const SubProductAddedOrModified = yield carts_services_1.CartsServices.addProductToCart({ idCart, idSubProduct, quantity });
+                res.status(200).json({ SubProductAddedOrModified });
+            }
+            catch (error) {
+                res.status(500).json({ message: 'No se pudo agragar el subProd al cart', error });
+            }
+        });
+    }
 }
 exports.CartsController = CartsController;

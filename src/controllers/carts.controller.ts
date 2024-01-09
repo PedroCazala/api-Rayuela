@@ -38,15 +38,16 @@ export class CartsController {
             res.status(500).json({ message: "No se pudo eliminar el carrito" ,error});
         }
     }
-    // static async addSubProduct(req: Request, res: Response){
-    //     const {idCart} = req.params;
-    //     const {idSubProduct, quantity} = req.body;
-    //     let productOfCart = await  CartsServices.addProductToCart({idCart,idSubProduct,quantity})
-    //     // try{
-
-    //     // }
-    //     return 'lala'
-    // }
+    static async addSubProduct(req: Request, res: Response){
+        const {idCart} = req.params;
+        const {idSubProduct, quantity} = req.body;
+        try {
+            const SubProductAddedOrModified = await CartsServices.addProductToCart({idCart,idSubProduct,quantity})
+            res.status(200).json({SubProductAddedOrModified})
+        } catch (error) {
+            res.status(500).json({message:'No se pudo agragar el subProd al cart',error})
+        }
+    }
 
     
     // static async getProducts(req: Request, res: Response) {
