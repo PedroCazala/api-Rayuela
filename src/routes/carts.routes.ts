@@ -15,7 +15,7 @@ CartsRoutes.post('/add-subproducts/:idCart',(req,res)=>{
 CartsRoutes.delete('/clear-cart/:idCart',(req,res)=>{
     CartsController.clearCart(req,res)
 })
-CartsRoutes.delete('/deleteProductOfCart/:idCart',(req,res)=>{
+CartsRoutes.delete('/delete-product-of-cart/:idCart',(req,res)=>{
     CartsController.deleteProductOfCart(req,res)
 })
 

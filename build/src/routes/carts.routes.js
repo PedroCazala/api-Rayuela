@@ -20,7 +20,7 @@ CartsRoutes.post('/add-subproducts/:idCart', (req, res) => {
 CartsRoutes.delete('/clear-cart/:idCart', (req, res) => {
     carts_controller_1.CartsController.clearCart(req, res);
 });
-CartsRoutes.delete('/deleteProductOfCart/:idCart', (req, res) => {
+CartsRoutes.delete('/delete-product-of-cart/:idCart', (req, res) => {
     carts_controller_1.CartsController.deleteProductOfCart(req, res);
 });
 CartsRoutes.delete('/:idCart', (req, res) => {

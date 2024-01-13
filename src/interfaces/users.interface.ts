@@ -1,10 +1,15 @@
-import { ICompleteSubProductToCart } from "./products.interface";
+import mongoose from "mongoose";
 
 export interface IUser {
-    _id: string;
-    userId: string;
+    _id: mongoose.Schema.Types.ObjectId;
+    cartId:  mongoose.Schema.Types.ObjectId;
+    rol: 'user'|'admin',
+    email:string;
+    password:string;
     // state:'inProgress'|'Enviado';
     creationDate: Date;
     lastModifiedDate?: Date;
-    products:[ICompleteSubProductToCart] | [];
+    cart:string;
+    IsValidPassword(password: string): Promise<boolean>;
+
 }

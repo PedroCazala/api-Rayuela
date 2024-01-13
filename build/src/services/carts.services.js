@@ -119,19 +119,30 @@ class CartsServices {
     static clearCart(idCart) {
         return __awaiter(this, void 0, void 0, function* () {
             const subProducts = [];
-            const deleted = yield carts_dao_mongo_1.CartsDaoMongo.modifiedProductToCart({ idCart, subProducts });
+            const deleted = yield carts_dao_mongo_1.CartsDaoMongo.modifiedProductToCart({
+                idCart,
+                subProducts,
+            });
             return deleted;
         });
     }
-    static deleteProductOfCart({ idCart, idSubProduct }) {
+    static deleteProductOfCart({ idCart, idSubProduct, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const cart = yield carts_dao_mongo_1.CartsDaoMongo.getOneById(idCart);
             const subProducts = cart === null || cart === void 0 ? void 0 : cart.products;
+            console.log('cart: ', cart);
+            console.log('subProducts: ', subProducts);
             if (subProducts) {
-                // =-====-=-=-= VOY POR ACÁ =_=--=-=-=====-
-                subProducts.splice(subProd => subProd._id == idSubProduct);
-                const edited = yield carts_dao_mongo_1.CartsDaoMongo.modifiedProductToCart({ idCart, subProducts });
-                return edited;
+                const index = subProducts.findIndex((subProd) => subProd._id == idSubProduct);
+                if (index !== -1) {
+                    subProducts.splice(index, 1);
+                    const edited = yield carts_dao_mongo_1.CartsDaoMongo.modifiedProductToCart({
+                        idCart,
+                        subProducts,
+                    });
+                    console.log('edited', edited);
+                    return edited;
+                }
             }
             return undefined;
         });

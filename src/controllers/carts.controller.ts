@@ -87,8 +87,13 @@ export class CartsController {
         const { idCart } = req.params;
         const { idSubProduct } = req.body;
         try {
-            await CartsServices.deleteProductOfCart({idCart,idSubProduct})
+            const deleted = await CartsServices.deleteProductOfCart({idCart,idSubProduct})
+            deleted?
             res.status(200).json({  message: `Se borró el subProd: ${idSubProduct} del cart ${idCart}` })
+            :
+            res.status(500).json({
+                message: `No se pudo borrar el subProd: ${idSubProduct} del cart ${idCart}`,
+            });
         } catch (error) {
             res.status(500).json({
                 message: `No se pudo borrar el subProd: ${idSubProduct} del cart ${idCart}`,

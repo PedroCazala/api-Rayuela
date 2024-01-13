@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface IProduct {
     _id: string;
     name: string;
@@ -21,7 +23,7 @@ export interface ISubProduct {
     stock: number;
     creationDate:Date,
     lastModifiedDate?:Date
-    IDProduct: IProduct['_id'];
+    IDProduct:  mongoose.Schema.Types.ObjectId;
 
 }
 export interface ICompleteProduct extends IProduct {

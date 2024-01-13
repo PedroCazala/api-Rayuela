@@ -1,14 +1,16 @@
 import { CartsDaoMongo } from "../daos/carts.dao.mongo";
 import { ICart } from "../interfaces/carts.interface";
-import { ICompleteSubProductToCart, ISubProduct } from "../interfaces/products.interface";
+import { ICompleteSubProductToCart } from "../interfaces/products.interface";
 import { SubProductsService } from "./subProducts.services";
+import mongoose from 'mongoose'
+type TypeIdMongoose = mongoose.Schema.Types.ObjectId;
 
 export class CartsServices {
     static getCart(id: string) {
         const cart = CartsDaoMongo.getOneById(id);
         return cart;
     }
-    static async create(userId: string) {
+    static async create(userId: TypeIdMongoose) {
         const date = new Date();
         const newCart: ICart = {
             creationDate: date,
@@ -35,25 +37,25 @@ export class CartsServices {
         try {
             const cart = await this.getCart(idCart);
             console.log("cart: ", cart?.products);
-            
+
             const subProduct = cart?.products.find(
                 (subProd) => subProd._id == idSubProduct
-                );
-                console.log("subProduct", subProduct);
-                
-                return subProduct;
-            } catch (error) {
-                console.log(error);
-                throw new Error(
-                    "Ocurrió un error en el servicio get one Product of cart by id"
-                    );
-                }
-            }
-            // static async productExistInCart({idCart,idSubProduct,quantity}:IProductOfCart){
-                //     let productsOfCart = await this.getProductsOfCart(idCart)
-                // }
-                static async addProductToCart({
-                    idCart,
+            );
+            console.log("subProduct", subProduct);
+
+            return subProduct;
+        } catch (error) {
+            console.log(error);
+            throw new Error(
+                "Ocurrió un error en el servicio get one Product of cart by id"
+            );
+        }
+    }
+    // static async productExistInCart({idCart,idSubProduct,quantity}:IProductOfCart){
+    //     let productsOfCart = await this.getProductsOfCart(idCart)
+    // }
+    static async addProductToCart({
+        idCart,
         idSubProduct,
         quantity,
     }: IProductOfCart) {
@@ -90,7 +92,7 @@ export class CartsServices {
                     return cart;
                 }
             }
-            return undefined
+            return undefined;
         } catch (error) {
             console.log(error);
             throw new Error(
@@ -108,7 +110,7 @@ export class CartsServices {
             if (sub._id == idSubProduct) {
                 sub.quantity = quantity;
             }
-            return sub
+            return sub;
         });
 
         if (subProducts) {
@@ -120,25 +122,40 @@ export class CartsServices {
         }
         return undefined;
     }
-    static async clearCart(idCart:string){
-        const subProducts:ICompleteSubProductToCart[] = []
-        const deleted = await CartsDaoMongo.modifiedProductToCart({idCart,subProducts})
-        return deleted
+    static async clearCart(idCart: string) {
+        const subProducts: ICompleteSubProductToCart[] = [];
+        const deleted = await CartsDaoMongo.modifiedProductToCart({
+            idCart,
+            subProducts,
+        });
+        return deleted;
     }
-    static async deleteProductOfCart({idCart,idSubProduct}:IIdsNecessaries){
-        const cart =await CartsDaoMongo.getOneById(idCart)
-        const subProducts = cart?.products
+    static async deleteProductOfCart({
+        idCart,
+        idSubProduct,
+    }: IIdsNecessaries) {
+        const cart = await CartsDaoMongo.getOneById(idCart);
+        const subProducts = cart?.products;
+        console.log('cart: ',cart);
+        console.log('subProducts: ',subProducts);
         if (subProducts) {
-            // =-====-=-=-= VOY POR ACÁ =_=--=-=-=====-
-            subProducts.splice(subProd => subProd._id == idSubProduct)
-            const edited = await CartsDaoMongo.modifiedProductToCart({idCart,subProducts})
-            return edited
+            const index = subProducts.findIndex(
+                (subProd) => subProd._id == idSubProduct
+            );
+            if (index !== -1) {
+                subProducts.splice(index, 1);
+                const edited = await CartsDaoMongo.modifiedProductToCart({
+                    idCart,
+                    subProducts,
+                });
+                console.log('edited',edited);
+                return edited;
+                
+            }
         }
-        return undefined
+        return undefined;
     }
-
 }
-
 
 interface IProductOfCart {
     idSubProduct: string;
