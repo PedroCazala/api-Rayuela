@@ -6,10 +6,20 @@ export interface IUser {
     rol: 'user'|'admin',
     email:string;
     password:string;
-    // state:'inProgress'|'Enviado';
     creationDate: Date;
     lastModifiedDate?: Date;
-    cart:string;
+
+    name?: string;
+    lastName?: string;
+    direction?: {
+        address?: string;
+        city?: string;
+        prov?: string;
+        CP?: number;
+    };
+    phone?: number;
+    img?: string;
+    dateBird?:Date;
     IsValidPassword(password: string): Promise<boolean>;
 
 }

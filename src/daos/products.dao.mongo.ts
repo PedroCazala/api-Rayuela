@@ -26,7 +26,7 @@ export class ProductsDaoMongo {
     }
 
     static async getOneById(id:String){
-        const product =await ProductModel.findOne({_id:id})
+        const product =await ProductModel.findOne({_id:id}).populate("IDSubProducts")
         return product
     }
 

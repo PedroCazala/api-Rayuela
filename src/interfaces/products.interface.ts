@@ -31,6 +31,7 @@ export interface ICompleteProduct extends IProduct {
 
 }
 
-export interface ICompleteSubProductToCart extends ISubProduct {
+export interface ICartProduct {
+    subProduct:mongoose.Types.ObjectId;
     quantity:number
 }

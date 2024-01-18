@@ -63,7 +63,7 @@ passport_1.default.use("login", new passport_local_1.Strategy({
 })));
 passport_1.default.use("jwt", new passport_jwt_1.Strategy({
     secretOrKey: secretKey,
-    jwtFromRequest: passport_jwt_1.ExtractJwt.fromUrlQueryParameter('secret_token'),
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
 }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         return done(null, token.user);

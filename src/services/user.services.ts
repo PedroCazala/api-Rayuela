@@ -5,6 +5,7 @@ export class UserService{
     static async getOneUserById(idUser:string){
 
         const user = await UserDaoMongo.getOneById(idUser)
+        
         return user
     }
 }

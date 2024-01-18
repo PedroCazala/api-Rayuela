@@ -9,6 +9,11 @@ export class SubProductsDaoMongo {
         const subProduct =await SubProductsModel.findOne({_id:id}).populate('IDProduct')
         return subProduct
     }
+    static async getOneByIdToCart(id:String){
+        const subProduct =await SubProductsModel.findOne({_id:id})
+        // subProduct &&     await subProduct.populate('IDProduct')
+        return subProduct
+    }
     static async CreateSubProducts(data:ISubProduct[]){
         const subProducts =await SubProductsModel.create(data)
         return subProducts

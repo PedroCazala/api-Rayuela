@@ -18,6 +18,13 @@ class SubProductsDaoMongo {
             return subProduct;
         });
     }
+    static getOneByIdToCart(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const subProduct = yield product_model_1.SubProductsModel.findOne({ _id: id });
+            // subProduct &&     await subProduct.populate('IDProduct')
+            return subProduct;
+        });
+    }
     static CreateSubProducts(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const subProducts = yield product_model_1.SubProductsModel.create(data);

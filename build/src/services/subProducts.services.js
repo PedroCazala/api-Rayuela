@@ -20,6 +20,19 @@ class SubProductsService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const subProduct = yield subProducts_dao_mongo_1.SubProductsDaoMongo.getOneById(id);
+                console.log(subProduct);
+                return subProduct;
+            }
+            catch (error) {
+                console.log(error);
+                return false;
+            }
+        });
+    }
+    static getOneSubProductToCart(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const subProduct = yield subProducts_dao_mongo_1.SubProductsDaoMongo.getOneByIdToCart(id);
                 return subProduct;
             }
             catch (error) {

@@ -22,7 +22,18 @@ const UsersSchema = new mongoose_1.default.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     rol: { type: String, enum: ['user', 'admin'], require: true },
-    cartId: { type: mongoose_1.default.Schema.Types.ObjectId }
+    cartId: { type: mongoose_1.default.Schema.Types.ObjectId },
+    name: { type: String },
+    lastName: { type: String },
+    direction: {
+        address: { type: String },
+        city: { type: String },
+        prov: { type: String },
+        CP: { type: Number },
+    },
+    phone: { type: Number },
+    img: { type: String },
+    dateBird: { type: Date },
 });
 UsersSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {

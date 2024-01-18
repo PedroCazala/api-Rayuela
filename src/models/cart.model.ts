@@ -1,15 +1,39 @@
-import mongoose from 'mongoose'
-import { ICart } from '../interfaces/carts.interface';
-import { userCollection } from './user.model';
+import mongoose from "mongoose";
+import { ICart } from "../interfaces/carts.interface";
+import { userCollection } from "./user.model";
+import { subProductsCollection } from "./product.model";
 // import {userCollection} from './user.model';
 // import { ICompleteProduct } from "../interfaces/products.interface";
-const cartCollection = 'Carts';
+const cartCollection = "Carts";
 
-const CartsSchema = new mongoose.Schema <ICart>({
-    userId: { type: mongoose.Types.ObjectId, ref: userCollection, required:true },  
-    creationDate:{type:Date, required:true},
-    products:{type:[]},
-    lastModifiedDate:{type:Date},
-})
+const CartsSchema = new mongoose.Schema<ICart>({
+    userId: {
+        type: mongoose.Types.ObjectId,
+        ref: userCollection,
+        required: true,
+    },
+    creationDate: { type: Date, required: true },
+    products: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "subProducts",
+            required: true,
+            quantity: { type: Number, required: true }
+        },
+    ],
 
-export const CartModel = mongoose.model<ICart>(cartCollection,CartsSchema) 
+    // products: [
+    //     {
+    //         subProducts: {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: "subProducts",
+    //             required: true,
+    //         },
+    //         quantity: { type: Number, required: true },
+    //     },
+    // ],
+
+    lastModifiedDate: { type: Date },
+});
+
+export const CartModel = mongoose.model<ICart>(cartCollection, CartsSchema);

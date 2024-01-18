@@ -42,7 +42,7 @@ class ProductsDaoMongo {
     }
     static getOneById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const product = yield product_model_1.ProductModel.findOne({ _id: id });
+            const product = yield product_model_1.ProductModel.findOne({ _id: id }).populate("IDSubProducts");
             return product;
         });
     }

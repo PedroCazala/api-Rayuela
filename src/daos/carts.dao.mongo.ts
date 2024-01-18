@@ -1,13 +1,25 @@
 import { ICart } from "../interfaces/carts.interface";
 import {
-    ICompleteSubProductToCart,
+    ICartProduct,
 } from "../interfaces/products.interface";
 import { CartModel } from "../models/cart.model";
+import { SubProductsModel } from "../models/product.model";
 
 export class CartsDaoMongo {
     // // Traer un carrito
     static async getOneById(id: String) {
-        const cart = await CartModel.findOne({ _id: id });
+        const cart = await CartModel.findOne({ _id: id })
+        .populate({
+            path: 'products',
+            model: 'subProducts', // Nombre de la colección de subproductos
+            populate: {
+                path: 'IDProduct',
+                model: 'Products', // Nombre de la colección de productos
+                // select: 'name description price', // Campos que deseas incluir
+            },
+        }) 
+        .lean();
+    
         return cart;
     }
     static async createCart(newCart: ICart) {
@@ -16,15 +28,15 @@ export class CartsDaoMongo {
     }
     static async deleteCart(idCart: string) {
         const cart = await CartModel.deleteOne({ _id: idCart });
-        console.log(cart);
         return cart;
     }
-    static async addSubprodctToCart({ idCart, subProduct }: IAddSubProduct) {
+    static async addSubprodctToCart({ idCart, subProduct }: IAddSubProduct) {        
         try {
             const updated =  await CartModel.findOneAndUpdate(
                 { _id: idCart },
                 { $push: { products: subProduct } }
             )
+            
             // const updated = await CartModel.findOne({ _id: idCart });
             return updated;
         } catch (error) {
@@ -46,9 +58,9 @@ export class CartsDaoMongo {
 
 interface IAddSubProduct {
     idCart: string;
-    subProduct: ICompleteSubProductToCart;
+    subProduct: ICartProduct;
 }
 interface IModifiedProductOfCart {
     idCart: string;
-    subProducts: ICompleteSubProductToCart[];
+    subProducts: ICartProduct[];
 }

@@ -2,13 +2,13 @@ import mongoose from 'mongoose'
 import { IProduct,ISubProduct } from '../interfaces/products.interface';
 
 const productsCollection = 'Products';
-const subProductsCollection = 'subProducts';
+export const subProductsCollection = 'subProducts';
 
 const productsSchema = new mongoose.Schema <IProduct>({
     name:{type:String,required:true},
     description:{type:String,required:true},
     price:{type:Number, required:true},
-    category:{type:String,require:true},
+    category:{type:String,required:true},
     brand: {type:String},
     creationDate:{type:Date, required:true},
     lastModifiedDate:{type:Date},

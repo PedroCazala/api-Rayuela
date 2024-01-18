@@ -15,7 +15,17 @@ class CartsDaoMongo {
     // // Traer un carrito
     static getOneById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cart = yield cart_model_1.CartModel.findOne({ _id: id });
+            const cart = yield cart_model_1.CartModel.findOne({ _id: id })
+                .populate({
+                path: 'products',
+                model: 'subProducts',
+                populate: {
+                    path: 'IDProduct',
+                    model: 'Products', // Nombre de la colección de productos
+                    // select: 'name description price', // Campos que deseas incluir
+                },
+            })
+                .lean();
             return cart;
         });
     }
@@ -28,7 +38,6 @@ class CartsDaoMongo {
     static deleteCart(idCart) {
         return __awaiter(this, void 0, void 0, function* () {
             const cart = yield cart_model_1.CartModel.deleteOne({ _id: idCart });
-            console.log(cart);
             return cart;
         });
     }

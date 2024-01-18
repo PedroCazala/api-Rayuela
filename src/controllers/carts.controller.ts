@@ -29,7 +29,7 @@ export class CartsController {
             res.status(200).json(cart);
         } catch (error) {
             res.status(500).json({
-                message: "No se pudo crear el carrito",
+                message: "No se pudo obtener el carrito",
                 error,
             });
         }
@@ -60,7 +60,7 @@ export class CartsController {
                 quantity,
             });
             SubProductAddedOrModified
-            ? res.status(200).json({ SubProductAddedOrModified })
+            ? res.status(200).json({ cart:SubProductAddedOrModified })
             : res.status(500).json({
                 message: "No se pudo agragar el subProd al cart",
             });

@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartsServices = void 0;
 const carts_dao_mongo_1 = require("../daos/carts.dao.mongo");
-const subProducts_services_1 = require("./subProducts.services");
 class CartsServices {
     static getCart(id) {
         const cart = carts_dao_mongo_1.CartsDaoMongo.getOneById(id);
@@ -42,13 +41,12 @@ class CartsServices {
             return productsOfCart;
         });
     }
-    static getOneProductoOfCartById({ idCart, idSubProduct, }) {
+    static getOneProductOfCartById({ idCart, idSubProduct, }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const cart = yield this.getCart(idCart);
-                console.log("cart: ", cart === null || cart === void 0 ? void 0 : cart.products);
                 const subProduct = cart === null || cart === void 0 ? void 0 : cart.products.find((subProd) => subProd._id == idSubProduct);
-                console.log("subProduct", subProduct);
+                console.log(subProduct, " subProduct");
                 return subProduct;
             }
             catch (error) {
@@ -63,7 +61,7 @@ class CartsServices {
     static addProductToCart({ idCart, idSubProduct, quantity, }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const exist = yield this.getOneProductoOfCartById({
+                const exist = yield this.getOneProductOfCartById({
                     idCart,
                     idSubProduct,
                     quantity,
@@ -78,9 +76,15 @@ class CartsServices {
                     return cart;
                 }
                 else {
-                    const subProd = yield subProducts_services_1.SubProductsService.getOneSubProduct(idSubProduct);
-                    if (subProd) {
-                        const subProduct = Object.assign(Object.assign({}, subProd.toObject()), { quantity });
+                    // const subProd = await SubProductsService.getOneSubProduct(
+                    //     idSubProduct
+                    // );
+                    if (idSubProduct) {
+                        const subProduct = {
+                            _id: idSubProduct,
+                            quantity,
+                        };
+                        console.warn(subProduct);
                         yield carts_dao_mongo_1.CartsDaoMongo.addSubprodctToCart({
                             idCart,
                             subProduct,
@@ -130,8 +134,6 @@ class CartsServices {
         return __awaiter(this, void 0, void 0, function* () {
             const cart = yield carts_dao_mongo_1.CartsDaoMongo.getOneById(idCart);
             const subProducts = cart === null || cart === void 0 ? void 0 : cart.products;
-            console.log('cart: ', cart);
-            console.log('subProducts: ', subProducts);
             if (subProducts) {
                 const index = subProducts.findIndex((subProd) => subProd._id == idSubProduct);
                 if (index !== -1) {
@@ -140,7 +142,6 @@ class CartsServices {
                         idCart,
                         subProducts,
                     });
-                    console.log('edited', edited);
                     return edited;
                 }
             }

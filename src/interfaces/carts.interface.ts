@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ICompleteSubProductToCart } from "./products.interface";
+import { ICartProduct } from "./products.interface";
 
 export interface ICart {
     _id?: string;
@@ -7,5 +7,9 @@ export interface ICart {
     // state:'inProgress'|'Enviado';
     creationDate: Date;
     lastModifiedDate?: Date;
-    products:[ICompleteSubProductToCart] | [];
+    products:[ICartProduct] | [];
+    quantities:[{
+        idProd:mongoose.Schema.Types.ObjectId,
+        quantity: number
+    }][]
 }
