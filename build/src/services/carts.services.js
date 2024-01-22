@@ -81,6 +81,7 @@ class CartsServices {
                     // );
                     if (idSubProduct) {
                         const subProduct = {
+                            subProduct: { _id: idSubProduct },
                             _id: idSubProduct,
                             quantity,
                         };

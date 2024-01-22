@@ -21,7 +21,7 @@ CartsRoutes.post("/add-subproducts/:idCart", auth_1.passport.authenticate("jwt",
 CartsRoutes.delete("/clear-cart/:idCart", auth_1.passport.authenticate("jwt", { session: false }), (req, res) => {
     carts_controller_1.CartsController.clearCart(req, res);
 });
-CartsRoutes.delete("/delete-product-of-cart/:idCart", (req, res) => {
+CartsRoutes.delete("/delete-product-of-cart/:idCart/:idSubProduct", (req, res) => {
     carts_controller_1.CartsController.deleteProductOfCart(req, res);
 });
 CartsRoutes.delete("/:idCart", (req, res) => {

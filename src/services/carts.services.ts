@@ -77,6 +77,7 @@ export class CartsServices {
                 // );
                 if (idSubProduct) {
                     const subProduct: ICartProduct = {
+                        subProduct:{_id: idSubProduct},
                         _id: idSubProduct,
                         quantity,
                     };

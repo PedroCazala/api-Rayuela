@@ -106,8 +106,7 @@ class CartsController {
     }
     static deleteProductOfCart(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idCart } = req.params;
-            const { idSubProduct } = req.body;
+            const { idCart, idSubProduct } = req.params;
             try {
                 const deleted = yield carts_services_1.CartsServices.deleteProductOfCart({ idCart, idSubProduct });
                 deleted ?

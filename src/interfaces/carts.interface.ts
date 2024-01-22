@@ -7,9 +7,5 @@ export interface ICart {
     // state:'inProgress'|'Enviado';
     creationDate: Date;
     lastModifiedDate?: Date;
-    products:[ICartProduct] | [];
-    quantities:[{
-        idProd:mongoose.Schema.Types.ObjectId,
-        quantity: number
-    }][]
+    products: [{ subProduct: ICartProduct; quantity: number,_id: ICartProduct }] | [];
 }

@@ -17,7 +17,7 @@ class CartsDaoMongo {
         return __awaiter(this, void 0, void 0, function* () {
             const cart = yield cart_model_1.CartModel.findOne({ _id: id })
                 .populate({
-                path: 'products',
+                path: 'products.subProduct',
                 model: 'subProducts',
                 populate: {
                     path: 'IDProduct',

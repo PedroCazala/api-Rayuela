@@ -16,14 +16,26 @@ const CartsSchema = new mongoose_1.default.Schema({
         required: true,
     },
     creationDate: { type: Date, required: true },
-    products: [
-        {
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "subProducts",
-            required: true,
+    // products: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "subProducts",
+    //         required: true,
+    //     },
+    // ],
+    products: [{
+            subProduct: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "subProducts",
+                required: true,
+            },
+            _id: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "subProducts",
+                required: true,
+            },
             quantity: { type: Number, required: true }
-        },
-    ],
+        }],
     // products: [
     //     {
     //         subProducts: {

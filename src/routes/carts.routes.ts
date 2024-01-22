@@ -21,7 +21,7 @@ passport.authenticate("jwt", { session: false }),(req, res) => {
 CartsRoutes.delete("/clear-cart/:idCart", passport.authenticate("jwt", { session: false }),(req, res) => {
     CartsController.clearCart(req, res);
 });
-CartsRoutes.delete("/delete-product-of-cart/:idCart", (req, res) => {
+CartsRoutes.delete("/delete-product-of-cart/:idCart/:idSubProduct", (req, res) => {
     CartsController.deleteProductOfCart(req, res);
 });
 

@@ -10,7 +10,7 @@ export class CartsDaoMongo {
     static async getOneById(id: String) {
         const cart = await CartModel.findOne({ _id: id })
         .populate({
-            path: 'products',
+            path: 'products.subProduct',
             model: 'subProducts', // Nombre de la colección de subproductos
             populate: {
                 path: 'IDProduct',

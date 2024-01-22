@@ -84,8 +84,7 @@ export class CartsController {
         }
     }
     static async deleteProductOfCart(req: Request, res: Response) {
-        const { idCart } = req.params;
-        const { idSubProduct } = req.body;
+        const { idCart,idSubProduct } = req.params;
         try {
             const deleted = await CartsServices.deleteProductOfCart({idCart,idSubProduct})
             deleted?
