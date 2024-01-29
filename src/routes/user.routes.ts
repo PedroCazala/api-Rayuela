@@ -3,6 +3,7 @@ import { passport } from "../auth/auth";
 import jwt, { Secret } from "jsonwebtoken";
 import { UserService } from "../services/user.services";
 import { IUser } from "../interfaces/users.interface";
+import { UserController } from "../controllers/user.controller";
 const UserRoutes = express.Router();
 const secretKey = process.env.JWT_SECRET;
 
@@ -62,8 +63,12 @@ UserRoutes.get(
 
 // })
 UserRoutes.post(
-    "/signup",
-    passport.authenticate("signup", { session: false }),
+    "/signup",      
+    // (req, res, next) => {
+    //     // Middleware para analizar el cuerpo de la solicitud
+    //     express.json()(req, res, next);
+    // },
+    passport.authenticate("signup", { session: false}),
     async (req, res) => {
         try {
             const info = req.body;
@@ -107,4 +112,11 @@ UserRoutes.post("/login", async (req, res, next) => {
     )(req, res, next);
 });
 
+UserRoutes.put('/update-user/:idUser', passport.authenticate("jwt", { session: false }),(req, res) => {
+    UserController.UpdateUser(req,res)
+    // return user
+    // console.log('entrooo bien pepe')
+    
+    // res.json('entrooo bien pepe')
+})
 export { UserRoutes };

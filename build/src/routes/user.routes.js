@@ -17,6 +17,7 @@ const express_1 = __importDefault(require("express"));
 const auth_1 = require("../auth/auth");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_services_1 = require("../services/user.services");
+const user_controller_1 = require("../controllers/user.controller");
 const UserRoutes = express_1.default.Router();
 exports.UserRoutes = UserRoutes;
 const secretKey = process.env.JWT_SECRET;
@@ -67,7 +68,12 @@ UserRoutes.get("/profile", auth_1.passport.authenticate("jwt", { session: false 
 // UserRoutes.get('/logout',(req,res)=>{
 //     res.send('cerrar sesion')
 // })
-UserRoutes.post("/signup", auth_1.passport.authenticate("signup", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+UserRoutes.post("/signup", 
+// (req, res, next) => {
+//     // Middleware para analizar el cuerpo de la solicitud
+//     express.json()(req, res, next);
+// },
+auth_1.passport.authenticate("signup", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const info = req.body;
         console.log(info);
@@ -109,3 +115,9 @@ UserRoutes.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, 
         });
     })(req, res, next);
 }));
+UserRoutes.put('/update-user/:idUser', auth_1.passport.authenticate("jwt", { session: false }), (req, res) => {
+    user_controller_1.UserController.UpdateUser(req, res);
+    // return user
+    // console.log('entrooo bien pepe')
+    // res.json('entrooo bien pepe')
+});

@@ -9,12 +9,14 @@ const products_routes_1 = require("./products.routes");
 const subProducts_routes_1 = require("./subProducts.routes");
 const carts_routes_1 = require("./carts.routes");
 const user_routes_1 = require("./user.routes");
+const files_routes_1 = require("./files.routes");
 const IndexRouter = express_1.default.Router();
 exports.IndexRouter = IndexRouter;
 IndexRouter.use('/api/products', products_routes_1.ProductsRoutes);
 IndexRouter.use('/api/subproducts', subProducts_routes_1.SubProductsRoutes);
 IndexRouter.use('/api/carts', carts_routes_1.CartsRoutes);
 IndexRouter.use('/api/user', user_routes_1.UserRoutes);
+IndexRouter.use('/api/files', files_routes_1.FilesRoutes);
 IndexRouter.get('/', (_, res) => {
     res.status(200).json({ message: 'Api de Rayuela', documentation_swagger: 'Aquí ira la url' });
 });

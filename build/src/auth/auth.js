@@ -23,13 +23,15 @@ const secretKey = process.env.JWT_SECRET;
 passport_1.default.use("signup", new passport_local_1.Strategy({
     usernameField: "email",
     passwordField: "password",
-}, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
+    passReqToCallback: true,
+}, (req, email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { name, lastName } = req.body;
         const creationDate = new Date();
         const user = yield user_model_1.UserModel.create({
             email,
             password,
-            creationDate,
+            creationDate, name, lastName, rol: "user"
         });
         const createCart = yield carts_services_1.CartsServices.create(user._id);
         const completeUser = yield user_model_1.UserModel.findByIdAndUpdate(user._id, { $set: { cartId: createCart._id } }, { new: true });
@@ -65,6 +67,7 @@ passport_1.default.use("jwt", new passport_jwt_1.Strategy({
     secretOrKey: secretKey,
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
 }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('entro al try');
     try {
         return done(null, token.user);
     }

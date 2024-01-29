@@ -18,5 +18,19 @@ class UserService {
             return user;
         });
     }
+    static UpdateUser(idUser, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("servicio no");
+            const user = yield user_dao_mongo_1.UserDaoMongo.UpdateUser(idUser, data);
+            console.log("servicio", user);
+            return user;
+        });
+    }
+    static UpdateImgUser(idUser, newImg) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield user_dao_mongo_1.UserDaoMongo.UpdateImgUser(idUser, newImg);
+            return user;
+        });
+    }
 }
 exports.UserService = UserService;

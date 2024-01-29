@@ -5,6 +5,7 @@ import { UserModel } from "../models/user.model";
 import { CartsServices } from "../services/carts.services";
 
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
+
 const secretKey = process.env.JWT_SECRET;
 
 passport.use(
@@ -13,14 +14,16 @@ passport.use(
         {
             usernameField: "email",
             passwordField: "password",
-        },
-        async (email, password, done) => {
+            passReqToCallback: true,
+        },  
+        async (req,email, password, done) => {
             try {
-                const creationDate = new Date();
+                const { name, lastName } = req.body;
+                    const creationDate = new Date();
                 const user = await UserModel.create({
                     email,
                     password,
-                    creationDate,
+                    creationDate,name,lastName,rol:"user"
                 });
                 const createCart = await CartsServices.create(user._id);
 
@@ -72,9 +75,10 @@ passport.use("jwt",
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         },
         async (token, done) => {
+            console.log('entro al try'); 
             try {
                 return done(null,token.user)
-            } catch (error) {
+            } catch (error) {                    
                 return done(error);
             }
         }

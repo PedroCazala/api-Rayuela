@@ -13,4 +13,17 @@ export class UserController {
         }
 
     }
+    static async UpdateUser(req:Request,res:Response){
+        const {idUser}= req.params
+        const newInfo = req.body
+        // console.log('info update user',idUser,newInfo);
+        try {
+            const user = await UserService.UpdateUser(idUser,newInfo)
+            res.json(user)
+            
+        } catch (error) {
+            res.json(error)
+        }
+    }
+    
 }

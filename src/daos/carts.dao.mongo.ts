@@ -3,7 +3,6 @@ import {
     ICartProduct,
 } from "../interfaces/products.interface";
 import { CartModel } from "../models/cart.model";
-import { SubProductsModel } from "../models/product.model";
 
 export class CartsDaoMongo {
     // // Traer un carrito

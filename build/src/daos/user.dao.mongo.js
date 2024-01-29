@@ -18,5 +18,23 @@ class UserDaoMongo {
             return user;
         });
     }
+    static UpdateUser(idUser, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('Updating user with ID:', idUser);
+            console.log('New data:', data);
+            const user = yield user_model_1.UserModel.findByIdAndUpdate(idUser, { $set: data }, { new: true } // Esto devuelve el documento actualizado
+            );
+            console.log('user', user);
+            return user;
+        });
+    }
+    static UpdateImgUser(idUser, newImg) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield user_model_1.UserModel.findByIdAndUpdate(idUser, { $set: { img: newImg } }, { new: true } // Esto devuelve el documento actualizado
+            );
+            console.log('user', user);
+            return user;
+        });
+    }
 }
 exports.UserDaoMongo = UserDaoMongo;

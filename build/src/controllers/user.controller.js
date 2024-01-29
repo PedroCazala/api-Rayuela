@@ -24,5 +24,19 @@ class UserController {
             }
         });
     }
+    static UpdateUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idUser } = req.params;
+            const newInfo = req.body;
+            // console.log('info update user',idUser,newInfo);
+            try {
+                const user = yield user_services_1.UserService.UpdateUser(idUser, newInfo);
+                res.json(user);
+            }
+            catch (error) {
+                res.json(error);
+            }
+        });
+    }
 }
 exports.UserController = UserController;
