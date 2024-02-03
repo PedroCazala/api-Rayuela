@@ -1,14 +1,14 @@
 import mongoose from 'mongoose'
 import { IUser } from '../interfaces/users.interface';
 import bcrypt from 'bcryptjs';
-
 export const userCollection = 'Users';
+
 
 const UsersSchema = new mongoose.Schema <IUser>({
     lastModifiedDate:{type:Date},
     creationDate:{type:Date,required:true},
     email:{type:String,required:true,unique:true},
-    password:{type: String,required:true},
+    password:{type: String},
     rol:{type: String, enum: ['user', 'admin'], require:true},
     cartId:{type:mongoose.Schema.Types.ObjectId},
     name: { type: String },

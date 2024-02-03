@@ -18,11 +18,15 @@ class UserService {
             return user;
         });
     }
+    static createUserFromGoogleProfile(profile) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield user_dao_mongo_1.UserDaoMongo.createUserFromGoogleProfile(profile);
+            return user;
+        });
+    }
     static UpdateUser(idUser, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("servicio no");
             const user = yield user_dao_mongo_1.UserDaoMongo.UpdateUser(idUser, data);
-            console.log("servicio", user);
             return user;
         });
     }

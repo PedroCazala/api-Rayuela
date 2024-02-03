@@ -46,7 +46,6 @@ class CartsServices {
             try {
                 const cart = yield this.getCart(idCart);
                 const subProduct = cart === null || cart === void 0 ? void 0 : cart.products.find((subProd) => subProd._id == idSubProduct);
-                console.log(subProduct, " subProduct");
                 return subProduct;
             }
             catch (error) {

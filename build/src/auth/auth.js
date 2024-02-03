@@ -67,9 +67,25 @@ passport_1.default.use("jwt", new passport_jwt_1.Strategy({
     secretOrKey: secretKey,
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
 }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('entro al try');
     try {
         return done(null, token.user);
+    }
+    catch (error) {
+        return done(error);
+    }
+})));
+passport_1.default.use("jwt-admin", new passport_jwt_1.Strategy({
+    secretOrKey: secretKey,
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+}, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (token.user.rol === 'admin') {
+            return done(null, token.user);
+        }
+        else {
+            // El usuario no es un administrador
+            return done(null, false);
+        }
     }
     catch (error) {
         return done(error);

@@ -17,7 +17,8 @@ export interface IProduct {
 }
 export interface ISubProduct {
     _id: string; 
-    img: string[];
+    img?: string[];
+    imgFiles?: Express.Multer.File[];
     barcode?: string;
     color: string;
     stock: number;

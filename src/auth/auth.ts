@@ -75,9 +75,28 @@ passport.use("jwt",
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         },
         async (token, done) => {
-            console.log('entro al try'); 
             try {
                 return done(null,token.user)
+            } catch (error) {                    
+                return done(error);
+            }
+        }
+    )
+);
+passport.use("jwt-admin",
+    new JWTStrategy(
+        {
+            secretOrKey: secretKey,
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        },
+        async (token, done) => {
+            try {
+                if(token.user.rol ==='admin'){
+                    return done(null,token.user)
+                }else {
+                    // El usuario no es un administrador
+                    return done(null, false);
+                }
             } catch (error) {                    
                 return done(error);
             }

@@ -25,7 +25,7 @@ const subProductsSchema = new mongoose.Schema<ISubProduct>({
     stock: { type: Number, required: true },
     creationDate:{type:Date, required:true},
     lastModifiedDate:{type:Date},
-    IDProduct:{ type: mongoose.Types.ObjectId, ref: productsCollection, required:true }
+    IDProduct:{ type: mongoose.Types.ObjectId, ref: productsCollection }
 })
 
 export const ProductModel = mongoose.model<IProduct>(productsCollection,productsSchema) 

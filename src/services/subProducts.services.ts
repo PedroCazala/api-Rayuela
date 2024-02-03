@@ -1,5 +1,6 @@
 import { SubProductsDaoMongo } from "../daos/subProducts.dao.mongo";
 import { ISubProduct } from "../interfaces/products.interface";
+import { FilesService } from "./files.services";
 
 export class SubProductsService{
     // static getAllProducts(){
@@ -27,7 +28,21 @@ export class SubProductsService{
         }
     }
     static async createSubProducts(data:ISubProduct[]){
-        const newSubProducts= await SubProductsDaoMongo.CreateSubProducts(data)
+        const newSubProducts = await SubProductsDaoMongo.CreateSubProducts(data)
+        for (let i = 0; i < newSubProducts.length; i++) {
+            const subProd = newSubProducts[i];
+        
+            // Obtener las fotos correspondientes al subproducto actual
+            const matchingPhotos = data[i];
+        
+            if (matchingPhotos && matchingPhotos.imgFiles) {
+              // Agregar las fotos usando el servicio adecuado
+                console.log(matchingPhotos.imgFiles);
+                
+                await FilesService.addPicturesSubProducts({idSubProduct:subProd._id,files:matchingPhotos.imgFiles})
+            }
+        }
+
         return newSubProducts
         // const date:Date = new Date();
         // const product = ProductsDaoMongo.postAProduct(newProduct)
@@ -49,6 +64,12 @@ export class SubProductsService{
     static deleteSubProduct(id:String){
         const product = SubProductsDaoMongo.deleteSubProduct(id)
         return product
+    }
+
+    static async addImgSubProduct(idSubProduct: string, newImg: string) {
+        const SubProduct = await SubProductsDaoMongo.addImgSubProduct(idSubProduct, newImg);
+
+        return SubProduct;
     }
 }
 

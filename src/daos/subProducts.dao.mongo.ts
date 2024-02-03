@@ -23,6 +23,16 @@ export class SubProductsDaoMongo {
         return subProducts
     }
 
+    static async addImgSubProduct(idSubProduct: string, newImg: string) {
+
+        const subProduct = await SubProductsModel.findByIdAndUpdate(
+            idSubProduct ,
+            { $push: {img:newImg} },
+            { new: true } // Esto devuelve el documento actualizado
+        );
+        
+        return subProduct;
+    }
 
     // static createTypeProduct(types:[],creationDate:String){
     //     types.map(async type=>{

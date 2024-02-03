@@ -50,6 +50,8 @@ export class ProductsController {
     static async createProduct(req: Request, res: Response) {
         
         const data: ICompleteProduct = req.body;
+        console.log('data de create Product en products.controller',data);
+        
         try {
             const subProducts = await SubProductsService.createSubProducts(
                 data.subProducts

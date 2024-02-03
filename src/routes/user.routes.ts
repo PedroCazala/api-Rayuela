@@ -4,6 +4,9 @@ import jwt, { Secret } from "jsonwebtoken";
 import { UserService } from "../services/user.services";
 import { IUser } from "../interfaces/users.interface";
 import { UserController } from "../controllers/user.controller";
+import { passportGoogle } from "../auth/auth-google";
+import { UserDaoMongo } from "../daos/user.dao.mongo";
+import { UserModel } from "../models/user.model";
 const UserRoutes = express.Router();
 const secretKey = process.env.JWT_SECRET;
 
@@ -15,29 +18,7 @@ UserRoutes.get(
         const sendUser = await UserService.getOneUserById(
             user._id as unknown as string
         );
-        console.log(sendUser, " es el log de send user");
-        console.log(sendUser?.lastName, "es el nombre");
-        console.log(sendUser?.email, "es el email");
-        // const lala = {
-        //     _id: "65a47ad9edd4629888a491a8",
-        //     creationDate: "2024-01-15T00:22:49.370Z",
-        //     email: "cazalapedro@hotmail.com.ar",
-        //     password:
-        //         "$2a$10$3HAgIQyNzAm1ceaHs01UbOWESM0U4Ufrf2mFu3S5QzZ9LLggeZ.HG",
-        //     __v: 0,
-        //     cartId: "65a47ad9edd4629888a491aa",
-        //     rol: "user",
-        //     direction: {
-        //         address: "Av España 1171",
-        //         city: "San Andrés de Giles",
-        //         prov: "Buenos Aires",
-        //         CP: 6720,
-        //     },
-        //     img: "https://pbs.twimg.com/profile_images/1681675523942907905/M_PF4Ifl_400x400.jpg",
-        //     lastName: "Cazala Acuña",
-        //     name: "Pedro Miguel",
-        //     phone: 23254334345,
-        // };
+
         const selectedUserInfo = {
             name: sendUser?.name,
             _id: sendUser?._id,
@@ -63,16 +44,11 @@ UserRoutes.get(
 
 // })
 UserRoutes.post(
-    "/signup",      
-    // (req, res, next) => {
-    //     // Middleware para analizar el cuerpo de la solicitud
-    //     express.json()(req, res, next);
-    // },
-    passport.authenticate("signup", { session: false}),
+    "/signup",
+    passport.authenticate("signup", { session: false }),
     async (req, res) => {
         try {
-            const info = req.body;
-            console.log(info);
+            // const info = req.body;
 
             res.status(200).json({
                 message: "signup successful",
@@ -86,6 +62,56 @@ UserRoutes.post(
         }
     }
 );
+UserRoutes.get(
+    "/google",
+    passportGoogle.authenticate("google-auth", {
+        scope: [
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/userinfo.email",
+        ],
+        session: false,
+    }),
+    async (req, res, next) => {
+        const user = req.user as IUser;
+
+        console.log(user);
+
+        if (user) {
+            req.login(user, { session: false }, async (error) => {
+                if (error) return next(error);
+                const body = {
+                    _id: user._id,
+                    email: user.email,
+                    rol: user.rol,
+                };
+                const token = jwt.sign({ user: body }, secretKey as Secret);
+                // return res.json({ token });
+                res.redirect(
+                    `${process.env.FRONTEND_URL}/loginGoogle/${token}`
+                );
+            });
+        }else{
+            res.send('no existe el usuario')
+        }
+        // console.log({ message: "hola passport google", user: user });
+        // res.send({ message: "hola passport google", user: user });
+
+        // try {
+        //     // const info = req.body;
+
+        //     res.status(200).json({
+        //         message: "signup successful",
+        //         user: req.user,
+        //     });
+        // } catch (error) {
+        //     res.status(500).json({
+        //         message: "Not can't signup",
+        //         user: req.user,
+        //     });
+        // }
+    }
+);
+
 UserRoutes.post("/login", async (req, res, next) => {
     passport.authenticate(
         "login",
@@ -112,11 +138,15 @@ UserRoutes.post("/login", async (req, res, next) => {
     )(req, res, next);
 });
 
-UserRoutes.put('/update-user/:idUser', passport.authenticate("jwt", { session: false }),(req, res) => {
-    UserController.UpdateUser(req,res)
-    // return user
-    // console.log('entrooo bien pepe')
-    
-    // res.json('entrooo bien pepe')
-})
+UserRoutes.put(
+    "/update-user/:idUser",
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+        UserController.UpdateUser(req, res);
+        // return user
+        // console.log('entrooo bien pepe')
+
+        // res.json('entrooo bien pepe')
+    }
+);
 export { UserRoutes };

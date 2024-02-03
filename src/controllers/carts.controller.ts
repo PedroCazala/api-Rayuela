@@ -22,8 +22,6 @@ export class CartsController {
     static async getCart(req: Request, res: Response) {
         const { idCart } = req.params;
 
-        console.log("el id del carro que se busca es: ", idCart);
-
         try {
             const cart = await CartsServices.getCart(idCart);
             res.status(200).json(cart);
@@ -42,7 +40,6 @@ export class CartsController {
                 message: `Se borró el carrito con el id: ${idCart}.`,
             });
         } catch (error) {
-            console.log("entro al catch");
             res.status(500).json({
                 message: "No se pudo eliminar el carrito",
                 error,

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubProductsService = void 0;
 const subProducts_dao_mongo_1 = require("../daos/subProducts.dao.mongo");
+const files_services_1 = require("./files.services");
 class SubProductsService {
     // static getAllProducts(){
     //     const products = ProductsDaoMongo.getAllProducts()
@@ -44,6 +45,16 @@ class SubProductsService {
     static createSubProducts(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const newSubProducts = yield subProducts_dao_mongo_1.SubProductsDaoMongo.CreateSubProducts(data);
+            for (let i = 0; i < newSubProducts.length; i++) {
+                const subProd = newSubProducts[i];
+                // Obtener las fotos correspondientes al subproducto actual
+                const matchingPhotos = data[i];
+                if (matchingPhotos && matchingPhotos.imgFiles) {
+                    // Agregar las fotos usando el servicio adecuado
+                    console.log(matchingPhotos.imgFiles);
+                    yield files_services_1.FilesService.addPicturesSubProducts({ idSubProduct: subProd._id, files: matchingPhotos.imgFiles });
+                }
+            }
             return newSubProducts;
             // const date:Date = new Date();
             // const product = ProductsDaoMongo.postAProduct(newProduct)
@@ -65,6 +76,12 @@ class SubProductsService {
     static deleteSubProduct(id) {
         const product = subProducts_dao_mongo_1.SubProductsDaoMongo.deleteSubProduct(id);
         return product;
+    }
+    static addImgSubProduct(idSubProduct, newImg) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const SubProduct = yield subProducts_dao_mongo_1.SubProductsDaoMongo.addImgSubProduct(idSubProduct, newImg);
+            return SubProduct;
+        });
     }
 }
 exports.SubProductsService = SubProductsService;

@@ -34,7 +34,6 @@ class CartsController {
     static getCart(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCart } = req.params;
-            console.log("el id del carro que se busca es: ", idCart);
             try {
                 const cart = yield carts_services_1.CartsServices.getCart(idCart);
                 res.status(200).json(cart);
@@ -57,7 +56,6 @@ class CartsController {
                 });
             }
             catch (error) {
-                console.log("entro al catch");
                 res.status(500).json({
                     message: "No se pudo eliminar el carrito",
                     error,

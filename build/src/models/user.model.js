@@ -20,7 +20,7 @@ const UsersSchema = new mongoose_1.default.Schema({
     lastModifiedDate: { type: Date },
     creationDate: { type: Date, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String },
     rol: { type: String, enum: ['user', 'admin'], require: true },
     cartId: { type: mongoose_1.default.Schema.Types.ObjectId },
     name: { type: String },

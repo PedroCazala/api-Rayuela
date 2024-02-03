@@ -12,10 +12,20 @@ const FilesRoutes = express.Router();
 FilesRoutes.post(
     "/img-user/:idUser",
     passport.authenticate("jwt", { session: false }),
-    upload.single("filename"),
+    upload.single("file-user"),
     (req, res) => {
         FilesController.addPictureUser(req, res);
-        // console.log('hola pe');
+        // res.send('hola pe');
+    }
+);
+FilesRoutes.post(
+    "/imgs-subProduct/:idSubProduct",
+    passport.authenticate("jwt-admin", { session: false }),
+    upload.array("files-img-subProduct"),
+    
+    (req, res) => {
+        FilesController.addPicturesSubProducts(req, res);
+        console.log('entro');
         // res.send('hola pe');
     }
 );

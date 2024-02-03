@@ -13,8 +13,12 @@ const FilesRoutes = express_1.default.Router();
 exports.FilesRoutes = FilesRoutes;
 // import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 // export const storage =getStorage()
-FilesRoutes.post("/img-user/:idUser", auth_1.passport.authenticate("jwt", { session: false }), upload.single("filename"), (req, res) => {
+FilesRoutes.post("/img-user/:idUser", auth_1.passport.authenticate("jwt", { session: false }), upload.single("file-user"), (req, res) => {
     files_controller_1.FilesController.addPictureUser(req, res);
-    // console.log('hola pe');
+    // res.send('hola pe');
+});
+FilesRoutes.post("/imgs-subProduct/:idSubProduct", auth_1.passport.authenticate("jwt-admin", { session: false }), upload.array("files-img-subProduct"), (req, res) => {
+    files_controller_1.FilesController.addPicturesSubProducts(req, res);
+    console.log('entro');
     // res.send('hola pe');
 });

@@ -18,35 +18,13 @@ const auth_1 = require("../auth/auth");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_services_1 = require("../services/user.services");
 const user_controller_1 = require("../controllers/user.controller");
+const auth_google_1 = require("../auth/auth-google");
 const UserRoutes = express_1.default.Router();
 exports.UserRoutes = UserRoutes;
 const secretKey = process.env.JWT_SECRET;
 UserRoutes.get("/profile", auth_1.passport.authenticate("jwt", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
     const sendUser = yield user_services_1.UserService.getOneUserById(user._id);
-    console.log(sendUser, " es el log de send user");
-    console.log(sendUser === null || sendUser === void 0 ? void 0 : sendUser.lastName, "es el nombre");
-    console.log(sendUser === null || sendUser === void 0 ? void 0 : sendUser.email, "es el email");
-    // const lala = {
-    //     _id: "65a47ad9edd4629888a491a8",
-    //     creationDate: "2024-01-15T00:22:49.370Z",
-    //     email: "cazalapedro@hotmail.com.ar",
-    //     password:
-    //         "$2a$10$3HAgIQyNzAm1ceaHs01UbOWESM0U4Ufrf2mFu3S5QzZ9LLggeZ.HG",
-    //     __v: 0,
-    //     cartId: "65a47ad9edd4629888a491aa",
-    //     rol: "user",
-    //     direction: {
-    //         address: "Av España 1171",
-    //         city: "San Andrés de Giles",
-    //         prov: "Buenos Aires",
-    //         CP: 6720,
-    //     },
-    //     img: "https://pbs.twimg.com/profile_images/1681675523942907905/M_PF4Ifl_400x400.jpg",
-    //     lastName: "Cazala Acuña",
-    //     name: "Pedro Miguel",
-    //     phone: 23254334345,
-    // };
     const selectedUserInfo = {
         name: sendUser === null || sendUser === void 0 ? void 0 : sendUser.name,
         _id: sendUser === null || sendUser === void 0 ? void 0 : sendUser._id,
@@ -68,15 +46,9 @@ UserRoutes.get("/profile", auth_1.passport.authenticate("jwt", { session: false 
 // UserRoutes.get('/logout',(req,res)=>{
 //     res.send('cerrar sesion')
 // })
-UserRoutes.post("/signup", 
-// (req, res, next) => {
-//     // Middleware para analizar el cuerpo de la solicitud
-//     express.json()(req, res, next);
-// },
-auth_1.passport.authenticate("signup", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+UserRoutes.post("/signup", auth_1.passport.authenticate("signup", { session: false }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const info = req.body;
-        console.log(info);
+        // const info = req.body;
         res.status(200).json({
             message: "signup successful",
             user: req.user,
@@ -88,6 +60,47 @@ auth_1.passport.authenticate("signup", { session: false }), (req, res) => __awai
             user: req.user,
         });
     }
+}));
+UserRoutes.get("/google", auth_google_1.passportGoogle.authenticate("google-auth", {
+    scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+    ],
+    session: false,
+}), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    console.log(user);
+    if (user) {
+        req.login(user, { session: false }, (error) => __awaiter(void 0, void 0, void 0, function* () {
+            if (error)
+                return next(error);
+            const body = {
+                _id: user._id,
+                email: user.email,
+                rol: user.rol,
+            };
+            const token = jsonwebtoken_1.default.sign({ user: body }, secretKey);
+            // return res.json({ token });
+            res.redirect(`${process.env.FRONTEND_URL}/loginGoogle/${token}`);
+        }));
+    }
+    else {
+        res.send('no existe el usuario');
+    }
+    // console.log({ message: "hola passport google", user: user });
+    // res.send({ message: "hola passport google", user: user });
+    // try {
+    //     // const info = req.body;
+    //     res.status(200).json({
+    //         message: "signup successful",
+    //         user: req.user,
+    //     });
+    // } catch (error) {
+    //     res.status(500).json({
+    //         message: "Not can't signup",
+    //         user: req.user,
+    //     });
+    // }
 }));
 UserRoutes.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     auth_1.passport.authenticate("login", function (error, user /* ,info:any */) {
@@ -115,7 +128,7 @@ UserRoutes.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, 
         });
     })(req, res, next);
 }));
-UserRoutes.put('/update-user/:idUser', auth_1.passport.authenticate("jwt", { session: false }), (req, res) => {
+UserRoutes.put("/update-user/:idUser", auth_1.passport.authenticate("jwt", { session: false }), (req, res) => {
     user_controller_1.UserController.UpdateUser(req, res);
     // return user
     // console.log('entrooo bien pepe')

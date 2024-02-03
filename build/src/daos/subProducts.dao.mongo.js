@@ -37,6 +37,13 @@ class SubProductsDaoMongo {
             return subProducts;
         });
     }
+    static addImgSubProduct(idSubProduct, newImg) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const subProduct = yield product_model_1.SubProductsModel.findByIdAndUpdate(idSubProduct, { $push: { img: newImg } }, { new: true } // Esto devuelve el documento actualizado
+            );
+            return subProduct;
+        });
+    }
     // static createTypeProduct(types:[],creationDate:String){
     //     types.map(async type=>{
     //         const typeProduct= await ProductTypeModel.create({type,creationDate})

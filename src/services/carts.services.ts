@@ -38,7 +38,6 @@ export class CartsServices {
             const subProduct = cart?.products.find(
                 (subProd) => subProd._id == idSubProduct
             );
-            console.log(subProduct, " subProduct");
 
             return subProduct;
         } catch (error) {

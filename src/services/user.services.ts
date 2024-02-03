@@ -6,11 +6,12 @@ export class UserService {
 
         return user;
     }
+    static async createUserFromGoogleProfile(profile:any){
+        const user = await UserDaoMongo.createUserFromGoogleProfile(profile)
+        return user
+    }
     static async UpdateUser(idUser: string, data: object) {
-        console.log("servicio no");
         const user = await UserDaoMongo.UpdateUser(idUser, data);
-        console.log("servicio", user);
-
         return user;
     }
     static async UpdateImgUser(idUser: string, newImg: string) {

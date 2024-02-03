@@ -67,6 +67,7 @@ class ProductsController {
     static createProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
+            console.log('data de create Product en products.controller', data);
             try {
                 const subProducts = yield subProducts_services_1.SubProductsService.createSubProducts(data.subProducts);
                 let IDSubProds = [];
