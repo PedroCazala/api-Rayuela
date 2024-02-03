@@ -16,6 +16,7 @@ exports.passportGoogle = void 0;
 const passport_1 = __importDefault(require("passport"));
 const passport_google_oauth20_1 = require("passport-google-oauth20");
 const user_model_1 = require("../models/user.model");
+const carts_services_1 = require("../services/carts.services");
 // import { CartsServices } from "../services/carts.services";
 // import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -27,23 +28,44 @@ passportGoogle.use("google-auth", new passport_google_oauth20_1.Strategy({
     clientSecret: GOOGLE_CLIENT_SECRET !== null && GOOGLE_CLIENT_SECRET !== void 0 ? GOOGLE_CLIENT_SECRET : "valor-predeterminado",
     callbackURL: "http://localhost:9090/api/user/google",
 }, function (accessToken, refreshToken, profile, cb) {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         // UserModel.findOrCreate({ googleId: profile.id }, function (err, user) {
         //   return cb(err, user);
         // });
         try {
             if (profile.emails) {
-                console.log('entro al if de auth-google');
-                const user = yield user_model_1.UserModel.find({ email: profile.emails[0].value });
-                console.log('entro al if de auth-google', user);
+                //Login
+                console.log("entro al if de auth-google");
+                const user = yield user_model_1.UserModel.findOne({
+                    email: profile.emails[0].value,
+                });
+                console.log("entro al if de auth-google", user);
                 if (user) {
                     // El usuario ya existe, lo devolvemos
-                    return cb(null, user[0]);
+                    console.log('inteento entrar aca');
+                    return cb(null, user);
+                }
+                else {
+                    //SINGUP
+                    const newUser = yield user_model_1.UserModel.create({
+                        email: profile.emails[0].value,
+                        creationDate: new Date(),
+                        rol: "user",
+                        name: ((_a = profile.name) === null || _a === void 0 ? void 0 : _a.givenName) || "",
+                        lastName: ((_b = profile.name) === null || _b === void 0 ? void 0 : _b.familyName) || "",
+                        img: profile.photos ? profile.photos[0].value : "",
+                    });
+                    const createCart = yield carts_services_1.CartsServices.create(newUser._id);
+                    const completeUser = yield user_model_1.UserModel.findByIdAndUpdate(newUser._id, { $set: { cartId: createCart._id } }, { new: true });
+                    if (completeUser)
+                        return cb(null, completeUser);
                 }
             }
             return cb(null, false);
         }
         catch (error) {
+            console.log('Error en la estrategia de google', error);
             return cb(null, false);
         }
     });

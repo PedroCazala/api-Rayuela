@@ -3,6 +3,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 import { UserModel } from "../models/user.model";
 import { UserService } from "../services/user.services";
+import { CartsServices } from "../services/carts.services";
 // import { CartsServices } from "../services/carts.services";
 
 // import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
@@ -17,28 +18,55 @@ passportGoogle.use(
             clientSecret: GOOGLE_CLIENT_SECRET ?? "valor-predeterminado",
             callbackURL: "http://localhost:9090/api/user/google",
         },
-        async function(accessToken, refreshToken, profile, cb) {
+        async function (accessToken, refreshToken, profile, cb) {
             // UserModel.findOrCreate({ googleId: profile.id }, function (err, user) {
             //   return cb(err, user);
             // });
             try {
-              if(profile.emails){
-                console.log('entro al if de auth-google');
-                
-                const user = await UserModel.find({ email: profile.emails[0].value  });
-                console.log('entro al if de auth-google',user);
-        
-                if (user) {
-                  // El usuario ya existe, lo devolvemos
-                  return cb(null, user[0]);
-                }
-              }
-              return cb(null, false);
+                if (profile.emails) {
+                    //Login
 
+                    console.log("entro al if de auth-google");
+
+                    const user = await UserModel.findOne({
+                        email: profile.emails[0].value,
+                    })
+                    console.log("entro al if de auth-google", user);
+
+                    if (user) {
+                        // El usuario ya existe, lo devolvemos
+                        console.log('inteento entrar aca');
+                        
+                        return cb(null, user);
+                    } else {
+                        //SINGUP
+                        const newUser = await UserModel.create({
+                            email: profile.emails[0].value,
+                            creationDate: new Date(),
+                            rol: "user",
+                            name: profile.name?.givenName || "",
+                            lastName: profile.name?.familyName || "",
+                            img: profile.photos ? profile.photos[0].value : "",
+                        });
+                        const createCart = await CartsServices.create(
+                            newUser._id
+                        );
+                        const completeUser = await UserModel.findByIdAndUpdate(
+                            newUser._id,
+                            { $set: { cartId: createCart._id } },
+                            { new: true }
+                        );
+
+                        if (completeUser) return cb(null, completeUser);
+                    }
+                }
+                return cb(null, false);
             } catch (error) {
-              return cb(null, false);
+              console.log('Error en la estrategia de google',error);
+              
+                return cb(null, false);
             }
-          }
+        }
         // async function (accessToken, refreshToken, profile, done) {
         //     console.log("jopas hola auth-google", profile.displayName);
         //     const user = profile;

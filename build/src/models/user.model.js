@@ -15,13 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModel = exports.userCollection = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-exports.userCollection = 'Users';
+exports.userCollection = "Users";
 const UsersSchema = new mongoose_1.default.Schema({
     lastModifiedDate: { type: Date },
     creationDate: { type: Date, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String },
-    rol: { type: String, enum: ['user', 'admin'], require: true },
+    rol: { type: String, enum: ["user", "admin"], require: true },
     cartId: { type: mongoose_1.default.Schema.Types.ObjectId },
     name: { type: String },
     lastName: { type: String },
@@ -35,10 +35,12 @@ const UsersSchema = new mongoose_1.default.Schema({
     img: { type: String },
     dateBird: { type: Date },
 });
-UsersSchema.pre('save', function (next) {
+UsersSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const hash = yield bcryptjs_1.default.hash(this.password, 10);
-        this.password = hash;
+        if (this.password) {
+            const hash = yield bcryptjs_1.default.hash(this.password, 10);
+            this.password = hash;
+        }
         next();
     });
 });

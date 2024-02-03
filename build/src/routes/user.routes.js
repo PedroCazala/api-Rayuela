@@ -67,6 +67,7 @@ UserRoutes.get("/google", auth_google_1.passportGoogle.authenticate("google-auth
         "https://www.googleapis.com/auth/userinfo.email",
     ],
     session: false,
+    prompt: 'consent',
 }), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
     console.log(user);
@@ -85,7 +86,7 @@ UserRoutes.get("/google", auth_google_1.passportGoogle.authenticate("google-auth
         }));
     }
     else {
-        res.send('no existe el usuario');
+        res.send("no existe el usuario");
     }
     // console.log({ message: "hola passport google", user: user });
     // res.send({ message: "hola passport google", user: user });

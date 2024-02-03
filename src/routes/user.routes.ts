@@ -70,12 +70,12 @@ UserRoutes.get(
             "https://www.googleapis.com/auth/userinfo.email",
         ],
         session: false,
+        prompt: 'consent', 
     }),
     async (req, res, next) => {
         const user = req.user as IUser;
 
         console.log(user);
-
         if (user) {
             req.login(user, { session: false }, async (error) => {
                 if (error) return next(error);
@@ -90,8 +90,8 @@ UserRoutes.get(
                     `${process.env.FRONTEND_URL}/loginGoogle/${token}`
                 );
             });
-        }else{
-            res.send('no existe el usuario')
+        } else {
+            res.send("no existe el usuario");
         }
         // console.log({ message: "hola passport google", user: user });
         // res.send({ message: "hola passport google", user: user });
