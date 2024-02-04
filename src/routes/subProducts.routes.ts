@@ -5,4 +5,5 @@ const SubProductsRoutes = express.Router()
 SubProductsRoutes.get('/:id',(req,res)=>{    
     SubProductsController.getSubProduct(req,res)
 })
+SubProductsRoutes.put('/:idSubProduct',SubProductsController.updateSubProduct)
 export {SubProductsRoutes}

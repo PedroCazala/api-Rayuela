@@ -25,3 +25,7 @@ app.use(cors());
 //---- Rutas ----
 import { IndexRouter } from "./src/routes";
 app.use("/", IndexRouter);
+
+import serverless from "serverless-http";
+module.exports = app;
+module.exports.handler = serverless(app);

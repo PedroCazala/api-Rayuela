@@ -61,8 +61,8 @@ class SubProductsService {
             // return product
         });
     }
-    static updateSubProducts({ idSubProduct, newData }) {
-        const subProds = subProducts_dao_mongo_1.SubProductsDaoMongo.updateSubproducts({ idSubProduct, newData });
+    static updateSubProduct({ idSubProduct, newData }) {
+        const subProds = subProducts_dao_mongo_1.SubProductsDaoMongo.updateSubProduct({ idSubProduct, newData });
         return subProds;
     }
     // static updateProduct({idProduct,newData}:PropsUpdate){

@@ -48,8 +48,8 @@ export class SubProductsService{
         // const product = ProductsDaoMongo.postAProduct(newProduct)
         // return product
     }
-    static updateSubProducts({idSubProduct,newData}:PropsUpdate){
-        const subProds = SubProductsDaoMongo.updateSubproducts({idSubProduct,newData})
+    static updateSubProduct({idSubProduct,newData}:PropsUpdate){
+        const subProds = SubProductsDaoMongo.updateSubProduct({idSubProduct,newData})
         return subProds
     }
     // static updateProduct({idProduct,newData}:PropsUpdate){

@@ -21,3 +21,6 @@ app.use((0, cors_1.default)());
 //---- Rutas ----
 const routes_1 = require("./src/routes");
 app.use("/", routes_1.IndexRouter);
+const serverless_http_1 = __importDefault(require("serverless-http"));
+module.exports = app;
+module.exports.handler = (0, serverless_http_1.default)(app);

@@ -30,5 +30,30 @@ class SubProductsController {
             // }
         });
     }
+    static updateSubProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idSubProduct } = req.params;
+            const newData = req.body;
+            try {
+                const product = yield subProducts_services_1.SubProductsService.updateSubProduct({ idSubProduct, newData });
+                if (product) {
+                    res.status(200).json({
+                        message: `Product with id: ${idSubProduct} was modified`, product,
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        message: `Product with id: ${idSubProduct} was not found`,
+                    });
+                }
+            }
+            catch (error) {
+                res.status(404).json({
+                    message: `Product with id: ${idSubProduct} was not found`,
+                    error
+                });
+            }
+        });
+    }
 }
 exports.SubProductsController = SubProductsController;

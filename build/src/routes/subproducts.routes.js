@@ -11,3 +11,4 @@ exports.SubProductsRoutes = SubProductsRoutes;
 SubProductsRoutes.get('/:id', (req, res) => {
     subProducts_controller_1.SubProductsController.getSubProduct(req, res);
 });
+SubProductsRoutes.put('/:idSubProduct', subProducts_controller_1.SubProductsController.updateSubProduct);
