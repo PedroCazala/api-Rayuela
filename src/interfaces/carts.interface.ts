@@ -7,5 +7,5 @@ export interface ICart {
     // state:'inProgress'|'Enviado';
     creationDate: Date;
     lastModifiedDate?: Date;
-    products: [{ subProduct: ICartProduct; quantity: number,_id: ICartProduct }] | [];
+    products: [{ subProduct: ICartProduct; quantity: number, _id: ICartProduct }] | [];
 }

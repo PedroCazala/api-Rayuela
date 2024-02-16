@@ -18,7 +18,6 @@ export class CartsDaoMongo {
             },
         }) 
         .lean();
-    
         return cart;
     }
     static async createCart(newCart: ICart) {

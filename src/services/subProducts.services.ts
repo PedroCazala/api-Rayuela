@@ -10,7 +10,6 @@ export class SubProductsService{
     static async getOneSubProduct(id:string){
         try {            
             const subProduct = await SubProductsDaoMongo.getOneById(id)   
-            console.log(subProduct);
             return subProduct
         } catch (error) {
             console.log(error);
@@ -44,31 +43,29 @@ export class SubProductsService{
         }
 
         return newSubProducts
-        // const date:Date = new Date();
-        // const product = ProductsDaoMongo.postAProduct(newProduct)
-        // return product
     }
     static updateSubProduct({idSubProduct,newData}:PropsUpdate){
         const subProds = SubProductsDaoMongo.updateSubProduct({idSubProduct,newData})
         return subProds
     }
-    // static updateProduct({idProduct,newData}:PropsUpdate){
-    //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
-    //     return product
-    // }
-    // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
-    //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
-        
-    //     return product
-    // }
     static deleteSubProduct(id:String){
-        const product = SubProductsDaoMongo.deleteSubProduct(id)
-        return product
+        const subProduct = SubProductsDaoMongo.deleteSubProduct(id)
+        return subProduct
     }
 
     static async addImgSubProduct(idSubProduct: string, newImg: string) {
         const SubProduct = await SubProductsDaoMongo.addImgSubProduct(idSubProduct, newImg);
+    
+        // const carritosConProducto = await CartModel.find({ 'products.SubProduct': idSubProduct });
 
+        // // Elimina el producto de la lista de productos en cada carrito
+
+        // await Promise.all(
+        //     carritosConProducto.map(async (carrito) => {
+        //         carrito.products = carrito.products.filter((subProd) => subProd.subProduct !== idSubProduct);
+        //         await carrito.save();
+        //     })
+        // );
         return SubProduct;
     }
 }

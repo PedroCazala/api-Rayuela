@@ -17,8 +17,6 @@ const passport_1 = __importDefault(require("passport"));
 const passport_google_oauth20_1 = require("passport-google-oauth20");
 const user_model_1 = require("../models/user.model");
 const carts_services_1 = require("../services/carts.services");
-// import { CartsServices } from "../services/carts.services";
-// import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const passportGoogle = passport_1.default;

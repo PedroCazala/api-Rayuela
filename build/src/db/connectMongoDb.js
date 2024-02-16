@@ -7,7 +7,8 @@ exports.connectMongoDb = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const connectMongoDb = () => {
     try {
-        mongoose_1.default.connect(`mongodb+srv://pedro:${process.env.MONGO_PASSWORD}@cluster0.tugf9.mongodb.net/rayu?retryWrites=true&w=majority` || `mongodb://localhost:27017/rayu`).then(() => console.log(`Se conectó a mongoDB 🔥`));
+        mongoose_1.default.connect(
+        /* `mongodb+srv://pedro:${process.env.MONGO_PASSWORD}@cluster0.tugf9.mongodb.net/rayu?retryWrites=true&w=majority`  ||  */ `mongodb://localhost:27017/rayu`).then(() => console.log(`Se conectó a mongoDB 🔥`));
     }
     catch (error) {
         console.log(error);

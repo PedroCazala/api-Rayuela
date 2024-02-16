@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Request, Response } from "express";
 import { FilesService } from "../services/files.services";
 
 export class FilesController {

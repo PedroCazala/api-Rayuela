@@ -2,11 +2,8 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 import { UserModel } from "../models/user.model";
-import { UserService } from "../services/user.services";
 import { CartsServices } from "../services/carts.services";
-// import { CartsServices } from "../services/carts.services";
 
-// import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const passportGoogle = passport;

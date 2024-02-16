@@ -21,7 +21,6 @@ class SubProductsService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const subProduct = yield subProducts_dao_mongo_1.SubProductsDaoMongo.getOneById(id);
-                console.log(subProduct);
                 return subProduct;
             }
             catch (error) {
@@ -56,30 +55,27 @@ class SubProductsService {
                 }
             }
             return newSubProducts;
-            // const date:Date = new Date();
-            // const product = ProductsDaoMongo.postAProduct(newProduct)
-            // return product
         });
     }
     static updateSubProduct({ idSubProduct, newData }) {
         const subProds = subProducts_dao_mongo_1.SubProductsDaoMongo.updateSubProduct({ idSubProduct, newData });
         return subProds;
     }
-    // static updateProduct({idProduct,newData}:PropsUpdate){
-    //     const product = ProductsDaoMongo.updateProduct({idProduct,newData})
-    //     return product
-    // }
-    // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
-    //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
-    //     return product
-    // }
     static deleteSubProduct(id) {
-        const product = subProducts_dao_mongo_1.SubProductsDaoMongo.deleteSubProduct(id);
-        return product;
+        const subProduct = subProducts_dao_mongo_1.SubProductsDaoMongo.deleteSubProduct(id);
+        return subProduct;
     }
     static addImgSubProduct(idSubProduct, newImg) {
         return __awaiter(this, void 0, void 0, function* () {
             const SubProduct = yield subProducts_dao_mongo_1.SubProductsDaoMongo.addImgSubProduct(idSubProduct, newImg);
+            // const carritosConProducto = await CartModel.find({ 'products.SubProduct': idSubProduct });
+            // // Elimina el producto de la lista de productos en cada carrito
+            // await Promise.all(
+            //     carritosConProducto.map(async (carrito) => {
+            //         carrito.products = carrito.products.filter((subProd) => subProd.subProduct !== idSubProduct);
+            //         await carrito.save();
+            //     })
+            // );
             return SubProduct;
         });
     }

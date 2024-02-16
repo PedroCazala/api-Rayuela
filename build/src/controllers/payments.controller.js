@@ -10,13 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentsController = void 0;
-// import { SubProductsService } from "../services/subProducts.services";
-// import { SubProductsService } from "../services/subProducts.services";
-// import { IProduct } from "../interfaces/products.interface";
 const mercadopago_1 = require("mercadopago");
 class PaymentsController {
     static createOrder(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            // const data:string[] =req.body // para que despues se vea los item del carrito, o quizas el id del carro
             const accessToken = process.env.ACCESS_TOKEN_MP;
             if (accessToken) {
                 const client = new mercadopago_1.MercadoPagoConfig({
@@ -35,14 +33,13 @@ class PaymentsController {
                                 },
                             ],
                             back_urls: {
-                                success: 'http://localhost:9090/api/payments/success',
-                                failure: 'http://localhost:9090/api/payments/failure',
-                                pending: 'http://localhost:9090/api/payments/pending',
+                                success: `${process.env.HOST}/api/payments/success`,
+                                failure: `${process.env.HOST}/api/payments/failure`,
+                                pending: `${process.env.HOST}/api/payments/pending`,
                             },
-                            notification_url: 'https://0a6c-190-184-231-244.ngrok-free.app/webhook'
-                        }
+                            notification_url: "https://996d-190-184-231-139.ngrok-free.app/api/payments/webhook",
+                        },
                     });
-                    console.log(result);
                     res.send(result);
                 }
                 catch (error) {
@@ -56,20 +53,35 @@ class PaymentsController {
     }
     static receiveWebhook(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("ENTRO AL RECEIVE WEBHOOK");
             const paymentQuery = req.query;
-            console.log(paymentQuery, 'paymentQuery');
+            console.log(paymentQuery, "paymentQuery");
+            // const CLAVEWEBHOOK= 'd66e55d715cf9e5e5c42bee5b03feae642caf388ad3849e22e1219326d566d5a'
+            // if (CLAVEWEBHOOK === PAY) {
+            // }
             try {
-                if (paymentQuery.type === 'payment') {
-                    const client = new mercadopago_1.MercadoPagoConfig({ accessToken: 'access_token' });
+                // if (paymentQuery.type === "payment") {
+                const accessToken = process.env.ACCESS_TOKEN_MP;
+                if (accessToken) {
+                    // Crear una instancia de MercadoPagoConfig con tu accessToken
+                    const client = new mercadopago_1.MercadoPagoConfig({
+                        accessToken: accessToken,
+                    });
+                    // Crear una instancia de Payment con el cliente
+                    const paymentApi = new mercadopago_1.Payment(client);
+                    // const preference = new Prefercleaence(client);
+                    // Buscar el pago por el id
+                    const data = yield paymentApi.get({
+                        id: paymentQuery["data.id"],
+                    });
+                    console.log(data, 'funciono todo bien y entro y mostro esa data');
+                    // }
                 }
-                // const payment = new Payment(client);
-                // payment.get(
-                //     {
-                //         id:paymentQuery['data.id']
-                //     }
-                // )
+                res.sendStatus(204);
             }
             catch (error) {
+                console.log('entro al catch');
+                res.sendStatus(500);
                 console.log(error);
             }
         });
