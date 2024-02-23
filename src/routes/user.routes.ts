@@ -5,8 +5,6 @@ import { UserService } from "../services/user.services";
 import { IUser } from "../interfaces/users.interface";
 import { UserController } from "../controllers/user.controller";
 import { passportGoogle } from "../auth/auth-google";
-import { UserDaoMongo } from "../daos/user.dao.mongo";
-import { UserModel } from "../models/user.model";
 const UserRoutes = express.Router();
 const secretKey = process.env.JWT_SECRET;
 

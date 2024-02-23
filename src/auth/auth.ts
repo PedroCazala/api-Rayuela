@@ -6,7 +6,7 @@ import { CartsServices } from "../services/carts.services";
 
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 
-const secretKey = process.env.JWT_SECRET;
+const secretKey = process.env.JWT_SECRET || 'este no es el secreto';
 
 passport.use(
     "signup",
@@ -68,40 +68,40 @@ passport.use(
     )
 );
 
-passport.use("jwt",
-    new JWTStrategy(
-        {
-            secretOrKey: secretKey,
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        },
-        async (token, done) => {
-            try {
-                return done(null,token.user)
-            } catch (error) {                    
-                return done(error);
-            }
-        }
-    )
-);
-passport.use("jwt-admin",
-    new JWTStrategy(
-        {
-            secretOrKey: secretKey,
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        },
-        async (token, done) => {
-            try {
-                if(token.user.rol ==='admin'){
+    passport.use("jwt",
+        new JWTStrategy(
+            {
+                secretOrKey: secretKey,
+                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            },
+            async (token, done) => {
+                try {
                     return done(null,token.user)
-                }else {
-                    // El usuario no es un administrador
-                    return done(null, false);
+                } catch (error) {                    
+                    return done(error);
                 }
-            } catch (error) {                    
-                return done(error);
             }
-        }
-    )
-);
+        )
+    );
+    passport.use("jwt-admin",
+        new JWTStrategy(
+            {
+                secretOrKey: secretKey,
+                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            },
+            async (token, done) => {
+                try {
+                    if(token.user.rol ==='admin'){
+                        return done(null,token.user)
+                    }else {
+                        // El usuario no es un administrador
+                        return done(null, false);
+                    }
+                } catch (error) {                    
+                    return done(error);
+                }
+            }
+        )
+    );
 
 export { passport };

@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express from "express";
 import multer from "multer";
 import { FilesController } from "../controllers/files.controller";
 import { passport } from "../auth/auth";

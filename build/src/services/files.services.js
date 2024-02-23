@@ -13,7 +13,7 @@ exports.FilesService = void 0;
 const storage_1 = require("firebase/storage");
 const firebase_config_1 = require("../config/firebase.config");
 const app_1 = require("firebase/app");
-const subProducts_services_1 = require("../services/subProducts.services");
+const sub_products_services_1 = require("./sub-products.services");
 const user_services_1 = require("./user.services");
 (0, app_1.initializeApp)(firebase_config_1.firebaseConfig);
 const storage = (0, storage_1.getStorage)();
@@ -65,7 +65,7 @@ class FilesService {
                 const downloadURL = yield (0, storage_1.getDownloadURL)(snapshot.ref);
                 console.log("File successfully uploaded.");
                 console.log("File successfully uploaded.");
-                yield subProducts_services_1.SubProductsService.addImgSubProduct(idSubProduct, downloadURL);
+                yield sub_products_services_1.SubProductsService.addImgSubProduct(idSubProduct, downloadURL);
             }
         });
     }

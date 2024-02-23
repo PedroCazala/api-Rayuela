@@ -1,5 +1,5 @@
 import { Request, Response /*, NextFunction */ } from "express";
-import { SubProductsService } from "../services/subProducts.services";
+import { SubProductsService } from "../services/sub-products.services";
 // import { IProduct } from "../interfaces/products.interface";
 
 export class SubProductsController {

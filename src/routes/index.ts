@@ -1,6 +1,6 @@
 import express from 'express'
 import { ProductsRoutes } from './products.routes'
-import { SubProductsRoutes } from './subProducts.routes'
+import { SubProductsRoutes } from './sub-products.routes'
 import { CartsRoutes } from './carts.routes'
 import { UserRoutes } from './user.routes'
 import { FilesRoutes } from './files.routes'

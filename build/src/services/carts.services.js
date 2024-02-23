@@ -54,9 +54,6 @@ class CartsServices {
             }
         });
     }
-    // static async productExistInCart({idCart,idSubProduct,quantity}:IProductOfCart){
-    //     let productsOfCart = await this.getProductsOfCart(idCart)
-    // }
     static addProductToCart({ idCart, idSubProduct, quantity, }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -75,10 +72,8 @@ class CartsServices {
                     return cart;
                 }
                 else {
-                    // const subProd = await SubProductsService.getOneSubProduct(
-                    //     idSubProduct
-                    // );
                     if (idSubProduct) {
+                        // const subProd = await SubProductsService.getOneSubProduct(idSubProduct)
                         const subProduct = {
                             subProduct: { _id: idSubProduct },
                             _id: idSubProduct,

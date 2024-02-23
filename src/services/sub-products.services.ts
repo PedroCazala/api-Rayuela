@@ -1,4 +1,4 @@
-import { SubProductsDaoMongo } from "../daos/subProducts.dao.mongo";
+import { SubProductsDaoMongo } from "../daos/sub-products.dao.mongo";
 import { ISubProduct } from "../interfaces/products.interface";
 import { FilesService } from "./files.services";
 

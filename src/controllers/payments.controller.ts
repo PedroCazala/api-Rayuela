@@ -1,7 +1,7 @@
 import { Request, Response /*, NextFunction */ } from "express";
 import { MercadoPagoConfig, Payment, Preference } from "mercadopago";
 export class PaymentsController {
-    static async createOrder(req: Request, res: Response) {
+    static async createOrder(_: Request, res: Response) {
         // const data:string[] =req.body // para que despues se vea los item del carrito, o quizas el id del carro
 
         const accessToken = process.env.ACCESS_TOKEN_MP;

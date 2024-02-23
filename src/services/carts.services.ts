@@ -2,6 +2,7 @@ import { CartsDaoMongo } from "../daos/carts.dao.mongo";
 import { ICart } from "../interfaces/carts.interface";
 import { ICartProduct } from "../interfaces/products.interface";
 import mongoose from "mongoose";
+import { SubProductsService } from "./sub-products.services";
 type TypeIdMongoose = mongoose.Schema.Types.ObjectId;
 
 export class CartsServices {
@@ -48,9 +49,7 @@ export class CartsServices {
             );
         }
     }
-    // static async productExistInCart({idCart,idSubProduct,quantity}:IProductOfCart){
-    //     let productsOfCart = await this.getProductsOfCart(idCart)
-    // }
+
     static async addProductToCart({
         idCart,
         idSubProduct,
@@ -72,12 +71,10 @@ export class CartsServices {
                 const cart = await CartsServices.getCart(idCart);
                 return cart;
             } else {
-                // const subProd = await SubProductsService.getOneSubProduct(
-                //     idSubProduct
-                // );
                 if (idSubProduct) {
+                    // const subProd = await SubProductsService.getOneSubProduct(idSubProduct)
                     const subProduct: ICartProduct = {
-                        subProduct: { _id: idSubProduct },
+                        subProduct: { _id: idSubProduct},
                         _id: idSubProduct,
                         quantity,
                     };

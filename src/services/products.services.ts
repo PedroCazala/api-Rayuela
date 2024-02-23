@@ -1,5 +1,5 @@
 import { ProductsDaoMongo } from "../daos/products.dao.mongo";
-import { SubProductsDaoMongo } from "../daos/subProducts.dao.mongo";
+import { SubProductsDaoMongo } from "../daos/sub-products.dao.mongo";
 import { IProduct, ISubProduct } from "../interfaces/products.interface";
 // import { IProduct } from "../interfaces/products.interface";
 // import { IProduct } from "../interfaces/products.interface";

@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
 import { ICart } from "../interfaces/carts.interface";
 import { userCollection } from "./user.model";
-import { subProductsCollection } from "./product.model";
-// import {userCollection} from './user.model';
-// import { ICompleteProduct } from "../interfaces/products.interface";
+
 const cartCollection = "Carts";
 
 const CartsSchema = new mongoose.Schema<ICart>({
@@ -13,13 +11,6 @@ const CartsSchema = new mongoose.Schema<ICart>({
         required: true,
     },
     creationDate: { type: Date, required: true },
-    // products: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "subProducts",
-    //         required: true,
-    //     },
-    // ],
     products:[{
         subProduct:{
             type: mongoose.Schema.Types.ObjectId,

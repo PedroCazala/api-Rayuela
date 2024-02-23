@@ -1,7 +1,7 @@
 import { ICompleteProduct, ISubProduct } from "../interfaces/products.interface";
 import { ProductsService } from "../services/products.services";
 import { Request, Response /*, NextFunction */ } from "express";
-import { SubProductsService } from "../services/subProducts.services";
+import { SubProductsService } from "../services/sub-products.services";
 // import { IProduct } from "../interfaces/products.interface";
 
 export class ProductsController {
@@ -66,7 +66,7 @@ export class ProductsController {
                 IDSubProducts: IDSubProds,
             });
             subProducts.forEach(async (sub:ISubProduct) => {
-                await SubProductsService.updateSubProducts({idSubProduct:sub._id,newData:{sub,IDProduct:product._id}})
+                await SubProductsService.updateSubProduct({idSubProduct:sub._id,newData:{sub,IDProduct:product._id}})
             })
             subProducts &&
                 res.status(200).json({

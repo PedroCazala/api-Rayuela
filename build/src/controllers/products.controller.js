@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
 const products_services_1 = require("../services/products.services");
-const subProducts_services_1 = require("../services/subProducts.services");
+const sub_products_services_1 = require("../services/sub-products.services");
 // import { IProduct } from "../interfaces/products.interface";
 class ProductsController {
     static getProducts(req, res) {
@@ -69,12 +69,12 @@ class ProductsController {
             const data = req.body;
             console.log('data de create Product en products.controller', data);
             try {
-                const subProducts = yield subProducts_services_1.SubProductsService.createSubProducts(data.subProducts);
+                const subProducts = yield sub_products_services_1.SubProductsService.createSubProducts(data.subProducts);
                 let IDSubProds = [];
                 subProducts.forEach((sub) => (IDSubProds = [...IDSubProds, sub._id]));
                 const product = yield products_services_1.ProductsService.createProduct(Object.assign(Object.assign({}, data), { IDSubProducts: IDSubProds }));
                 subProducts.forEach((sub) => __awaiter(this, void 0, void 0, function* () {
-                    yield subProducts_services_1.SubProductsService.updateSubProducts({ idSubProduct: sub._id, newData: { sub, IDProduct: product._id } });
+                    yield sub_products_services_1.SubProductsService.updateSubProduct({ idSubProduct: sub._id, newData: { sub, IDProduct: product._id } });
                 }));
                 subProducts &&
                     res.status(200).json({
@@ -137,7 +137,7 @@ class ProductsController {
                 const subProds = yield products_services_1.ProductsService.getSubProductsOfAProduct(id);
                 subProds &&
                     subProds.map((sub) => __awaiter(this, void 0, void 0, function* () {
-                        yield subProducts_services_1.SubProductsService.deleteSubProduct(sub._id);
+                        yield sub_products_services_1.SubProductsService.deleteSubProduct(sub._id);
                     }));
                 const product = yield products_services_1.ProductsService.deleteProduct(id);
                 if (product.deletedCount > 0) {

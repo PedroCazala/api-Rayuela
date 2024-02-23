@@ -6,7 +6,7 @@ import {
 } from "firebase/storage";
 import { firebaseConfig } from "../config/firebase.config";
 import { initializeApp } from "firebase/app";
-import { SubProductsService } from "../services/subProducts.services";
+import { SubProductsService } from "./sub-products.services";
 import { UserService } from "./user.services";
 
 initializeApp(firebaseConfig);

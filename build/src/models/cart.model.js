@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const user_model_1 = require("./user.model");
-// import {userCollection} from './user.model';
-// import { ICompleteProduct } from "../interfaces/products.interface";
 const cartCollection = "Carts";
 const CartsSchema = new mongoose_1.default.Schema({
     userId: {
@@ -16,13 +14,6 @@ const CartsSchema = new mongoose_1.default.Schema({
         required: true,
     },
     creationDate: { type: Date, required: true },
-    // products: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "subProducts",
-    //         required: true,
-    //     },
-    // ],
     products: [{
             subProduct: {
                 type: mongoose_1.default.Schema.Types.ObjectId,

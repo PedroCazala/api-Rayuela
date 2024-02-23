@@ -19,7 +19,7 @@ const passport_local_1 = require("passport-local");
 const user_model_1 = require("../models/user.model");
 const carts_services_1 = require("../services/carts.services");
 const passport_jwt_1 = require("passport-jwt");
-const secretKey = process.env.JWT_SECRET;
+const secretKey = process.env.JWT_SECRET || 'este no es el secreto';
 passport_1.default.use("signup", new passport_local_1.Strategy({
     usernameField: "email",
     passwordField: "password",

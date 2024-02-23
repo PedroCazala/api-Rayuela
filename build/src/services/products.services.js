@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsService = void 0;
 const products_dao_mongo_1 = require("../daos/products.dao.mongo");
-const subProducts_dao_mongo_1 = require("../daos/subProducts.dao.mongo");
+const sub_products_dao_mongo_1 = require("../daos/sub-products.dao.mongo");
 // import { IProduct } from "../interfaces/products.interface";
 // import { IProduct } from "../interfaces/products.interface";
 class ProductsService {
@@ -40,7 +40,7 @@ class ProductsService {
                 let subProducts = [];
                 if (idSubProducts) {
                     for (const id of idSubProducts) {
-                        const subProduct = yield subProducts_dao_mongo_1.SubProductsDaoMongo.getOneById(id);
+                        const subProduct = yield sub_products_dao_mongo_1.SubProductsDaoMongo.getOneById(id);
                         if (subProduct) {
                             subProducts = [...subProducts, subProduct];
                             // console.log(subProducts);

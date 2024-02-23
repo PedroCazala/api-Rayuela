@@ -3,13 +3,13 @@ import { PaymentsController } from "../controllers/payments.controller";
 const PaymentsRoutes = Router()
 PaymentsRoutes.post('/create-order',PaymentsController.createOrder)
 
-PaymentsRoutes.get('/success',(req,res)=>{
+PaymentsRoutes.get('/success',(_,res)=>{
     res.send('success')
 })
-PaymentsRoutes.get('/failure',(req,res)=>{
+PaymentsRoutes.get('/failure',(_,res)=>{
     res.send('failure')
 })
-PaymentsRoutes.get('/pending',(req,res)=>{
+PaymentsRoutes.get('/pending',(_,res)=>{
     res.send('pending')
 })
 

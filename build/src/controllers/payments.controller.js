@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentsController = void 0;
 const mercadopago_1 = require("mercadopago");
 class PaymentsController {
-    static createOrder(req, res) {
+    static createOrder(_, res) {
         return __awaiter(this, void 0, void 0, function* () {
             // const data:string[] =req.body // para que despues se vea los item del carrito, o quizas el id del carro
             const accessToken = process.env.ACCESS_TOKEN_MP;
