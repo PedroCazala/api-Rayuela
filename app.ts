@@ -12,7 +12,7 @@ connectMongoDb();
 const PORT = process.env.PORT || 9000;
 //---- Server corriendo ----
 const server = app.listen(PORT, () =>
-    console.log(`🔥The server is running in http://localhost:${PORT}`)
+    console.log(`🔥The server is running in http://127.0.0.1:${PORT}`)
 );
 server.on("error", (error: Error) =>
     console.log(`Error en el servidor ${error}`)

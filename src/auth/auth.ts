@@ -6,7 +6,7 @@ import { CartsServices } from "../services/carts.services";
 
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 
-const secretKey = process.env.JWT_SECRET || 'este no es el secreto';
+const secretKey = process.env.JWT_SECRET;
 
 passport.use(
     "signup",
@@ -15,15 +15,18 @@ passport.use(
             usernameField: "email",
             passwordField: "password",
             passReqToCallback: true,
-        },  
-        async (req,email, password, done) => {
+        },
+        async (req, email, password, done) => {
             try {
                 const { name, lastName } = req.body;
-                    const creationDate = new Date();
+                const creationDate = new Date();
                 const user = await UserModel.create({
                     email,
                     password,
-                    creationDate,name,lastName,rol:"user"
+                    creationDate,
+                    name,
+                    lastName,
+                    rol: "user",
                 });
                 const createCart = await CartsServices.create(user._id);
 
@@ -68,40 +71,42 @@ passport.use(
     )
 );
 
-    passport.use("jwt",
-        new JWTStrategy(
-            {
-                secretOrKey: secretKey,
-                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            },
-            async (token, done) => {
-                try {
-                    return done(null,token.user)
-                } catch (error) {                    
-                    return done(error);
-                }
+passport.use(
+    "jwt",
+    new JWTStrategy(
+        {
+            secretOrKey: secretKey,
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        },
+        async (token, done) => {
+            try {
+                return done(null, token.user);
+            } catch (error) {
+                return done(error);
             }
-        )
-    );
-    passport.use("jwt-admin",
-        new JWTStrategy(
-            {
-                secretOrKey: secretKey,
-                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            },
-            async (token, done) => {
-                try {
-                    if(token.user.rol ==='admin'){
-                        return done(null,token.user)
-                    }else {
-                        // El usuario no es un administrador
-                        return done(null, false);
-                    }
-                } catch (error) {                    
-                    return done(error);
+        }
+    )
+);
+passport.use(
+    "jwt-admin",
+    new JWTStrategy(
+        {
+            secretOrKey: secretKey,
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        },
+        async (token, done) => {
+            try {
+                if (token.user.rol === "admin") {
+                    return done(null, token.user);
+                } else {
+                    // El usuario no es un administrador
+                    return done(null, false);
                 }
+            } catch (error) {
+                return done(error);
             }
-        )
-    );
+        }
+    )
+);
 
 export { passport };

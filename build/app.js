@@ -13,7 +13,7 @@ const connectMongoDb_1 = require("./src/db/connectMongoDb");
 (0, connectMongoDb_1.connectMongoDb)();
 const PORT = process.env.PORT || 9000;
 //---- Server corriendo ----
-const server = app.listen(PORT, () => console.log(`🔥The server is running in http://localhost:${PORT}`));
+const server = app.listen(PORT, () => console.log(`🔥The server is running in http://127.0.0.1:${PORT}`));
 server.on("error", (error) => console.log(`Error en el servidor ${error}`));
 //---- Cors para porder realizar peticiones desde otros puertos ----
 const cors_1 = __importDefault(require("cors"));

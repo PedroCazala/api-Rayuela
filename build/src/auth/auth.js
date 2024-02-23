@@ -19,7 +19,7 @@ const passport_local_1 = require("passport-local");
 const user_model_1 = require("../models/user.model");
 const carts_services_1 = require("../services/carts.services");
 const passport_jwt_1 = require("passport-jwt");
-const secretKey = process.env.JWT_SECRET || 'este no es el secreto';
+const secretKey = process.env.JWT_SECRET;
 passport_1.default.use("signup", new passport_local_1.Strategy({
     usernameField: "email",
     passwordField: "password",
@@ -31,7 +31,10 @@ passport_1.default.use("signup", new passport_local_1.Strategy({
         const user = yield user_model_1.UserModel.create({
             email,
             password,
-            creationDate, name, lastName, rol: "user"
+            creationDate,
+            name,
+            lastName,
+            rol: "user",
         });
         const createCart = yield carts_services_1.CartsServices.create(user._id);
         const completeUser = yield user_model_1.UserModel.findByIdAndUpdate(user._id, { $set: { cartId: createCart._id } }, { new: true });
@@ -79,7 +82,7 @@ passport_1.default.use("jwt-admin", new passport_jwt_1.Strategy({
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
 }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (token.user.rol === 'admin') {
+        if (token.user.rol === "admin") {
             return done(null, token.user);
         }
         else {

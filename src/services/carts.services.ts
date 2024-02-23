@@ -2,7 +2,6 @@ import { CartsDaoMongo } from "../daos/carts.dao.mongo";
 import { ICart } from "../interfaces/carts.interface";
 import { ICartProduct } from "../interfaces/products.interface";
 import mongoose from "mongoose";
-import { SubProductsService } from "./sub-products.services";
 type TypeIdMongoose = mongoose.Schema.Types.ObjectId;
 
 export class CartsServices {

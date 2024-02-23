@@ -15,7 +15,7 @@ passportGoogle.use(
             clientSecret: GOOGLE_CLIENT_SECRET ?? "valor-predeterminado",
             callbackURL: "http://localhost:9090/api/user/google",
         },
-        async function (accessToken, refreshToken, profile, cb) {
+        async function (_accessToken, _refreshToken, profile, cb) {
             // UserModel.findOrCreate({ googleId: profile.id }, function (err, user) {
             //   return cb(err, user);
             // });
