@@ -6,6 +6,7 @@ import { CartsServices } from "../services/carts.services";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const HOST = process.env.HOST;
 const passportGoogle = passport;
 passportGoogle.use(
     "google-auth",
@@ -13,7 +14,7 @@ passportGoogle.use(
         {
             clientID: GOOGLE_CLIENT_ID ?? "valor-predeterminado",
             clientSecret: GOOGLE_CLIENT_SECRET ?? "valor-predeterminado",
-            callbackURL: "http://localhost:9090/api/user/google",
+            callbackURL: `${HOST}/api/user/google`,
         },
         async function (_accessToken, _refreshToken, profile, cb) {
             // UserModel.findOrCreate({ googleId: profile.id }, function (err, user) {

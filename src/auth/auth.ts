@@ -70,43 +70,43 @@ passport.use(
         }
     )
 );
-
-passport.use(
-    "jwt",
-    new JWTStrategy(
-        {
-            secretOrKey: secretKey,
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        },
-        async (token, done) => {
-            try {
-                return done(null, token.user);
-            } catch (error) {
-                return done(error);
-            }
-        }
-    )
-);
-passport.use(
-    "jwt-admin",
-    new JWTStrategy(
-        {
-            secretOrKey: secretKey,
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        },
-        async (token, done) => {
-            try {
-                if (token.user.rol === "admin") {
+if (secretKey) {
+    passport.use(
+        "jwt",
+        new JWTStrategy(
+            {
+                secretOrKey: secretKey,
+                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            },
+            async (token, done) => {
+                try {
                     return done(null, token.user);
-                } else {
-                    // El usuario no es un administrador
-                    return done(null, false);
+                } catch (error) {
+                    return done(error);
                 }
-            } catch (error) {
-                return done(error);
             }
-        }
-    )
-);
-
+        )
+    );
+    passport.use(
+        "jwt-admin",
+        new JWTStrategy(
+            {
+                secretOrKey: secretKey,
+                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            },
+            async (token, done) => {
+                try {
+                    if (token.user.rol === "admin") {
+                        return done(null, token.user);
+                    } else {
+                        // El usuario no es un administrador
+                        return done(null, false);
+                    }
+                } catch (error) {
+                    return done(error);
+                }
+            }
+        )
+    );
+}
 export { passport };

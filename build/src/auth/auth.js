@@ -66,31 +66,33 @@ passport_1.default.use("login", new passport_local_1.Strategy({
         return done(error);
     }
 })));
-passport_1.default.use("jwt", new passport_jwt_1.Strategy({
-    secretOrKey: secretKey,
-    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-}, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        return done(null, token.user);
-    }
-    catch (error) {
-        return done(error);
-    }
-})));
-passport_1.default.use("jwt-admin", new passport_jwt_1.Strategy({
-    secretOrKey: secretKey,
-    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-}, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        if (token.user.rol === "admin") {
+if (secretKey) {
+    passport_1.default.use("jwt", new passport_jwt_1.Strategy({
+        secretOrKey: secretKey,
+        jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
             return done(null, token.user);
         }
-        else {
-            // El usuario no es un administrador
-            return done(null, false);
+        catch (error) {
+            return done(error);
         }
-    }
-    catch (error) {
-        return done(error);
-    }
-})));
+    })));
+    passport_1.default.use("jwt-admin", new passport_jwt_1.Strategy({
+        secretOrKey: secretKey,
+        jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            if (token.user.rol === "admin") {
+                return done(null, token.user);
+            }
+            else {
+                // El usuario no es un administrador
+                return done(null, false);
+            }
+        }
+        catch (error) {
+            return done(error);
+        }
+    })));
+}

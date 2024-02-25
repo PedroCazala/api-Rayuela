@@ -19,12 +19,13 @@ const user_model_1 = require("../models/user.model");
 const carts_services_1 = require("../services/carts.services");
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const HOST = process.env.HOST;
 const passportGoogle = passport_1.default;
 exports.passportGoogle = passportGoogle;
 passportGoogle.use("google-auth", new passport_google_oauth20_1.Strategy({
     clientID: GOOGLE_CLIENT_ID !== null && GOOGLE_CLIENT_ID !== void 0 ? GOOGLE_CLIENT_ID : "valor-predeterminado",
     clientSecret: GOOGLE_CLIENT_SECRET !== null && GOOGLE_CLIENT_SECRET !== void 0 ? GOOGLE_CLIENT_SECRET : "valor-predeterminado",
-    callbackURL: "http://localhost:9090/api/user/google",
+    callbackURL: `${HOST}/api/user/google`,
 }, function (_accessToken, _refreshToken, profile, cb) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
