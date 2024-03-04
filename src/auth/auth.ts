@@ -70,7 +70,7 @@ passport.use(
         }
     )
 );
-if (secretKey) {
+// if (secretKey) {
     passport.use(
         "jwt",
         new JWTStrategy(
@@ -108,5 +108,5 @@ if (secretKey) {
             }
         )
     );
-}
+// }
 export { passport };

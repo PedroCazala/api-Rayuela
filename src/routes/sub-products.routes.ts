@@ -1,9 +1,14 @@
-import express from 'express'
-import { SubProductsController } from '../controllers/sub-products.controller'
+import express from "express";
+import { SubProductsController } from "../controllers/sub-products.controller";
+import { passport } from "../auth/auth";
 
-const SubProductsRoutes = express.Router()
-SubProductsRoutes.get('/:id',(req,res)=>{    
-    SubProductsController.getSubProduct(req,res)
-})
-SubProductsRoutes.put('/:idSubProduct',SubProductsController.updateSubProduct)
-export {SubProductsRoutes}
+const SubProductsRoutes = express.Router();
+SubProductsRoutes.get("/:id", (req, res) => {
+    SubProductsController.getSubProduct(req, res);
+});
+SubProductsRoutes.put(
+    "/:idSubProduct",
+    passport.authenticate("jwt-admin", { session: false }),
+    SubProductsController.updateSubProduct
+);
+export { SubProductsRoutes };

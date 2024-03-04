@@ -23,19 +23,19 @@ export class SubProductsController {
             const {idSubProduct} = req.params;
             const newData = req.body;
             try {
-                const product = await SubProductsService.updateSubProduct({idSubProduct,newData});
-                if (product) {
+                const subProduct = await SubProductsService.updateSubProduct({idSubProduct,newData});
+                if (subProduct) {
                     res.status(200).json({
-                        message: `Product with id: ${idSubProduct} was modified`,product,
+                        message: `SubProduct with id: ${idSubProduct} was modified`,subProduct,
                     });
                 } else {
                     res.status(404).json({
-                        message: `Product with id: ${idSubProduct} was not found`,
+                        message: `SubProduct with id: ${idSubProduct} was not found`,
                     });
                 }
             } catch (error) {
                 res.status(404).json({
-                    message: `Product with id: ${idSubProduct} was not found`,
+                    message: `SubProduct with id: ${idSubProduct} was not found`,
                     error
                 });
 

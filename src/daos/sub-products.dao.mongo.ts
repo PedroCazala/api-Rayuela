@@ -19,7 +19,7 @@ export class SubProductsDaoMongo {
         return subProducts
     }
     static async updateSubProduct({idSubProduct,newData}:IPropsUpdateSubProduct){
-        const subProducts =await SubProductsModel.findByIdAndUpdate(idSubProduct,newData)
+        const subProducts =await SubProductsModel.findByIdAndUpdate(idSubProduct,newData,{new:true})
         return subProducts
     }
 

@@ -29,20 +29,14 @@ passportGoogle.use("google-auth", new passport_google_oauth20_1.Strategy({
 }, function (_accessToken, _refreshToken, profile, cb) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
-        // UserModel.findOrCreate({ googleId: profile.id }, function (err, user) {
-        //   return cb(err, user);
-        // });
         try {
             if (profile.emails) {
                 //Login
-                console.log("entro al if de auth-google");
                 const user = yield user_model_1.UserModel.findOne({
                     email: profile.emails[0].value,
                 });
-                console.log("entro al if de auth-google", user);
                 if (user) {
                     // El usuario ya existe, lo devolvemos
-                    console.log('inteento entrar aca');
                     return cb(null, user);
                 }
                 else {
@@ -64,40 +58,8 @@ passportGoogle.use("google-auth", new passport_google_oauth20_1.Strategy({
             return cb(null, false);
         }
         catch (error) {
-            console.log('Error en la estrategia de google', error);
+            console.log("Error en la estrategia de google", error);
             return cb(null, false);
         }
     });
-}
-// async function (accessToken, refreshToken, profile, done) {
-//     console.log("jopas hola auth-google", profile.displayName);
-//     const user = profile;
-//     // return done(null,user)
-//     console.log("entro a la estrategia de google");
-//     // try {
-//     if (profile.emails !== undefined) {
-//         const user = await UserModel.findOne({
-//             email: profile.emails[0].value,
-//         });
-//         if (user) {
-//             // Usuario encontrado, devolverlo a Passport
-//             return done(null, user,  { message: "Login successful" });
-//         }
-//     }
-//     //     } else {
-//     //         // Usuario no encontrado, crea uno nuevo
-//     //         const newUser = await UserService.createUserFromGoogleProfile(profile);
-//     //         return done(null, newUser);
-//     //     }
-//     //     } else {
-//     //         // Usuario no encontrado, puedes crear uno nuevo aquí si es necesario
-//     //         // return cb(null, newUser);
-//     //         // O, si no quieres crear un usuario automáticamente, puedes indicar que el usuario no existe
-//     //         return done(null, false, { message: 'Usuario no encontrado.' });
-//     //     }
-//     // } catch (err:any) {
-//     //     // Manejar errores de base de datos u otros errores
-//     //     return done(err);
-//     // }
-// }
-));
+}));

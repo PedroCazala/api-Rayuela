@@ -1,5 +1,9 @@
 import express from "express";
-// import "dotenv/config";
+import "dotenv/config";
+// require('dotenv').config({ path: '../.env' });
+
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(express.json());

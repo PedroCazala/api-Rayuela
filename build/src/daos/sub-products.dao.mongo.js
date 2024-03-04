@@ -33,7 +33,7 @@ class SubProductsDaoMongo {
     }
     static updateSubProduct({ idSubProduct, newData }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const subProducts = yield product_model_1.SubProductsModel.findByIdAndUpdate(idSubProduct, newData);
+            const subProducts = yield product_model_1.SubProductsModel.findByIdAndUpdate(idSubProduct, newData, { new: true });
             return subProducts;
         });
     }
