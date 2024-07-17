@@ -21,6 +21,40 @@ export class OrdersController {
             });
         }
     }
+    static async getByIdMP(req: Request, res: Response) {
+        const { idOrderMP } = req.params;
+        console.log({idOrderMP});
+        
+        // try {
+        //     if (idOrder) {
+        //         const order = await OrdersServices.getOne(idOrder);
+        //         res.status(200).json(order);
+        //     } else {
+        //         const orders = await OrdersServices.getAll();
+        //         res.status(200).json(orders);
+        //     }
+        // } catch (error) {
+        //     res.status(500).json({
+        //         message: "No se pudo obtener el carrito",
+        //         error,
+        //     });
+        // }
+    }
+
+    static async getEditeState(req: Request, res: Response) {
+        const {idOrder,state} = req.params
+        try{
+            const orders = await OrdersServices.getEditeState({idOrder,state});
+            res.status(200).json(orders);
+
+        }catch(error){
+            res.status(500).json({
+                message: "No se pudo obtener el carrito",
+                error,
+            });
+
+        }
+    }
     static async getByState(req: Request, res: Response) {
         const { state } = req.params;
         try {
@@ -32,7 +66,7 @@ export class OrdersController {
             }
         } catch (error) {
             res.status(500).json({
-                message: "No se pudo obtener el carrito",
+                message: "No se pudieron obtener las ordenes",
                 error,
             });
         }

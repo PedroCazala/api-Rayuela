@@ -33,7 +33,7 @@ export class PaymentsController {
                     const result = await preference.create({
                         body: {
                             payer:{
-                                email:"cazalapedro@gmail.com",//user?.email,
+                                email: user?.email,
                                 // id:user?._id
                             },
                             // additional_info:{
@@ -53,6 +53,8 @@ export class PaymentsController {
                         });
                         if(user && result.id){
                             const order = await OrdersServices.create({idUser:user._id,idPreference:result.id})
+                            //------ ACA DEBERÍA AGREGAR EL ID DE LA PREFERENCIA Y MODIFICARLE EL ESTADO 
+
                             // console.log(order, 'ES LA ORDENNNN');
                         }else{
                             console.log('no creo la ORDENNN');
@@ -75,17 +77,21 @@ export class PaymentsController {
 
         try {
             if (paymentQuery.type === "payment") {
-            const accessToken = process.env.ACCESS_TOKEN_MP;
-            if (accessToken) {
-                // Crear una instancia de MercadoPagoConfig con tu accessToken
-                const client = new MercadoPagoConfig({
-                    accessToken: accessToken,
-                });
-                // Crear una instancia de Payment con el cliente
-                const paymentApi = new Payment(client);
-                const data = await paymentApi.get({
-                    id: paymentQuery["data.id"] as string,
-                });
+                const accessToken = process.env.ACCESS_TOKEN_MP;
+                if (accessToken) {
+                    // Crear una instancia de MercadoPagoConfig con tu accessToken
+                    const client = new MercadoPagoConfig({
+                        accessToken: accessToken,
+                    });
+                    // Crear una instancia de Payment con el cliente
+                    const paymentApi = new Payment(client);
+                    const data = await paymentApi.get({
+                        id: paymentQuery["data.id"] as string,
+                    });
+                    console.log(data);
+                    // ----- CAMBIAR EL STATE DE LA ORDEN
+                    // const order = await OrdersServices.create({idUser:user._id,idPreference:result.id})
+                    // const orders = await OrdersServices.getByPreferenceIdMercadoPago(data.id)
                     res.sendStatus(204);
                 }
             }

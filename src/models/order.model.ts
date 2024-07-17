@@ -1,25 +1,32 @@
 import mongoose from "mongoose";
-import { IUser } from "../interfaces/users.interface";
 import { IOrder } from "../interfaces/orders.interface";
+import { userCollection } from "./user.model";
+import { SubProductsModel, subProductsSchema, subProductsSchemaForOrder } from "./product.model";
 export const orderCollection = "Orders";
 
 const OrderSchema = new mongoose.Schema<IOrder>({
     creationDate: { type: Date, required: true },
     cartId: { type: mongoose.Schema.Types.ObjectId },
-    userId: { type: mongoose.Schema.Types.ObjectId },
+    userId: {
+        type: mongoose.Types.ObjectId,
+        ref: userCollection,
+        // required: true,
+    },
     cartProducts: {
         type: [
             {
                 subProduct: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "subProducts",
+                    type: subProductsSchemaForOrder,
+                    // type: mongoose.Schema.Types.ObjectId,
+                    // ref: "subProducts",
                     required: true,
                 },
-                _id: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "subProducts",
-                    required: true,
-                },
+                // _id: {
+                //     type: mongoose.Schema.Types.ObjectId,
+                //     ref: "subProducts",
+                //     required: true,
+                // },
+                price: { type: Number, required: true },
                 quantity: { type: Number, required: true },
             },
         ],
@@ -28,7 +35,7 @@ const OrderSchema = new mongoose.Schema<IOrder>({
     priceShipment: { type: Number, required: true },
     state: {
         type: String,
-        enum: ["Orden-creada","En-preparación", "En-camino", "recibida"],
+        enum: ["Orden-creada", "En-preparación", "En-camino", "recibida"],
         required: true,
     },
     totalPrice: { type: Number, required: true },
@@ -39,6 +46,7 @@ const OrderSchema = new mongoose.Schema<IOrder>({
         prov: { type: String, required: true },
         CP: { type: Number, required: true },
     },
+    preferenceIdMercadoPago:{ type: String, required: true },
 });
 
 export const OrderModel = mongoose.model<IOrder>(orderCollection, OrderSchema);

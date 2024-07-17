@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubProductsModel = exports.ProductModel = exports.subProductsCollection = void 0;
+exports.SubProductsModel = exports.ProductModel = exports.subProductsSchemaForOrder = exports.subProductsCollection = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const productsCollection = "Products";
 exports.subProductsCollection = "subProducts";
@@ -39,6 +39,15 @@ const subProductsSchema = new mongoose_1.default.Schema({
     creationDate: { type: Date, required: true },
     lastModifiedDate: { type: Date },
     IDProduct: { type: mongoose_1.default.Types.ObjectId, ref: productsCollection },
+});
+exports.subProductsSchemaForOrder = new mongoose_1.default.Schema({
+    img: [{ type: String, required: true }],
+    barcode: { type: String },
+    color: { type: String, required: true },
+    stock: { type: Number, required: true },
+    creationDate: { type: Date, required: true },
+    lastModifiedDate: { type: Date },
+    IDProduct: { type: productsSchema },
 });
 exports.ProductModel = mongoose_1.default.model(productsCollection, productsSchema);
 exports.SubProductsModel = mongoose_1.default.model(exports.subProductsCollection, subProductsSchema);

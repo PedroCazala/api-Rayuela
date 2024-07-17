@@ -20,19 +20,33 @@ class OrdersDaoMongo {
     }
     static getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const orders = yield order_model_1.OrderModel.find();
+            const orders = yield order_model_1.OrderModel.find().populate("userId");
             return orders;
         });
     }
     static getByState(state) {
         return __awaiter(this, void 0, void 0, function* () {
-            const orders = yield order_model_1.OrderModel.find({ state });
+            const orders = yield order_model_1.OrderModel.find({ state }).populate("userId");
+            return orders;
+        });
+    }
+    static getByPreferenceIdMercadoPago(preferenceIdMercadoPago) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const orders = yield order_model_1.OrderModel.find({ preferenceIdMercadoPago });
             return orders;
         });
     }
     static create(newOrder) {
         return __awaiter(this, void 0, void 0, function* () {
             const order = yield order_model_1.OrderModel.create(newOrder);
+            return order;
+        });
+    }
+    static getEditeState({ idOrder, state }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const order = yield order_model_1.OrderModel.findOneAndUpdate({
+                _id: idOrder
+            }, { state });
             return order;
         });
     }

@@ -9,7 +9,9 @@ export class SubProductsService{
     // }
     static async getOneSubProduct(id:string){
         try {            
-            const subProduct = await SubProductsDaoMongo.getOneById(id)   
+            const subProduct = await SubProductsDaoMongo.getOneById(id)  
+            // console.log({subProduct});
+             
             return subProduct
         } catch (error) {
             console.log(error);

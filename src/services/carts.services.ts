@@ -7,9 +7,9 @@ type TypeIdMongoose = mongoose.Schema.Types.ObjectId;
 export class CartsServices {
     static getCart(id: string) {
         const cart = CartsDaoMongo.getOneById(id);
-
         return cart;
     }
+
     static async create(userId: TypeIdMongoose) {
         const date = new Date();
         const newCart: ICart = {

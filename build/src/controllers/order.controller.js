@@ -34,6 +34,41 @@ class OrdersController {
             }
         });
     }
+    static getByIdMP(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idOrderMP } = req.params;
+            console.log({ idOrderMP });
+            // try {
+            //     if (idOrder) {
+            //         const order = await OrdersServices.getOne(idOrder);
+            //         res.status(200).json(order);
+            //     } else {
+            //         const orders = await OrdersServices.getAll();
+            //         res.status(200).json(orders);
+            //     }
+            // } catch (error) {
+            //     res.status(500).json({
+            //         message: "No se pudo obtener el carrito",
+            //         error,
+            //     });
+            // }
+        });
+    }
+    static getEditeState(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idOrder, state } = req.params;
+            try {
+                const orders = yield orders_services_1.OrdersServices.getEditeState({ idOrder, state });
+                res.status(200).json(orders);
+            }
+            catch (error) {
+                res.status(500).json({
+                    message: "No se pudo obtener el carrito",
+                    error,
+                });
+            }
+        });
+    }
     static getByState(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { state } = req.params;
@@ -48,7 +83,7 @@ class OrdersController {
             }
             catch (error) {
                 res.status(500).json({
-                    message: "No se pudo obtener el carrito",
+                    message: "No se pudieron obtener las ordenes",
                     error,
                 });
             }

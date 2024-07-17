@@ -37,6 +37,15 @@ const subProductsSchema = new mongoose.Schema<ISubProduct>({
     lastModifiedDate: { type: Date },
     IDProduct: { type: mongoose.Types.ObjectId, ref: productsCollection },
 });
+export const subProductsSchemaForOrder = new mongoose.Schema<ISubProduct>({
+    img: [{ type: String, required: true }],
+    barcode: { type: String },
+    color: { type: String, required: true },
+    stock: { type: Number, required: true },
+    creationDate: { type: Date, required: true },
+    lastModifiedDate: { type: Date },
+    IDProduct: { type: productsSchema },
+});
 
 export const ProductModel = mongoose.model<IProduct>(
     productsCollection,

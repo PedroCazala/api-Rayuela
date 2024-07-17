@@ -21,6 +21,7 @@ class SubProductsService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const subProduct = yield sub_products_dao_mongo_1.SubProductsDaoMongo.getOneById(id);
+                // console.log({subProduct});
                 return subProduct;
             }
             catch (error) {

@@ -42,7 +42,7 @@ class PaymentsController {
                         const result = yield preference.create({
                             body: {
                                 payer: {
-                                    email: "cazalapedro@gmail.com", //user?.email,
+                                    email: user === null || user === void 0 ? void 0 : user.email,
                                     // id:user?._id
                                 },
                                 // additional_info:{
@@ -59,6 +59,7 @@ class PaymentsController {
                         });
                         if (user && result.id) {
                             const order = yield orders_services_1.OrdersServices.create({ idUser: user._id, idPreference: result.id });
+                            //------ ACA DEBERÍA AGREGAR EL ID DE LA PREFERENCIA Y MODIFICARLE EL ESTADO 
                             // console.log(order, 'ES LA ORDENNNN');
                         }
                         else {
@@ -94,6 +95,10 @@ class PaymentsController {
                         const data = yield paymentApi.get({
                             id: paymentQuery["data.id"],
                         });
+                        console.log(data);
+                        // ----- CAMBIAR EL STATE DE LA ORDEN
+                        // const order = await OrdersServices.create({idUser:user._id,idPreference:result.id})
+                        // const orders = await OrdersServices.getByPreferenceIdMercadoPago(data.id)
                         res.sendStatus(204);
                     }
                 }
