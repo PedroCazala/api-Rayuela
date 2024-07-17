@@ -9,38 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
-const user_dao_mongo_1 = require("../daos/user.dao.mongo");
-class UserService {
-    static getOneUserById(idUser) {
+exports.OrdersDaoMongo = void 0;
+const order_model_1 = require("../models/order.model");
+class OrdersDaoMongo {
+    static getOneById(idOrder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield user_dao_mongo_1.UserDaoMongo.getOneById(idUser);
-            return user;
+            const order = yield order_model_1.OrderModel.findById(idOrder);
+            return order;
         });
     }
-    static getOneUserByEmail(email) {
+    static getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield user_dao_mongo_1.UserDaoMongo.getOneByEmail(email);
-            return user;
+            const orders = yield order_model_1.OrderModel.find();
+            return orders;
         });
     }
-    static createUserFromGoogleProfile(profile) {
+    static getByState(state) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield user_dao_mongo_1.UserDaoMongo.createUserFromGoogleProfile(profile);
-            return user;
+            const orders = yield order_model_1.OrderModel.find({ state });
+            return orders;
         });
     }
-    static UpdateUser(idUser, data) {
+    static create(newOrder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield user_dao_mongo_1.UserDaoMongo.UpdateUser(idUser, data);
-            return user;
-        });
-    }
-    static UpdateImgUser(idUser, newImg) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const user = yield user_dao_mongo_1.UserDaoMongo.UpdateImgUser(idUser, newImg);
-            return user;
+            const order = yield order_model_1.OrderModel.create(newOrder);
+            return order;
         });
     }
 }
-exports.UserService = UserService;
+exports.OrdersDaoMongo = OrdersDaoMongo;

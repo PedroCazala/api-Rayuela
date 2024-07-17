@@ -147,6 +147,23 @@ export class CartsServices {
         }
         return undefined;
     }
+
+    static async returnTotalPrice(idCart:string){
+        const cart = await this.getCart(idCart)
+        const arrayTotals = cart?.products.map((prod) => {
+            const quantity = prod.quantity;
+            const price = prod.subProduct?.IDProduct?.price;
+
+            if (quantity !== undefined && price !== undefined) {
+                return quantity * price;
+            }
+            return 0;
+        });
+        const suma = arrayTotals
+            ? arrayTotals.reduce((a, b) => a + (b ?? 0), 0)
+            : 0;
+        return suma
+    }
 }
 
 interface IProductOfCart {

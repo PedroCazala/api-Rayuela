@@ -7,6 +7,10 @@ export class UserDaoMongo {
         const user = UserModel.findById(idUser);
         return user;
     }
+    static async getOneByEmail(email: string) {
+        const user = UserModel.find({email});
+        return user;
+    }
 
     static async createUserFromGoogleProfile(profile: Profile) {
         try {

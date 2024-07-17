@@ -19,6 +19,12 @@ class UserDaoMongo {
             return user;
         });
     }
+    static getOneByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = user_model_1.UserModel.find({ email });
+            return user;
+        });
+    }
     static createUserFromGoogleProfile(profile) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

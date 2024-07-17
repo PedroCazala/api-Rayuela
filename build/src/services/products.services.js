@@ -14,10 +14,69 @@ const products_dao_mongo_1 = require("../daos/products.dao.mongo");
 const sub_products_dao_mongo_1 = require("../daos/sub-products.dao.mongo");
 // import { IProduct } from "../interfaces/products.interface";
 // import { IProduct } from "../interfaces/products.interface";
+const SortByMajorPrice = (products) => {
+    products.sort(function (a, b) {
+        let priceA = a.price;
+        let priceB = b.price;
+        if (priceA > priceB) {
+            return -1; // si el nombre de 'a' es menor que el de 'b'
+        }
+        if (priceA < priceB) {
+            return 1; // si el nombre de 'a' es mayor que el de 'b'
+        }
+        return 0; // si son iguales
+    });
+    return products;
+};
+const SortByMinorPrice = (products) => {
+    products.sort(function (a, b) {
+        let priceA = a.price;
+        let priceB = b.price;
+        if (priceA < priceB) {
+            return -1; // si el nombre de 'a' es menor que el de 'b'
+        }
+        if (priceA > priceB) {
+            return 1; // si el nombre de 'a' es mayor que el de 'b'
+        }
+        return 0; // si son iguales
+    });
+    return products;
+};
+const SortByName = (products) => {
+    products.sort(function (a, b) {
+        let nameA = a.name.toUpperCase();
+        let nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+            return -1; // si el nombre de 'a' es menor que el de 'b'
+        }
+        if (nameA > nameB) {
+            return 1; // si el nombre de 'a' es mayor que el de 'b'
+        }
+        return 0; // si son iguales
+    });
+    return products;
+};
 class ProductsService {
-    static getAllProducts() {
-        const products = products_dao_mongo_1.ProductsDaoMongo.getAllProducts();
-        return products;
+    static getAllProductsSortByName() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const products = yield products_dao_mongo_1.ProductsDaoMongo.getAllProducts();
+            const productsOrder = SortByName(products);
+            return productsOrder;
+        });
+    }
+    static getAllProductsSortByMinorPrice() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const products = yield products_dao_mongo_1.ProductsDaoMongo.getAllProducts();
+            const productsOrder = SortByMinorPrice(products);
+            return productsOrder;
+        });
+    }
+    static getAllProductsSortByMajorPrice() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const products = yield products_dao_mongo_1.ProductsDaoMongo.getAllProducts();
+            const productsOrder = SortByMajorPrice(products);
+            return productsOrder;
+        });
     }
     static getOneProduct(id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -55,11 +114,12 @@ class ProductsService {
             }
         });
     }
-    static getForCategory(category) {
+    static getForCategorySortByName(category) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const products = yield products_dao_mongo_1.ProductsDaoMongo.getForCategory(category);
-                return products;
+                const productsOrder = SortByName(products);
+                return productsOrder;
             }
             catch (error) {
                 console.log(error);
@@ -67,11 +127,64 @@ class ProductsService {
             }
         });
     }
-    static getForBrand(brand) {
+    static getForCategorySortByMinorPrice(category) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const products = yield products_dao_mongo_1.ProductsDaoMongo.getForCategory(category);
+                const productsOrder = SortByMinorPrice(products);
+                return productsOrder;
+            }
+            catch (error) {
+                console.log(error);
+                return false;
+            }
+        });
+    }
+    static getForCategorySortByMajorPrice(category) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const products = yield products_dao_mongo_1.ProductsDaoMongo.getForCategory(category);
+                const productsOrder = SortByMajorPrice(products);
+                return productsOrder;
+            }
+            catch (error) {
+                console.log(error);
+                return false;
+            }
+        });
+    }
+    static getForBrandSortByName(brand) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const products = yield products_dao_mongo_1.ProductsDaoMongo.getForBrand(brand);
-                return products;
+                const productsOrder = SortByName(products);
+                return productsOrder;
+            }
+            catch (error) {
+                console.log(error);
+                return false;
+            }
+        });
+    }
+    static getForBrandSortByMajorPrice(brand) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const products = yield products_dao_mongo_1.ProductsDaoMongo.getForBrand(brand);
+                const productsOrder = SortByMajorPrice(products);
+                return productsOrder;
+            }
+            catch (error) {
+                console.log(error);
+                return false;
+            }
+        });
+    }
+    static getForBrandSortByMinorPrice(brand) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const products = yield products_dao_mongo_1.ProductsDaoMongo.getForBrand(brand);
+                const productsOrder = SortByMinorPrice(products);
+                return productsOrder;
             }
             catch (error) {
                 console.log(error);

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IUser {
-    _id: mongoose.Schema.Types.ObjectId;
+    _id: string;
     cartId:  mongoose.Schema.Types.ObjectId;
     rol: 'user'|'admin',
     email:string;

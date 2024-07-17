@@ -5,7 +5,7 @@ const express_1 = require("express");
 const payments_controller_1 = require("../controllers/payments.controller");
 const PaymentsRoutes = (0, express_1.Router)();
 exports.PaymentsRoutes = PaymentsRoutes;
-PaymentsRoutes.post('/create-order', payments_controller_1.PaymentsController.createOrder);
+PaymentsRoutes.post('/create-order/:idCart/:idUser', payments_controller_1.PaymentsController.createOrder);
 PaymentsRoutes.get('/success', (_, res) => {
     res.send('success');
 });

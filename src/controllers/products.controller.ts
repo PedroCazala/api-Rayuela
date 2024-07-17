@@ -1,4 +1,7 @@
-import { ICompleteProduct, ISubProduct } from "../interfaces/products.interface";
+import {
+    ICompleteProduct,
+    ISubProduct,
+} from "../interfaces/products.interface";
 import { ProductsService } from "../services/products.services";
 import { Request, Response /*, NextFunction */ } from "express";
 import { SubProductsService } from "../services/sub-products.services";
@@ -6,14 +9,26 @@ import { SubProductsService } from "../services/sub-products.services";
 
 export class ProductsController {
     static async getProducts(req: Request, res: Response) {
-        const id = req.params.id;
+        const {id} = req.params;
         if (id) {
             const product = await ProductsService.getOneProduct(id);
             product
                 ? res.status(200).json(product)
                 : res.status(404).json(`Product with id: ${id}, don't exist`);
         } else {
-            const products = await ProductsService.getAllProducts();
+            let {sort} = req.query;
+            
+            let products;
+            if (sort === 'SortByMinorPrice') {
+                products =
+                await ProductsService.getAllProductsSortByMinorPrice();
+            } else if (sort === 'SortByMajorPrice') {
+                products =
+                await ProductsService.getAllProductsSortByMajorPrice();
+            } else {
+                console.log('entro al else');
+                products = await ProductsService.getAllProductsSortByName();
+            }
             products[0]
                 ? res.status(200).json(products)
                 : res
@@ -31,7 +46,19 @@ export class ProductsController {
     }
     static async getProductsForCategory(req: Request, res: Response) {
         const category = req.params.category;
-        const products = await ProductsService.getForCategory(category);
+        let {sort} = req.query;
+            
+        let products;
+        if (sort === 'SortByMinorPrice') {
+            products =
+            await ProductsService.getForCategorySortByMinorPrice(category);
+        } else if (sort === 'SortByMajorPrice') {
+            products =
+            await ProductsService.getForCategorySortByMajorPrice(category);
+        } else {
+            console.log('entro al else');
+            products = await ProductsService.getForCategorySortByName(category);
+        }
         products
             ? res.status(200).json(products)
             : res.status(404).json({
@@ -40,18 +67,29 @@ export class ProductsController {
     }
     static async getProductsForBrand(req: Request, res: Response) {
         const brand = req.params.brand;
-        const products = await ProductsService.getForBrand(brand);
+        let {sort} = req.query;
+            
+        let products;
+        if (sort === 'SortByMinorPrice') {
+            products =
+            await ProductsService.getForBrandSortByMinorPrice(brand);
+        } else if (sort === 'SortByMajorPrice') {
+            products =
+            await ProductsService.getForBrandSortByMajorPrice(brand);
+        } else {
+            console.log('entro al else');
+            products = await ProductsService.getForBrandSortByName(brand);
+        }
         products
             ? res.status(200).json(products)
             : res.status(404).json({
-                message: `No found products with brand: ${brand} in database`,
-            });
+                  message: `No found products with brand: ${brand} in database`,
+              });
     }
     static async createProduct(req: Request, res: Response) {
-        
         const data: ICompleteProduct = req.body;
-        console.log('data de create Product en products.controller',data);
-        
+        console.log("data de create Product en products.controller", data);
+
         try {
             const subProducts = await SubProductsService.createSubProducts(
                 data.subProducts
@@ -65,9 +103,12 @@ export class ProductsController {
                 ...data,
                 IDSubProducts: IDSubProds,
             });
-            subProducts.forEach(async (sub:ISubProduct) => {
-                await SubProductsService.updateSubProduct({idSubProduct:sub._id,newData:{sub,IDProduct:product._id}})
-            })
+            subProducts.forEach(async (sub: ISubProduct) => {
+                await SubProductsService.updateSubProduct({
+                    idSubProduct: sub._id,
+                    newData: { sub, IDProduct: product._id },
+                });
+            });
             subProducts &&
                 res.status(200).json({
                     // product,
@@ -76,33 +117,35 @@ export class ProductsController {
                     message2: `Los subproductos fueron creados con los id: ${IDSubProds}`,
                 });
         } catch (error) {
-            
             res.status(500).json({ message: `error`, error });
         }
     }
 
-        static async updateProduct(req: Request, res: Response) {
-            const {idProduct} = req.params;
-            const newData = req.body;
-            try {
-                const product = await ProductsService.updateProduct({idProduct,newData});
-                if (product) {
-                    res.status(200).json({
-                        message: `Product with id: ${idProduct} was modified`,product,
-                    });
-                } else {
-                    res.status(404).json({
-                        message: `Product with id: ${idProduct} was not found`,
-                    });
-                }
-            } catch (error) {
+    static async updateProduct(req: Request, res: Response) {
+        const { idProduct } = req.params;
+        const newData = req.body;
+        try {
+            const product = await ProductsService.updateProduct({
+                idProduct,
+                newData,
+            });
+            if (product) {
+                res.status(200).json({
+                    message: `Product with id: ${idProduct} was modified`,
+                    product,
+                });
+            } else {
                 res.status(404).json({
                     message: `Product with id: ${idProduct} was not found`,
-                    error
                 });
-
             }
+        } catch (error) {
+            res.status(404).json({
+                message: `Product with id: ${idProduct} was not found`,
+                error,
+            });
         }
+    }
     //     static async updateTypeProduct(req: Request, res: Response) {
     //         const {idProduct,idType} = req.params;
     //         const newData = req.body;
@@ -128,10 +171,10 @@ export class ProductsController {
         try {
             const subProds = await ProductsService.getSubProductsOfAProduct(id);
             subProds &&
-                subProds.map(async(sub) => {
-                    await SubProductsService.deleteSubProduct(sub._id)
+                subProds.map(async (sub) => {
+                    await SubProductsService.deleteSubProduct(sub._id);
                 });
-            
+
             const product = await ProductsService.deleteProduct(id);
             if (product.deletedCount > 0) {
                 res.status(200).json({

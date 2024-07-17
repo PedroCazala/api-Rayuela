@@ -143,23 +143,5 @@ class CartsServices {
             return undefined;
         });
     }
-    static returnTotalPrice(idCart) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const cart = yield this.getCart(idCart);
-            const arrayTotals = cart === null || cart === void 0 ? void 0 : cart.products.map((prod) => {
-                var _a, _b;
-                const quantity = prod.quantity;
-                const price = (_b = (_a = prod.subProduct) === null || _a === void 0 ? void 0 : _a.IDProduct) === null || _b === void 0 ? void 0 : _b.price;
-                if (quantity !== undefined && price !== undefined) {
-                    return quantity * price;
-                }
-                return 0;
-            });
-            const suma = arrayTotals
-                ? arrayTotals.reduce((a, b) => a + (b !== null && b !== void 0 ? b : 0), 0)
-                : 0;
-            return suma;
-        });
-    }
 }
 exports.CartsServices = CartsServices;

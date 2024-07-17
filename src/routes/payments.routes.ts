@@ -1,7 +1,7 @@
 import {Router} from "express";
 import { PaymentsController } from "../controllers/payments.controller";
 const PaymentsRoutes = Router()
-PaymentsRoutes.post('/create-order',PaymentsController.createOrder)
+PaymentsRoutes.post('/create-order/:idCart/:idUser',PaymentsController.createOrder)
 
 PaymentsRoutes.get('/success',(_,res)=>{
     res.send('success')

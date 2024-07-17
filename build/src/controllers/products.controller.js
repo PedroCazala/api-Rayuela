@@ -16,7 +16,7 @@ const sub_products_services_1 = require("../services/sub-products.services");
 class ProductsController {
     static getProducts(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
+            const { id } = req.params;
             if (id) {
                 const product = yield products_services_1.ProductsService.getOneProduct(id);
                 product
@@ -24,7 +24,20 @@ class ProductsController {
                     : res.status(404).json(`Product with id: ${id}, don't exist`);
             }
             else {
-                const products = yield products_services_1.ProductsService.getAllProducts();
+                let { sort } = req.query;
+                let products;
+                if (sort === 'SortByMinorPrice') {
+                    products =
+                        yield products_services_1.ProductsService.getAllProductsSortByMinorPrice();
+                }
+                else if (sort === 'SortByMajorPrice') {
+                    products =
+                        yield products_services_1.ProductsService.getAllProductsSortByMajorPrice();
+                }
+                else {
+                    console.log('entro al else');
+                    products = yield products_services_1.ProductsService.getAllProductsSortByName();
+                }
                 products[0]
                     ? res.status(200).json(products)
                     : res
@@ -45,7 +58,20 @@ class ProductsController {
     static getProductsForCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const category = req.params.category;
-            const products = yield products_services_1.ProductsService.getForCategory(category);
+            let { sort } = req.query;
+            let products;
+            if (sort === 'SortByMinorPrice') {
+                products =
+                    yield products_services_1.ProductsService.getForCategorySortByMinorPrice(category);
+            }
+            else if (sort === 'SortByMajorPrice') {
+                products =
+                    yield products_services_1.ProductsService.getForCategorySortByMajorPrice(category);
+            }
+            else {
+                console.log('entro al else');
+                products = yield products_services_1.ProductsService.getForCategorySortByName(category);
+            }
             products
                 ? res.status(200).json(products)
                 : res.status(404).json({
@@ -56,7 +82,20 @@ class ProductsController {
     static getProductsForBrand(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const brand = req.params.brand;
-            const products = yield products_services_1.ProductsService.getForBrand(brand);
+            let { sort } = req.query;
+            let products;
+            if (sort === 'SortByMinorPrice') {
+                products =
+                    yield products_services_1.ProductsService.getForBrandSortByMinorPrice(brand);
+            }
+            else if (sort === 'SortByMajorPrice') {
+                products =
+                    yield products_services_1.ProductsService.getForBrandSortByMajorPrice(brand);
+            }
+            else {
+                console.log('entro al else');
+                products = yield products_services_1.ProductsService.getForBrandSortByName(brand);
+            }
             products
                 ? res.status(200).json(products)
                 : res.status(404).json({
@@ -67,14 +106,17 @@ class ProductsController {
     static createProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
-            console.log('data de create Product en products.controller', data);
+            console.log("data de create Product en products.controller", data);
             try {
                 const subProducts = yield sub_products_services_1.SubProductsService.createSubProducts(data.subProducts);
                 let IDSubProds = [];
                 subProducts.forEach((sub) => (IDSubProds = [...IDSubProds, sub._id]));
                 const product = yield products_services_1.ProductsService.createProduct(Object.assign(Object.assign({}, data), { IDSubProducts: IDSubProds }));
                 subProducts.forEach((sub) => __awaiter(this, void 0, void 0, function* () {
-                    yield sub_products_services_1.SubProductsService.updateSubProduct({ idSubProduct: sub._id, newData: { sub, IDProduct: product._id } });
+                    yield sub_products_services_1.SubProductsService.updateSubProduct({
+                        idSubProduct: sub._id,
+                        newData: { sub, IDProduct: product._id },
+                    });
                 }));
                 subProducts &&
                     res.status(200).json({
@@ -94,10 +136,14 @@ class ProductsController {
             const { idProduct } = req.params;
             const newData = req.body;
             try {
-                const product = yield products_services_1.ProductsService.updateProduct({ idProduct, newData });
+                const product = yield products_services_1.ProductsService.updateProduct({
+                    idProduct,
+                    newData,
+                });
                 if (product) {
                     res.status(200).json({
-                        message: `Product with id: ${idProduct} was modified`, product,
+                        message: `Product with id: ${idProduct} was modified`,
+                        product,
                     });
                 }
                 else {
@@ -109,7 +155,7 @@ class ProductsController {
             catch (error) {
                 res.status(404).json({
                     message: `Product with id: ${idProduct} was not found`,
-                    error
+                    error,
                 });
             }
         });

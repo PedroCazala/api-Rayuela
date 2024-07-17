@@ -54,58 +54,12 @@ class ProductsDaoMongo {
             return product;
         });
     }
-    // static createTypeProduct(types:[],creationDate:String){
-    //     types.map(async type=>{
-    //         const typeProduct= await ProductTypeModel.create({type,creationDate})
-    //     })
-    // }
-    // static async postAProduct(newProduct:IProduct): Promise<IProductReal>{
-    //     const arrayTypes:String[] = []
-    //     const creationDate=newProduct.creationDate
-    //     if(newProduct.subProducts) {
-    //         newProduct.subProducts.map(async(prod)=>{
-    //             const typeProduct= await ProductTypeModel.create({...prod,creationDate})
-    //             console.log(typeProduct);
-    //             arrayTypes.push(typeProduct._id)
-    //         })
-    //     }
-    //     const product: Promise<IProduct>= await ProductModel.create({newProduct,types:arrayTypes})
-    //     return product
-    // }
     static updateProduct({ idProduct, newData }) {
         return __awaiter(this, void 0, void 0, function* () {
             const product = yield product_model_1.ProductModel.findByIdAndUpdate(idProduct, newData, { new: true });
             return product;
         });
     }
-    // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateTypeProduct){
-    //     console.log(newData);
-    //     const productType = await ProductModel.findById(idProduct,{},{
-    //         arrayFilters: [
-    //             {
-    //                 "elem._id": idType
-    //             }
-    //         ],
-    //         new: true
-    //     })
-    //     console.log(productType);
-    //     const product = await ProductModel.findByIdAndUpdate(idProduct,{
-    //         $set: {
-    //             "types.$[elem]":  Object.assign({},{productType},newData)
-    //             // {
-    //             //     ...newData
-    //             // }
-    //         }
-    //     },    {
-    //         arrayFilters: [
-    //             {
-    //                 "elem._id": idType
-    //             }
-    //         ],
-    //         new: true
-    //     })
-    //     return product
-    // }
     static deleteProduct(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const product = yield product_model_1.ProductModel.deleteOne({ _id: id });
