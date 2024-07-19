@@ -30,9 +30,9 @@ class OrdersDaoMongo {
             return orders;
         });
     }
-    static getByPreferenceIdMercadoPago(preferenceIdMercadoPago) {
+    static updateByIdOrder(idOrder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const orders = yield order_model_1.OrderModel.find({ preferenceIdMercadoPago });
+            const orders = yield order_model_1.OrderModel.findByIdAndUpdate(idOrder, { state: "En-preparación" }, { new: true }).populate("userId");
             return orders;
         });
     }
@@ -45,7 +45,7 @@ class OrdersDaoMongo {
     static getEditeState({ idOrder, state }) {
         return __awaiter(this, void 0, void 0, function* () {
             const order = yield order_model_1.OrderModel.findOneAndUpdate({
-                _id: idOrder
+                _id: idOrder,
             }, { state });
             return order;
         });

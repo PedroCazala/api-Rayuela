@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const user_dao_mongo_1 = require("../daos/user.dao.mongo");
+// import { IUser } from "../interfaces/users.interface";
 class UserService {
     static getOneUserById(idUser) {
         return __awaiter(this, void 0, void 0, function* () {

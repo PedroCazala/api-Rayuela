@@ -46,7 +46,7 @@ const OrderSchema = new mongoose.Schema<IOrder>({
         prov: { type: String, required: true },
         CP: { type: Number, required: true },
     },
-    preferenceIdMercadoPago:{ type: String, required: true },
+    // externalReference:{ type: String, required: true },
 });
 
 export const OrderModel = mongoose.model<IOrder>(orderCollection, OrderSchema);

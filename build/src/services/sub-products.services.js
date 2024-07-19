@@ -13,15 +13,10 @@ exports.SubProductsService = void 0;
 const sub_products_dao_mongo_1 = require("../daos/sub-products.dao.mongo");
 const files_services_1 = require("./files.services");
 class SubProductsService {
-    // static getAllProducts(){
-    //     const products = ProductsDaoMongo.getAllProducts()
-    //     return products
-    // }
     static getOneSubProduct(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const subProduct = yield sub_products_dao_mongo_1.SubProductsDaoMongo.getOneById(id);
-                // console.log({subProduct});
                 return subProduct;
             }
             catch (error) {
@@ -62,6 +57,22 @@ class SubProductsService {
         const subProds = sub_products_dao_mongo_1.SubProductsDaoMongo.updateSubProduct({ idSubProduct, newData });
         return subProds;
     }
+    static discountStockSubProduct({ idSubProduct, subtract }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const subProd = yield this.getOneSubProduct(idSubProduct);
+            console.log({ MESSAGE: 'entro a discountStockSubProduct', subProd });
+            console.log({ message: 'siguiente', idSubProduct, subtract });
+            if (subProd) {
+                const newStock = subProd.stock - subtract;
+                console.log({ message: 'entro al map pARA descontar', idSubProduct, subtract, newStock });
+                const update = sub_products_dao_mongo_1.SubProductsDaoMongo.updateSubProduct({ idSubProduct, newData: { subProd, stock: newStock } });
+                return update;
+            }
+            else {
+                return new Error;
+            }
+        });
+    }
     static deleteSubProduct(id) {
         const subProduct = sub_products_dao_mongo_1.SubProductsDaoMongo.deleteSubProduct(id);
         return subProduct;
@@ -69,21 +80,8 @@ class SubProductsService {
     static addImgSubProduct(idSubProduct, newImg) {
         return __awaiter(this, void 0, void 0, function* () {
             const SubProduct = yield sub_products_dao_mongo_1.SubProductsDaoMongo.addImgSubProduct(idSubProduct, newImg);
-            // const carritosConProducto = await CartModel.find({ 'products.SubProduct': idSubProduct });
-            // // Elimina el producto de la lista de productos en cada carrito
-            // await Promise.all(
-            //     carritosConProducto.map(async (carrito) => {
-            //         carrito.products = carrito.products.filter((subProd) => subProd.subProduct !== idSubProduct);
-            //         await carrito.save();
-            //     })
-            // );
             return SubProduct;
         });
     }
 }
 exports.SubProductsService = SubProductsService;
-// interface PropsUpdateType{
-//     idProduct:String,
-//     idType:String,
-//     newData:Object
-// }

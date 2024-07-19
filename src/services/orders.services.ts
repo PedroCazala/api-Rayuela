@@ -30,30 +30,36 @@ export class OrdersServices {
             return error;
         }
     }
-    static async getByPreferenceIdMercadoPago(idMp: string) {
+    static async updateByIdOrder(idOrder: string) {
         try {
-            const orders = await OrdersDaoMongo.getByPreferenceIdMercadoPago(
-                idMp
-            );
-            return orders;
+            const order = await OrdersDaoMongo.updateByIdOrder(idOrder);
+
+            return order;
         } catch (error) {
+            console.log('entro al error service updateByIdOrder',error);
+            
             return error;
         }
-    }
-    static async create({ idUser, idPreference }: ICreateOrder) {
+    } 
+
+    static async create({ idUser }: ICreateOrder) {
         try {
             const user = await UserService.getOneUserById(idUser);
+            if (!user) {
+                throw new Error("User not found");
+            }
             const cart = await CartsServices.getCart(
                 user?.cartId as unknown as string
             );
-            if (!cart?.products) {
-                // Si cart o cart.products es undefined, devuelve un array vacío o maneja el caso según tus necesidades
-                return [];
+            if (!cart || !cart.products.length) {
+                return null;
             }
+            console.log({user,cart});
+            
 
             const productsPromises = cart?.products.map(async (prod) => {
                 // const price = await SubProductsService
-                let product = await SubProductsService.getOneSubProduct(
+                const product = await SubProductsService.getOneSubProduct(
                     prod.subProduct
                 ); // {...prod}
                 // console.log({'cada product':product});
@@ -61,7 +67,6 @@ export class OrdersServices {
                 return {subProduct:product/* {...prod} */,quantity:prod.quantity,price:5};
             })
             const products =await Promise.all(productsPromises);
-            console.log({ 'todos los products':JSON.stringify(products) });
 
             const date = new Date();
             if (cart && user && products) {
@@ -78,13 +83,12 @@ export class OrdersServices {
                     priceShipment,
                     totalPriceOfProducts, 
                     totalPrice: totalPriceOfProducts + priceShipment,
-                    preferenceIdMercadoPago: idPreference,
+                    // externalReference: externalReference,
                 };
                 const order = await OrdersDaoMongo.create(newOrder);
-                console.log({ idOrder: order._id });
-
                 return order;
             }
+            return null;
         } catch (error) {
             return error;
         }
@@ -104,10 +108,10 @@ export class OrdersServices {
         }
     }
 
-    static async delete(idCart: string) {
+    // static async delete(idCart: string) {
         // const cart = await CartsDaoMongo.deleteCart(idCart);
         // return cart;
-    }
+    // }
 }
 
 interface IEditState {
@@ -115,6 +119,6 @@ interface IEditState {
     state: string;
 }
 interface ICreateOrder {
-    idPreference: string;
+    // externalReference: string;
     idUser: string;
 }

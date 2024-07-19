@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { IUser } from "./users.interface";
-import { ICart } from "./carts.interface";
-import { ICartProduct, ISubProduct } from "./products.interface";
+// import { ICart } from "./carts.interface";
+import { ISubProduct } from "./products.interface";
 
 export interface IOrder {
     _id?: string;
@@ -26,5 +26,5 @@ export interface IOrder {
     totalPriceOfProducts:number;
     totalPrice:number;
     creationDate:Date;
-    preferenceIdMercadoPago:string;
+    // externalReference:string;
 }

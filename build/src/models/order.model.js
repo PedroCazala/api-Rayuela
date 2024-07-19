@@ -50,6 +50,6 @@ const OrderSchema = new mongoose_1.default.Schema({
         prov: { type: String, required: true },
         CP: { type: Number, required: true },
     },
-    preferenceIdMercadoPago: { type: String, required: true },
+    // externalReference:{ type: String, required: true },
 });
 exports.OrderModel = mongoose_1.default.model(exports.orderCollection, OrderSchema);

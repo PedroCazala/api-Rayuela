@@ -7,25 +7,35 @@ export class OrdersDaoMongo {
         return order;
     }
     static async getAll() {
-        const orders = await OrderModel.find().populate("userId")
+        const orders = await OrderModel.find().populate("userId");
         return orders;
     }
-    static async getByState(state:string) {
-        const orders = await OrderModel.find({state}).populate("userId");
+    static async getByState(state: string) {
+        const orders = await OrderModel.find({ state }).populate("userId");
         return orders;
     }
-    static async getByPreferenceIdMercadoPago(preferenceIdMercadoPago:string) {
-        const orders = await OrderModel.find({preferenceIdMercadoPago})
+    static async updateByIdOrder(idOrder: string) {
+
+        const orders = await OrderModel.findByIdAndUpdate(
+            idOrder,
+            { state: "En-preparación" },
+            { new: true }
+        ).populate("userId");
         return orders;
     }
-    static async create(newOrder:IOrder){
-        const order = await  OrderModel.create(newOrder)
-        return order
+
+    static async create(newOrder: IOrder) {
+        const order = await OrderModel.create(newOrder);
+        return order;
     }
-    static async getEditeState({idOrder,state}:IEditState){
-        const order = await  OrderModel.findOneAndUpdate({
-            _id:idOrder},{state})
-        return order
+    static async getEditeState({ idOrder, state }: IEditState) {
+        const order = await OrderModel.findOneAndUpdate(
+            {
+                _id: idOrder,
+            },
+            { state }
+        );
+        return order;
     }
 }
 interface IEditState {

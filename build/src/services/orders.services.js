@@ -48,34 +48,37 @@ class OrdersServices {
             }
         });
     }
-    static getByPreferenceIdMercadoPago(idMp) {
+    static updateByIdOrder(idOrder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const orders = yield orders_dao_mongo_1.OrdersDaoMongo.getByPreferenceIdMercadoPago(idMp);
-                return orders;
+                const order = yield orders_dao_mongo_1.OrdersDaoMongo.updateByIdOrder(idOrder);
+                return order;
             }
             catch (error) {
+                console.log('entro al error service updateByIdOrder', error);
                 return error;
             }
         });
     }
-    static create({ idUser, idPreference }) {
+    static create({ idUser }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = yield user_services_1.UserService.getOneUserById(idUser);
-                const cart = yield carts_services_1.CartsServices.getCart(user === null || user === void 0 ? void 0 : user.cartId);
-                if (!(cart === null || cart === void 0 ? void 0 : cart.products)) {
-                    // Si cart o cart.products es undefined, devuelve un array vacío o maneja el caso según tus necesidades
-                    return [];
+                if (!user) {
+                    throw new Error("User not found");
                 }
+                const cart = yield carts_services_1.CartsServices.getCart(user === null || user === void 0 ? void 0 : user.cartId);
+                if (!cart || !cart.products.length) {
+                    return null;
+                }
+                console.log({ user, cart });
                 const productsPromises = cart === null || cart === void 0 ? void 0 : cart.products.map((prod) => __awaiter(this, void 0, void 0, function* () {
                     // const price = await SubProductsService
-                    let product = yield sub_products_services_1.SubProductsService.getOneSubProduct(prod.subProduct); // {...prod}
+                    const product = yield sub_products_services_1.SubProductsService.getOneSubProduct(prod.subProduct); // {...prod}
                     // console.log({'cada product':product});
                     return { subProduct: product /* {...prod} */, quantity: prod.quantity, price: 5 };
                 }));
                 const products = yield Promise.all(productsPromises);
-                console.log({ 'todos los products': JSON.stringify(products) });
                 const date = new Date();
                 if (cart && user && products) {
                     const totalPriceOfProducts = yield carts_services_1.CartsServices.returnTotalPrice(cart === null || cart === void 0 ? void 0 : cart._id);
@@ -90,12 +93,12 @@ class OrdersServices {
                         priceShipment,
                         totalPriceOfProducts,
                         totalPrice: totalPriceOfProducts + priceShipment,
-                        preferenceIdMercadoPago: idPreference,
+                        // externalReference: externalReference,
                     };
                     const order = yield orders_dao_mongo_1.OrdersDaoMongo.create(newOrder);
-                    console.log({ idOrder: order._id });
                     return order;
                 }
+                return null;
             }
             catch (error) {
                 return error;
@@ -116,12 +119,6 @@ class OrdersServices {
             catch (error) {
                 return error;
             }
-        });
-    }
-    static delete(idCart) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // const cart = await CartsDaoMongo.deleteCart(idCart);
-            // return cart;
         });
     }
 }

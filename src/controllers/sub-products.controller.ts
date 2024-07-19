@@ -12,12 +12,6 @@ export class SubProductsController {
             ? res.status(200).json(subProduct)
             : res.status(404).json(`SubProduct with id: ${id}, don't exist`);
         }
-        // else {
-            //     const products = await SubProductsService.getAllProducts();
-            //     products[0]
-            //         ? res.status(200).json(products)
-            //         : res.status(404).json({ message: `No found products in database` });
-            // }
         }
         static async updateSubProduct(req: Request, res: Response) {
             const {idSubProduct} = req.params;

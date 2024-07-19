@@ -1,5 +1,5 @@
 import { UserDaoMongo } from "../daos/user.dao.mongo";
-import { IUser } from "../interfaces/users.interface";
+// import { IUser } from "../interfaces/users.interface";
 
 export class UserService {
     static async getOneUserById(idUser: string) {
