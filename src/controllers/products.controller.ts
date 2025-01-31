@@ -1,5 +1,6 @@
 import {
     ICompleteProduct,
+    IProduct,
     ISubProduct,
 } from "../interfaces/products.interface";
 import { ProductsService } from "../services/products.services";
@@ -26,7 +27,6 @@ export class ProductsController {
                 products =
                 await ProductsService.getAllProductsSortByMajorPrice();
             } else {
-                console.log('entro al else');
                 products = await ProductsService.getAllProductsSortByName();
             }
             products[0]
@@ -116,6 +116,47 @@ export class ProductsController {
                     message1: `El producto se creó con el id: ${product._id}`,
                     message2: `Los subproductos fueron creados con los id: ${IDSubProds}`,
                 });
+        } catch (error) {
+            res.status(500).json({ message: `error`, error });
+        }
+    }
+    static async addMoreSubProduct(req: Request, res: Response) {
+        // funciona -- recibir los subprod y el id del prod---
+        const data: { idProduct: string; subProducts: ISubProduct[] } = req.body;
+        // console.log("data de create Product en products.controller", {dataid:data.idProduct,datasubprdo:data.subProducts});
+
+        try {
+            // funciona ---- crear los subprod -----
+            const subProducts = await SubProductsService.createSubProducts(
+                data.subProducts
+            );
+            let IDSubProds: string[] = [];
+            subProducts.forEach(
+                (sub) => ( IDSubProds.push(sub._id))
+            );
+
+            const product = await ProductsService.getOneProduct(data.idProduct)
+            console.log({product});
+            
+            if(product){
+                await ProductsService.addIDSubProductToProduct({idProduct:data.idProduct,arrayIdsSub:IDSubProds})
+                
+                //funciona --- agregar el id dedel prod a los subprod ---
+                subProducts.forEach(async (sub: ISubProduct) => {
+                    await SubProductsService.updateSubProduct({
+                        idSubProduct: sub._id,
+                        newData: { sub, IDProduct: data.idProduct },
+                    });
+                });
+                subProducts &&
+                    res.status(200).json({
+                        // product,
+                        // subProducts,
+                        message1: `El producto se editó con el id: ${data.idProduct}`,
+                        message2: `Los subproductos fueron creados con los id: ${IDSubProds}`,
+                        // prod:{}
+                    });
+            }
         } catch (error) {
             res.status(500).json({ message: `error`, error });
         }

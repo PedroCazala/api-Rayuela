@@ -8,7 +8,7 @@ export interface IOrder {
     cartId: mongoose.Schema.Types.ObjectId;
     userId: mongoose.Schema.Types.ObjectId;
     cartProducts:{
-        subProduct: ISubProduct,
+        subProduct: mongoose.Schema.Types.ObjectId; 
         // _id:ICartProduct,
         price: number,
         quantity: number
@@ -22,6 +22,7 @@ export interface IOrder {
     //  ICart['products'][];
     userDirection:  IUser['direction'];
     state:'Orden-creada'|'En-preparación'|'En-camino'|'recibida';
+    typeOfShipment:'giles'|'argentina'|'retira';
     priceShipment:number;
     totalPriceOfProducts:number;
     totalPrice:number;

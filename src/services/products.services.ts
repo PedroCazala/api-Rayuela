@@ -165,9 +165,19 @@ export class ProductsService {
         const product = ProductsDaoMongo.postAProduct(newProduct);
         return product;
     }
-    static updateProduct({ idProduct, newData }: PropsUpdate) {
-        const product = ProductsDaoMongo.updateProduct({ idProduct, newData });
+    static async  updateProduct({ idProduct, newData }: PropsUpdate) {
+        console.log({newData});
+        
+        const product =await ProductsDaoMongo.updateProduct({ idProduct, newData });
+        console.log({product});
+        
         return product;
+    }
+    static async  addIDSubProductToProduct({ idProduct, arrayIdsSub }: {idProduct:string,arrayIdsSub:string[]}) {  
+        const updateProduct =await ProductsDaoMongo.addIDSubProductToProduct({ idProduct, arrayIdsSub });
+        console.log({updateProduct});
+        
+        return updateProduct;
     }
     // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
     //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})
@@ -181,7 +191,7 @@ export class ProductsService {
 }
 
 interface PropsUpdate {
-    idProduct: String;
+    idProduct: string;
     newData: IProduct;
 }
 // interface PropsUpdateType{

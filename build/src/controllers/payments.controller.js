@@ -15,14 +15,17 @@ const carts_services_1 = require("../services/carts.services");
 const orders_services_1 = require("../services/orders.services");
 const user_services_1 = require("../services/user.services");
 const sub_products_services_1 = require("../services/sub-products.services");
+const mails_service_1 = require("../services/mails.service");
 class PaymentsController {
     static createOrder(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             // const data:string[] =req.body // para que despues se vea los item del carrito, o quizas el id del carro
             const { idCart } = req.params;
             const { idUser } = req.params;
+            const { typeOfShipment, priceShipment } = req.body;
             const accessToken = process.env.ACCESS_TOKEN_MP;
             const webhook_URL = process.env.WEBHOOK_URL;
+            // const webhook_URL = 'https://4eff-179-42-182-253.ngrok-free.app/api/payments/webhook'; //usar en produccion
             if (accessToken) {
                 const client = new mercadopago_1.MercadoPagoConfig({
                     accessToken: accessToken,
@@ -45,8 +48,19 @@ class PaymentsController {
                             picture_url: "https://rayu.com.ar/images/logo.png", //item.subProduct.img[0]
                         };
                     });
+                    if (priceShipment && priceShipment > 0) {
+                        items.push({
+                            id: "shipment",
+                            title: "Costo de envío",
+                            quantity: 1,
+                            unit_price: priceShipment,
+                            picture_url: "https://rayu.com.ar/images/logo.png", //item.subProduct.img[0]
+                        });
+                    }
                     const order = yield orders_services_1.OrdersServices.create({
                         idUser: user._id,
+                        priceShipment,
+                        typeOfShipment,
                     });
                     const result = yield preference.create({
                         body: {
@@ -57,11 +71,11 @@ class PaymentsController {
                             items: items,
                             external_reference: order._id,
                             back_urls: {
-                                success: `${process.env.HOST}/api/payments/success`,
-                                failure: `${process.env.HOST}/api/payments/failure`,
-                                pending: `${process.env.HOST}/api/payments/pending`,
+                                success: `${process.env.FRONTEND_URL}/success`,
+                                failure: `${process.env.FRONTEND_URL}/failure`,
+                                pending: `${process.env.FRONTEND_URL}/pending`,
                             },
-                            notification_url: webhook_URL
+                            notification_url: webhook_URL,
                         },
                     });
                     res.send(result);
@@ -96,12 +110,22 @@ class PaymentsController {
                         yield orders_services_1.OrdersServices.updateByIdOrder(data.external_reference);
                         if (data.external_reference) {
                             const order = yield orders_services_1.OrdersServices.getOne(data.external_reference);
+                            console.log({ order, external_reference: data.external_reference });
                             // ----- restar el stock ------
                             if (order) {
                                 order === null || order === void 0 ? void 0 : order.cartProducts.map((prod) => __awaiter(this, void 0, void 0, function* () {
-                                    console.log({ m: 'en el map', prod });
-                                    yield sub_products_services_1.SubProductsService.discountStockSubProduct({ idSubProduct: prod.subProduct._id, subtract: prod.quantity });
+                                    console.log({ m: "en el map", prod });
+                                    yield sub_products_services_1.SubProductsService.discountStockSubProduct({
+                                        idSubProduct: prod.subProduct._id,
+                                        subtract: prod.quantity,
+                                    });
                                 }));
+                                // vaciar el carrito
+                                yield carts_services_1.CartsServices.clearCart(order.cartId);
+                                //Enviar mail al usuario
+                                const mailService = new mails_service_1.MailService();
+                                yield mailService.orderConfirmation(order._id);
+                                yield mailService.sendEmailToAdminNewSale(order._id);
                             }
                         }
                         res.sendStatus(204);

@@ -117,8 +117,8 @@ export class CartsServices {
         }
         return undefined;
     }
-    static async clearCart(idCart: string) {
-        const subProducts: ICartProduct[] = [];
+    static async clearCart(idCart: string) {        
+        const subProducts: ICartProduct[] = []; 
         const deleted = await CartsDaoMongo.modifiedProductToCart({
             idCart,
             subProducts,

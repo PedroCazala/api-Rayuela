@@ -12,6 +12,8 @@ const user_routes_1 = require("./user.routes");
 const files_routes_1 = require("./files.routes");
 const payments_routes_1 = require("./payments.routes");
 const orders_routes_1 = require("./orders.routes");
+const frontent_redirect_routes_1 = require("./frontent-redirect.routes");
+const mails_routes_1 = require("./mails.routes");
 const IndexRouter = express_1.default.Router();
 exports.IndexRouter = IndexRouter;
 IndexRouter.use('/api/products', products_routes_1.ProductsRoutes);
@@ -21,6 +23,8 @@ IndexRouter.use('/api/user', user_routes_1.UserRoutes);
 IndexRouter.use('/api/files', files_routes_1.FilesRoutes);
 IndexRouter.use('/api/payments', payments_routes_1.PaymentsRoutes);
 IndexRouter.use('/api/orders', orders_routes_1.OrdersRoutes);
+IndexRouter.use('/api/redirect', frontent_redirect_routes_1.FrontendRedirectRoute);
+IndexRouter.use('/api/mail', mails_routes_1.MailRoutes);
 IndexRouter.get('/', (_, res) => {
     res.status(200).json({ message: 'Api de Rayuela', documentation_swagger: 'Aquí ira la url' });
 });

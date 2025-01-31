@@ -21,6 +21,18 @@ export class OrdersController {
             });
         }
     }
+    static async getOrderByUser(req: Request, res: Response) {
+        const { idUser } = req.params;        
+        try {
+            const orders = await OrdersServices.getOrderByUser(idUser);
+            res.status(200).json(orders);
+        } catch (error) {
+            res.status(500).json({
+                message: "No se pudo obtener el carrito",
+                error,
+            });
+        }
+    }
     static async getByIdMP(req: Request, res: Response) {
         const { idOrderMP } = req.params;
         console.log({idOrderMP});

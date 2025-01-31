@@ -12,6 +12,9 @@ exports.OrdersRoutes = OrdersRoutes;
 OrdersRoutes.get("/:idOrder?", auth_1.passport.authenticate("jwt-admin", { session: false }), (req, res) => {
     order_controller_1.OrdersController.get(req, res);
 });
+OrdersRoutes.get("/user/:idUser", auth_1.passport.authenticate("jwt", { session: false }), (req, res) => {
+    order_controller_1.OrdersController.getOrderByUser(req, res);
+});
 OrdersRoutes.get("/:idOrderMP", auth_1.passport.authenticate("jwt-admin", { session: false }), (req, res) => {
     order_controller_1.OrdersController.getByIdMP(req, res);
 });

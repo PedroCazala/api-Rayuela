@@ -1,0 +1,208 @@
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 25px auto;
+        }
+
+        .slogan {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .header {
+            background-color: #f15bb5;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            display: block;
+            margin: 25px auto;
+        }
+
+
+        .header h2 {
+            margin-bottom: 0;
+        }
+
+        .order-details {
+            background-color: #333;
+            color: #ffffff;
+            width: 90vh;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-details p {
+            margin: 10px 0;
+        }
+
+        .product-item {
+            list-style-type: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item img {
+            width: 12vh;
+            height: 12vh;
+            display: inline-block;
+        }
+
+        .product-item p {
+            display: inline-block;
+            width: 90%;
+        }
+
+        .total-price {
+            width: 90vh;
+            background-color: #fff;
+            margin: auto;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .shipment-info {
+            width: 90vh;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #FADADD;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            background-color: #f15bb5;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #f15bb5;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .whatsapp-button {
+            text-decoration: none;
+            color: #fff;
+            background-color: #f15bb5;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .whatsapp-button img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+
+        <a href="https://rayu.com.ar/">
+            <img src="https://rayu.com.ar/images/logo.png" class="logo" alt="Logo de Rayu" />
+        </a>
+        </div>
+        <div class="slogan">Rayu, tu librería online</div>
+    </header>
+    <h1>¡<%= order.userId?.name %> gracias por tu compra!</h1>
+    <div class="header">
+        <h2>Detalle de tu orden: </h2>
+        <p>Orden id: <%= order._id %>
+        </p>
+        <p>Estado de la compra: <%= order.state %>
+        </p>
+        <p>Fecha de compra: <%= moment(order.creationDate).format('DD/MM/YYYY') %>
+        </p>
+    </div>
+    <h2>Productos comprados: </h2>
+    <ul>
+        <% order.cartProducts.forEach(function(prod) { %>
+            <li class="product-item">
+                <img src="<%= prod.subProduct.img[0] %>" />
+                <p>
+                    <%= prod.quantity %> unidades de <%= prod.subProduct.IDProduct.name %> del modelo/color <%=
+                                prod.subProduct.color %><br>Precio: $<%= prod.price %><br>Cantidad: <%= prod.quantity %>
+                </p>
+            </li>
+            <% }); %>
+    </ul>
+    <% if (order.priceShipment) { %>
+        <p>Precio de envío: $<%= order.priceShipment %>
+        </p>
+        <p>Total antes de envío: $<%= order.totalPriceOfProducts %>
+        </p>
+        <% } %>
+            <br>
+            <p class="total-price">Total gastado $<%= order.totalPrice %>
+            </p>
+            <div class="shipment-info">
+                <p>Estamos preparando tu paquete.</p>
+                <% if (order.typeOfShipment==='giles' ) { %>
+                    <p>Seleccionaste la opción envío en la ciudad de San Andrés de Giles, Bs As. A la brevedad, nos
+                        estaremos comunicando para acordar fecha y hora de entrega.</p>
+                    <% } else if (order.typeOfShipment==='argentina' ) { %>
+                        <p>Seleccionaste la opción envío a Argentina. Prepararemos tu paquete y en cuanto tengamos el
+                            costo de envío, nos comunicaremos para informarle el valor del mismo.</p>
+                        <% } else if (order.typeOfShipment==='retira' ) { %>
+                            <p>Seleccionaste la opción retiro en domicilio, la dirección es Av España 1171. A la
+                                brevedad, nos estaremos comunicando para acordar fecha y hora del retiro.</p>
+                            <% } %>
+            </div>
+
+            <footer class="footer">
+                <p>Gracias por tu compra</p>
+                <p>Puedes ver el estado de tus pedidos en:</p>
+                <a href="https://rayu.com.ar/mis-pedidos">👉 https://rayu.com.ar/mis-pedidos 👈</a>
+                <p>Si quieres comunicarte por whatsapp, podes contactarte al:</p>
+                <a href="https://wa.me/5492325686108?text=Hola%20Rayu!%20Realicé%20una%20compra%20en%20*https://rayu.com.ar/*,%20me%20comunico%20con%20ustedes%20para%20ver%20como%20proseguimos.%20El%20id%20de%20mi%20orden%20es:%20%22<%= order._id %>%22"
+                    class="whatsapp-button">
+                    <img src="https://rayu.com.ar/images/icons/whatsapp.png" alt="Ir a whatsapp" /> +54
+                </a>
+                <p>© 2025 Rayu. Todos los derechos reservados.</p>
+            </footer>
+</body>
+
+</html>

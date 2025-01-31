@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { IOrder } from "../interfaces/orders.interface";
 import { userCollection } from "./user.model";
-import { SubProductsModel, subProductsSchema, subProductsSchemaForOrder } from "./product.model";
+import { SubProductsModel, subProductsSchemaForOrder } from "./product.model";
 export const orderCollection = "Orders";
 
 const OrderSchema = new mongoose.Schema<IOrder>({
@@ -32,10 +32,15 @@ const OrderSchema = new mongoose.Schema<IOrder>({
         ],
         required: true,
     },
-    priceShipment: { type: Number, required: true },
     state: {
         type: String,
         enum: ["Orden-creada", "En-preparación", "En-camino", "recibida"],
+        required: true,
+    },
+    priceShipment: { type: Number, required: true },
+    typeOfShipment: {
+        type: String,
+        enum: ["giles", "argentina", "retira"],
         required: true,
     },
     totalPrice: { type: Number, required: true },

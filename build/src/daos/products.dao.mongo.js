@@ -19,7 +19,7 @@ class ProductsDaoMongo {
             return allProducts;
         });
     }
-    // Traer todos los subproductos 
+    // Traer todos los subproductos
     static getAllSubProducts() {
         return __awaiter(this, void 0, void 0, function* () {
             const allProducts = yield product_model_1.SubProductsModel.find();
@@ -29,7 +29,9 @@ class ProductsDaoMongo {
     //traer productos por CATEGORÍA
     static getForCategory(category) {
         return __awaiter(this, void 0, void 0, function* () {
-            const products = yield product_model_1.ProductModel.find({ category: category }).populate("IDSubProducts");
+            const products = yield product_model_1.ProductModel.find({
+                category: category,
+            }).populate("IDSubProducts");
             return products;
         });
     }
@@ -57,6 +59,12 @@ class ProductsDaoMongo {
     static updateProduct({ idProduct, newData }) {
         return __awaiter(this, void 0, void 0, function* () {
             const product = yield product_model_1.ProductModel.findByIdAndUpdate(idProduct, newData, { new: true });
+            return product;
+        });
+    }
+    static addIDSubProductToProduct({ idProduct, arrayIdsSub, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const product = yield product_model_1.ProductModel.updateOne({ _id: idProduct }, { $push: { IDSubProducts: { $each: arrayIdsSub } } });
             return product;
         });
     }

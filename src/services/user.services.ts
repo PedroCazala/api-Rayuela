@@ -1,4 +1,5 @@
 import { UserDaoMongo } from "../daos/user.dao.mongo";
+import { MailService } from "./mails.service";
 // import { IUser } from "../interfaces/users.interface";
 
 export class UserService {

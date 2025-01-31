@@ -37,6 +37,7 @@ const CartsSchema = new mongoose_1.default.Schema({
     //         quantity: { type: Number, required: true },
     //     },
     // ],
+    shipment: { type: Number },
     lastModifiedDate: { type: Date },
 });
 exports.CartModel = mongoose_1.default.model(cartCollection, CartsSchema);

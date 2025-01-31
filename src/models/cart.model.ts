@@ -35,7 +35,7 @@ const CartsSchema = new mongoose.Schema<ICart>({
     //         quantity: { type: Number, required: true },
     //     },
     // ],
-
+    shipment:{ type: Number},
     lastModifiedDate: { type: Date },
 });
 

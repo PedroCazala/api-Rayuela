@@ -3,6 +3,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 import { UserModel } from "../models/user.model";
 import { CartsServices } from "../services/carts.services";
+import { MailService } from "../services/mails.service";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -45,6 +46,8 @@ passportGoogle.use(
                             { $set: { cartId: createCart._id } },
                             { new: true }
                         );
+
+                        await MailService.sendEmailToNewUser(newUser._id)
 
                         if (completeUser) return cb(null, completeUser);
                     }

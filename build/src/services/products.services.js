@@ -199,8 +199,19 @@ class ProductsService {
         return product;
     }
     static updateProduct({ idProduct, newData }) {
-        const product = products_dao_mongo_1.ProductsDaoMongo.updateProduct({ idProduct, newData });
-        return product;
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log({ newData });
+            const product = yield products_dao_mongo_1.ProductsDaoMongo.updateProduct({ idProduct, newData });
+            console.log({ product });
+            return product;
+        });
+    }
+    static addIDSubProductToProduct({ idProduct, arrayIdsSub }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const updateProduct = yield products_dao_mongo_1.ProductsDaoMongo.addIDSubProductToProduct({ idProduct, arrayIdsSub });
+            console.log({ updateProduct });
+            return updateProduct;
+        });
     }
     // static async updateTypeProduct({idProduct,idType,newData}:PropsUpdateType){
     //     const product = await ProductsDaoMongo.updateTypeProduct({idProduct,idType,newData})

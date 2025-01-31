@@ -10,6 +10,13 @@ export class OrdersDaoMongo {
         const orders = await OrderModel.find().populate("userId");
         return orders;
     }
+    static async getOrderByUser(idUser:string) {
+        const orders = await OrderModel.find({userId:idUser}).populate("userId");
+        // console.log('llego aca');
+        
+        // const orders = 'sd'
+        return orders;
+    }
     static async getByState(state: string) {
         const orders = await OrderModel.find({ state }).populate("userId");
         return orders;

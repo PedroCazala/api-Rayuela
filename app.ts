@@ -30,6 +30,8 @@ app.use(cors());
 import { IndexRouter } from "./src/routes";
 app.use("/", IndexRouter);
 
+// Inicia los cron jobs automáticamente
+import "./src/services/cronJobs"; 
 
 // import serverless from "serverless-http";
 // module.exports = app;

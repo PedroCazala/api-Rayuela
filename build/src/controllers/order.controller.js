@@ -34,6 +34,21 @@ class OrdersController {
             }
         });
     }
+    static getOrderByUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idUser } = req.params;
+            try {
+                const orders = yield orders_services_1.OrdersServices.getOrderByUser(idUser);
+                res.status(200).json(orders);
+            }
+            catch (error) {
+                res.status(500).json({
+                    message: "No se pudo obtener el carrito",
+                    error,
+                });
+            }
+        });
+    }
     static getByIdMP(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idOrderMP } = req.params;

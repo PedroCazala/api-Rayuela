@@ -5,6 +5,7 @@ import { UserModel } from "../models/user.model";
 import { CartsServices } from "../services/carts.services";
 
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
+import { MailService } from "../services/mails.service";
 
 const secretKey = process.env.JWT_SECRET;
 
@@ -35,6 +36,8 @@ passport.use(
                     { $set: { cartId: createCart._id } },
                     { new: true }
                 );
+
+                await MailService.sendEmailToNewUser(user._id)
 
                 if (completeUser) return done(null, completeUser);
             } catch (error) {

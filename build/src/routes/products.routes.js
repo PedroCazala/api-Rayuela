@@ -26,6 +26,9 @@ const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage()
 ProductsRoutes.post("/", auth_1.passport.authenticate("jwt-admin", { session: false }), upload.array("files-img-subProduct"), (req, res) => {
     products_controller_1.ProductsController.createProduct(req, res);
 });
+ProductsRoutes.post("/add-more-sub-product", auth_1.passport.authenticate("jwt-admin", { session: false }), upload.array("files-img-subProduct"), (req, res) => {
+    products_controller_1.ProductsController.addMoreSubProduct(req, res);
+});
 ProductsRoutes.put("/:idProduct", auth_1.passport.authenticate("jwt-admin", { session: false }), (req, res) => {
     products_controller_1.ProductsController.updateProduct(req, res);
 });

@@ -36,10 +36,15 @@ const OrderSchema = new mongoose_1.default.Schema({
         ],
         required: true,
     },
-    priceShipment: { type: Number, required: true },
     state: {
         type: String,
         enum: ["Orden-creada", "En-preparación", "En-camino", "recibida"],
+        required: true,
+    },
+    priceShipment: { type: Number, required: true },
+    typeOfShipment: {
+        type: String,
+        enum: ["giles", "argentina", "retira"],
         required: true,
     },
     totalPrice: { type: Number, required: true },

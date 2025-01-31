@@ -7,6 +7,9 @@ const OrdersRoutes = express.Router();
 OrdersRoutes.get("/:idOrder?", passport.authenticate("jwt-admin", { session: false }),(req, res) => {
     OrdersController.get(req, res);
 });
+OrdersRoutes.get("/user/:idUser", passport.authenticate("jwt", { session: false }),(req, res) => {    
+    OrdersController.getOrderByUser(req, res);
+});
 OrdersRoutes.get("/:idOrderMP", passport.authenticate("jwt-admin", { session: false }),(req, res) => {
     OrdersController.getByIdMP(req, res);
 });

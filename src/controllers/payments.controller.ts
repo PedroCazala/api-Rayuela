@@ -5,14 +5,17 @@ import { OrdersServices } from "../services/orders.services";
 import { UserService } from "../services/user.services";
 import { IOrder } from "../interfaces/orders.interface";
 import { SubProductsService } from "../services/sub-products.services";
+import { MailService } from "../services/mails.service";
 export class PaymentsController {
     static async createOrder(req: Request, res: Response) {
         // const data:string[] =req.body // para que despues se vea los item del carrito, o quizas el id del carro
         const { idCart } = req.params;
         const { idUser } = req.params;
+        const { typeOfShipment, priceShipment } = req.body;
 
         const accessToken = process.env.ACCESS_TOKEN_MP;
         const webhook_URL = process.env.WEBHOOK_URL;
+        // const webhook_URL = 'https://4eff-179-42-182-253.ngrok-free.app/api/payments/webhook'; //usar en produccion
         if (accessToken) {
             const client = new MercadoPagoConfig({
                 accessToken: accessToken,
@@ -36,9 +39,20 @@ export class PaymentsController {
                         picture_url: "https://rayu.com.ar/images/logo.png", //item.subProduct.img[0]
                     };
                 });
+                if (priceShipment && priceShipment > 0) {
+                    items.push({
+                        id: "shipment",
+                        title: "Costo de envío",
+                        quantity: 1,
+                        unit_price: priceShipment,
+                        picture_url: "https://rayu.com.ar/images/logo.png", //item.subProduct.img[0]
+                    });
+                }
 
                 const order = await OrdersServices.create({
                     idUser: user._id,
+                    priceShipment,
+                    typeOfShipment,
                 });
 
                 const result = await preference.create({
@@ -51,14 +65,14 @@ export class PaymentsController {
                         items: items,
                         external_reference: order._id,
                         back_urls: {
-                            success: `${process.env.HOST}/api/payments/success`,
-                            failure: `${process.env.HOST}/api/payments/failure`,
-                            pending: `${process.env.HOST}/api/payments/pending`,
+                            success: `${process.env.FRONTEND_URL}/success`,
+                            failure: `${process.env.FRONTEND_URL}/failure`,
+                            pending: `${process.env.FRONTEND_URL}/pending`,
                         },
-                        notification_url: webhook_URL
+                        notification_url: webhook_URL,
                     },
                 });
-                
+
                 res.send(result);
             } catch (error) {
                 console.log(error);
@@ -74,7 +88,6 @@ export class PaymentsController {
 
         try {
             if (paymentQuery.type === "payment") {
-                
                 const accessToken = process.env.ACCESS_TOKEN_MP;
                 if (accessToken) {
                     // Crear una instancia de MercadoPagoConfig con tu accessToken
@@ -86,22 +99,36 @@ export class PaymentsController {
                     const data = await paymentApi.get({
                         id: paymentQuery["data.id"] as string,
                     });
-                    
+
                     await OrdersServices.updateByIdOrder(
                         data.external_reference as string
                     );
-                    if(data.external_reference){
-
-                        const order= await OrdersServices.getOne(data.external_reference)
+                    if (data.external_reference) {
+                        const order:IOrder|unknown = await OrdersServices.getOne(
+                            data.external_reference
+                        );
+                        console.log({order,external_reference:data.external_reference});
                         // ----- restar el stock ------
-                        if(order){
+                        if (order) {
                             
-                            order?.cartProducts.map(async prod=>{
-                                console.log({m:'en el map',prod});
-                                
-                                await SubProductsService.discountStockSubProduct({idSubProduct:prod.subProduct._id,subtract:prod.quantity})
-                            }
-                            )
+                            order?.cartProducts.map(async (prod) => {
+                                console.log({ m: "en el map", prod });
+
+                                await SubProductsService.discountStockSubProduct(
+                                    {
+                                        idSubProduct: prod.subProduct._id,
+                                        subtract: prod.quantity,
+                                    }
+                                );
+                            });
+
+                            // vaciar el carrito
+                            await CartsServices.clearCart(order.cartId);
+
+                            //Enviar mail al usuario
+                            const mailService = new MailService();
+                            await mailService.orderConfirmation(order._id);
+                            await mailService.sendEmailToAdminNewSale(order._id);
                         }
                     }
                     res.sendStatus(204);

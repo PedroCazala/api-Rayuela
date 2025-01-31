@@ -17,6 +17,7 @@ const passport_1 = __importDefault(require("passport"));
 const passport_google_oauth20_1 = require("passport-google-oauth20");
 const user_model_1 = require("../models/user.model");
 const carts_services_1 = require("../services/carts.services");
+const mails_service_1 = require("../services/mails.service");
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const HOST = process.env.HOST;
@@ -51,6 +52,7 @@ passportGoogle.use("google-auth", new passport_google_oauth20_1.Strategy({
                     });
                     const createCart = yield carts_services_1.CartsServices.create(newUser._id);
                     const completeUser = yield user_model_1.UserModel.findByIdAndUpdate(newUser._id, { $set: { cartId: createCart._id } }, { new: true });
+                    yield mails_service_1.MailService.sendEmailToNewUser(newUser._id);
                     if (completeUser)
                         return cb(null, completeUser);
                 }

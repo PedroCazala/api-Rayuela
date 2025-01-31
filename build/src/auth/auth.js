@@ -19,6 +19,7 @@ const passport_local_1 = require("passport-local");
 const user_model_1 = require("../models/user.model");
 const carts_services_1 = require("../services/carts.services");
 const passport_jwt_1 = require("passport-jwt");
+const mails_service_1 = require("../services/mails.service");
 const secretKey = process.env.JWT_SECRET;
 passport_1.default.use("signup", new passport_local_1.Strategy({
     usernameField: "email",
@@ -38,6 +39,7 @@ passport_1.default.use("signup", new passport_local_1.Strategy({
         });
         const createCart = yield carts_services_1.CartsServices.create(user._id);
         const completeUser = yield user_model_1.UserModel.findByIdAndUpdate(user._id, { $set: { cartId: createCart._id } }, { new: true });
+        yield mails_service_1.MailService.sendEmailToNewUser(user._id);
         if (completeUser)
             return done(null, completeUser);
     }

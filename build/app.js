@@ -24,6 +24,8 @@ app.use((0, cors_1.default)());
 //---- Rutas ----
 const routes_1 = require("./src/routes");
 app.use("/", routes_1.IndexRouter);
+// Inicia los cron jobs automáticamente
+require("./src/services/cronJobs");
 // import serverless from "serverless-http";
 // module.exports = app;
 // module.exports.handler = serverless(app);

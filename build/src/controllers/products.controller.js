@@ -35,7 +35,6 @@ class ProductsController {
                         yield products_services_1.ProductsService.getAllProductsSortByMajorPrice();
                 }
                 else {
-                    console.log('entro al else');
                     products = yield products_services_1.ProductsService.getAllProductsSortByName();
                 }
                 products[0]
@@ -125,6 +124,42 @@ class ProductsController {
                         message1: `El producto se creó con el id: ${product._id}`,
                         message2: `Los subproductos fueron creados con los id: ${IDSubProds}`,
                     });
+            }
+            catch (error) {
+                res.status(500).json({ message: `error`, error });
+            }
+        });
+    }
+    static addMoreSubProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // funciona -- recibir los subprod y el id del prod---
+            const data = req.body;
+            // console.log("data de create Product en products.controller", {dataid:data.idProduct,datasubprdo:data.subProducts});
+            try {
+                // funciona ---- crear los subprod -----
+                const subProducts = yield sub_products_services_1.SubProductsService.createSubProducts(data.subProducts);
+                let IDSubProds = [];
+                subProducts.forEach((sub) => (IDSubProds.push(sub._id)));
+                const product = yield products_services_1.ProductsService.getOneProduct(data.idProduct);
+                console.log({ product });
+                if (product) {
+                    yield products_services_1.ProductsService.addIDSubProductToProduct({ idProduct: data.idProduct, arrayIdsSub: IDSubProds });
+                    //funciona --- agregar el id dedel prod a los subprod ---
+                    subProducts.forEach((sub) => __awaiter(this, void 0, void 0, function* () {
+                        yield sub_products_services_1.SubProductsService.updateSubProduct({
+                            idSubProduct: sub._id,
+                            newData: { sub, IDProduct: data.idProduct },
+                        });
+                    }));
+                    subProducts &&
+                        res.status(200).json({
+                            // product,
+                            // subProducts,
+                            message1: `El producto se editó con el id: ${data.idProduct}`,
+                            message2: `Los subproductos fueron creados con los id: ${IDSubProds}`,
+                            // prod:{}
+                        });
+                }
             }
             catch (error) {
                 res.status(500).json({ message: `error`, error });

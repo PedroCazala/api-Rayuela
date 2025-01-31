@@ -60,11 +60,8 @@ class SubProductsService {
     static discountStockSubProduct({ idSubProduct, subtract }) {
         return __awaiter(this, void 0, void 0, function* () {
             const subProd = yield this.getOneSubProduct(idSubProduct);
-            console.log({ MESSAGE: 'entro a discountStockSubProduct', subProd });
-            console.log({ message: 'siguiente', idSubProduct, subtract });
             if (subProd) {
                 const newStock = subProd.stock - subtract;
-                console.log({ message: 'entro al map pARA descontar', idSubProduct, subtract, newStock });
                 const update = sub_products_dao_mongo_1.SubProductsDaoMongo.updateSubProduct({ idSubProduct, newData: { subProd, stock: newStock } });
                 return update;
             }

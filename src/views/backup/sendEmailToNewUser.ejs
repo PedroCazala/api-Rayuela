@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a Rayu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header img {
+            width: 100px;
+        }
+        
+        .slogan {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .message {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="https://rayu.com.ar/">
+                <img src="https://rayu.com.ar/images/logo.png" alt="Logo de Rayu"/>
+            </a>
+        </div>
+        <div class="slogan">Rayu, tu librería online</div> 
+
+        <div class="message">
+            <h2>¡Hola, <%= user.name %>!</h2>
+            <p>Nos alegra que te hayas unido a Rayu. Ahora eres parte de nuestra comunidad, donde podrás disfrutar de
+                una experiencia única de compra, estar al tanto de nuestras novedades y mucho más.</p>
+
+            <p>Aquí tienes un resumen de tu cuenta:</p>
+            <ul>
+                <li><strong>Email:</strong>
+                    <%= user.email %>
+                </li>
+                <li><strong>Nombre:</strong>
+                    <%= user.name %>
+                        <%= user.lastName %>
+                </li>
+                <li><strong>Dirección:</strong>
+                    <%= user.direction?.address || 'Dirección no especificada' %>,
+                        <%= user.direction?.city || 'Ciudad no especificada' %>,
+                            <%= user.direction?.prov || 'Provincia no especificada' %>,
+                                <%= user.direction?.CP || 'Código postal no especificado' %>
+                </li>
+            </ul>
+
+            <% if (!user.direction?.address || !user.direction?.city || !user.direction?.prov || !user.direction?.CP) {
+                %>
+                <p>
+                    <strong>¿Te gustaría completar la información que falta?</strong>
+                    <a href="https://rayu.com.ar/info-user">Haz clic aquí para actualizar tus datos.</a>
+                </p>
+                <% } %>
+                    <p>Para comenzar, te invitamos a disfrutar de nuestro <a href="https://rayu.com.ar/catalogo"
+                            target="_blank">catálogo</a> y explorar todo lo que tenemos para ti.</p>
+                    <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.</p>
+                    <p>¡Esperamos que disfrutes tu experiencia con nosotros!</p>
+        </div>
+        <div class="footer">
+            <p>© 2025 Rayu. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+
+</html>

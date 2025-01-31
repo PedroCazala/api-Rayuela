@@ -46,12 +46,10 @@ export class SubProductsService{
     }
     static async discountStockSubProduct({idSubProduct,subtract}:PropsDiscountStock){
         const subProd = await this.getOneSubProduct(idSubProduct)
-        console.log({MESSAGE:'entro a discountStockSubProduct',subProd});
-        console.log({message:'siguiente',idSubProduct,subtract});
+
         
         if(subProd){
             const newStock = subProd.stock - subtract
-            console.log({message:'entro al map pARA descontar',idSubProduct,subtract,newStock});
             const update = SubProductsDaoMongo.updateSubProduct({idSubProduct,newData:{subProd,stock:newStock}})
             return update
         }else{

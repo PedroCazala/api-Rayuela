@@ -25,5 +25,6 @@ export class UserController {
             res.json(error)
         }
     }
+
     
 }

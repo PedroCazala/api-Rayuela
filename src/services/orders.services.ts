@@ -4,6 +4,8 @@ import { CartsServices } from "./carts.services";
 import { OrdersDaoMongo } from "../daos/orders.dao.mongo";
 import { IOrder } from "../interfaces/orders.interface";
 import { SubProductsService } from "./sub-products.services";
+import { ICart } from "../interfaces/carts.interface";
+import { OrderModel } from "../models/order.model";
 
 export class OrdersServices {
     static async getOne(id: string) {
@@ -17,6 +19,14 @@ export class OrdersServices {
     static async getAll() {
         try {
             const orders = await OrdersDaoMongo.getAll();
+            return orders;
+        } catch (error) {
+            return error;
+        }
+    }
+    static async getOrderByUser(idUser: string) {
+        try {
+            const orders = await OrdersDaoMongo.getOrderByUser(idUser);
             return orders;
         } catch (error) {
             return error;
@@ -36,13 +46,17 @@ export class OrdersServices {
 
             return order;
         } catch (error) {
-            console.log('entro al error service updateByIdOrder',error);
-            
+            console.log("entro al error service updateByIdOrder", error);
+
             return error;
         }
-    } 
+    }
 
-    static async create({ idUser }: ICreateOrder) {
+    static async create({
+        idUser,
+        priceShipment,
+        typeOfShipment,
+    }: ICreateOrder) {
         try {
             const user = await UserService.getOneUserById(idUser);
             if (!user) {
@@ -54,25 +68,25 @@ export class OrdersServices {
             if (!cart || !cart.products.length) {
                 return null;
             }
-            console.log({user,cart});
-            
 
             const productsPromises = cart?.products.map(async (prod) => {
                 // const price = await SubProductsService
                 const product = await SubProductsService.getOneSubProduct(
                     prod.subProduct
                 ); // {...prod}
-                // console.log({'cada product':product});
-                
-                return {subProduct:product/* {...prod} */,quantity:prod.quantity,price:5};
-            })
-            const products =await Promise.all(productsPromises);
+
+                return {
+                    subProduct: product /* {...prod} */,
+                    quantity: prod.quantity,
+                    price: prod.subProduct.IDProduct.price,
+                };
+            });
+            const products = await Promise.all(productsPromises);
 
             const date = new Date();
             if (cart && user && products) {
                 const totalPriceOfProducts =
                     await CartsServices.returnTotalPrice(cart?._id);
-                const priceShipment = 0;
                 const newOrder: IOrder = {
                     creationDate: date,
                     userId: idUser as unknown as mongoose.Schema.Types.ObjectId,
@@ -81,20 +95,24 @@ export class OrdersServices {
                     userDirection: user.direction,
                     state: "Orden-creada",
                     priceShipment,
-                    totalPriceOfProducts, 
+                    typeOfShipment,
+                    totalPriceOfProducts,
                     totalPrice: totalPriceOfProducts + priceShipment,
                     // externalReference: externalReference,
                 };
-                const order = await OrdersDaoMongo.create(newOrder);
-                return order;
+                try {
+                    const order = await OrdersDaoMongo.create(newOrder);
+                    return order;
+                } catch (error) {
+                    console.error("Error al crear la orden:", error);
+                    throw error; // Para propagar el error si es necesario
+                }
             }
+
             return null;
         } catch (error) {
             return error;
         }
-
-        // const carrito = await CartsDaoMongo.createCart(newCart);
-        // return carrito;
     }
     static async getEditeState({ idOrder, state }: IEditState) {
         try {
@@ -107,10 +125,25 @@ export class OrdersServices {
             return error;
         }
     }
+    public static async deleteOldOrders(): Promise<void> {
+        try {
+            const twentyFourHoursAgo = new Date();
+            twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
+            const result = await OrderModel.deleteMany({
+                state: "Orden-creada",
+                creationDate: { $lte: twentyFourHoursAgo },
+                // createdAt: { $lte: twentyFourHoursAgo },
+            });
+            console.log(`Órdenes eliminadas: ${result.deletedCount}`);
+        } catch (error) {
+            console.error("Error al eliminar órdenes:", error);
+        }
+    }
 
     // static async delete(idCart: string) {
-        // const cart = await CartsDaoMongo.deleteCart(idCart);
-        // return cart;
+    // const cart = await CartsDaoMongo.deleteCart(idCart);
+    // return cart;
     // }
 }
 
@@ -121,4 +154,6 @@ interface IEditState {
 interface ICreateOrder {
     // externalReference: string;
     idUser: string;
+    priceShipment: number;
+    typeOfShipment: IOrder["typeOfShipment"];
 }

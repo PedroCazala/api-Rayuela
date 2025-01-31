@@ -24,6 +24,14 @@ class OrdersDaoMongo {
             return orders;
         });
     }
+    static getOrderByUser(idUser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const orders = yield order_model_1.OrderModel.find({ userId: idUser }).populate("userId");
+            // console.log('llego aca');
+            // const orders = 'sd'
+            return orders;
+        });
+    }
     static getByState(state) {
         return __awaiter(this, void 0, void 0, function* () {
             const orders = yield order_model_1.OrderModel.find({ state }).populate("userId");

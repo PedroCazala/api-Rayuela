@@ -26,6 +26,14 @@ ProductsRoutes.post(
         ProductsController.createProduct(req, res);
     }
 );
+ProductsRoutes.post(
+    "/add-more-sub-product",
+    passport.authenticate("jwt-admin", { session: false }),
+    upload.array("files-img-subProduct"),
+    (req, res) => {
+        ProductsController.addMoreSubProduct(req, res);
+    }
+);
 ProductsRoutes.put(
     "/:idProduct",
     passport.authenticate("jwt-admin", { session: false }),
