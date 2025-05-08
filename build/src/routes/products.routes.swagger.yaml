@@ -1,0 +1,6 @@
+openapi: 3.0.0
+tags:
+  - name: Products
+    description: Endpoints relacionados con productos
+paths:
+  # Agrega aquí los endpoints de products.routes.ts

@@ -1,0 +1,6 @@
+openapi: 3.0.0
+tags:
+  - name: Users
+    description: Endpoints relacionados con usuarios
+paths:
+  # Agrega aquí los endpoints de user.routes.ts

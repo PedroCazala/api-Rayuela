@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Nueva compra!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: auto;
+            display: block;
+            margin: 25px auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 25px auto;
+        }
+        .slogan {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .order-detail {
+            background-color: #f15bb5;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .order-info {
+            width: 90%;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #333;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-info p {
+            margin: 5px 0;
+        }
+        
+        .product-item {
+            list-style-type: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item img {
+            width: 12vh;
+            height: 12vh;
+            display: inline-block;
+        }
+
+        .product-item p {
+            display: inline-block;
+            width: 90%;
+        }
+
+        .shipping-info {
+            background-color: #FADADD;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .total-cost {
+            width: 90%;
+            background-color: #fff;
+            margin: auto;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            background-color: #f15bb5;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #f15bb5;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="https://rayu.com.ar/">
+            <img src="https://rayu.com.ar/images/logo.png" alt="Logo de Rayu" class="logo"/>
+        </a>
+    </div>
+    <div class="slogan">Rayu, tu librería online</div> 
+
+        <h1>¡Nueva compra!</h1>
+        <div class="order-detail">
+            <h2>Detalle de la orden:</h2>
+            <p>Orden id: <%= order._id %></p>
+            <p>Estado de la compra: <%= order.state %></p>
+            <p>Fecha de compra: <%= moment(order.creationDate).format('DD/MM/YYYY') %></p>
+            <div class="order-info">
+                <p>Datos del cliente:</p>
+                <p>Nombre: <%= order.userId?.name %> <%= order.userId?.lastName %></p>
+                <p>Email: <%= order.userId?.email %></p>
+                <p>Teléfono: <%= order.userId?.phone %></p>
+                <p><b>Tipo de envío: <%= order.typeOfShipment %></b></p>
+                <p>Dirección de envío: <%= order.userDirection?.address %>, <%= order.userDirection?.city %>, <%= order.userDirection?.prov %>, CP: <%= order.userDirection?.CP %></p>
+            </div>
+        </div>
+        <h2>Productos comprados:</h2>
+        <ul class="product-list">
+            <% order.cartProducts.forEach(function(prod) { %>
+                <li class="product-item">
+                    <img src="<%= prod.subProduct.img[0] %>" />
+                    <p>
+                        <%= prod.quantity %> unidades de <%= prod.subProduct.IDProduct.name %> del modelo/color <%=
+                            prod.subProduct.color %><br>Precio: $<%= prod.price %><br>Cantidad: <%= prod.quantity %>
+                    </p>
+                </li>
+            <% }); %>
+        </ul>
+        <% if (order.priceShipment) { %>
+        <p>Precio de envío: $<%= order.priceShipment %></p>
+        <p>Total antes de envío: $<%= order.totalPriceOfProducts %></p>
+        <% } %>
+        <br>
+        <div class="total-cost">
+            <p>Total gastado: $<%= order.totalPrice %></p>
+        </div>
+        <div class="shipping-info">
+            <p>El cliente:</p>
+            <% if (order.typeOfShipment === 'giles') { %>
+            <p>Seleccionó la opción envío en San Andrés de Giles, Bs As.</p>
+            <% } else if (order.typeOfShipment === 'argentina') { %>
+            <p>Seleccionó la opción envío a Argentina. Se debe coordinar la entrega.</p>
+            <% } else if (order.typeOfShipment === 'retira') { %>
+            <p>Seleccionó la opción retiro en domicilio. Se debe coordinar la entrega.</p>
+            <% } %>
+        </div>
+        <footer class="footer">
+            <a href="https://rayu.com.ar/admin/order">👉 https://rayu.com.ar/admin/order 👈</a>
+            <p>© 2025 Rayu. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+</body>
+
+</html>

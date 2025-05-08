@@ -1,0 +1,87 @@
+openapi: 3.0.0
+tags:
+  - name: Carts
+    description: Endpoints relacionados con carritos
+paths:
+  /api/carts:
+    post:
+      tags:
+        - Carts
+      summary: Crear un carrito
+      responses:
+        '201':
+          description: Carrito creado
+  /api/carts/{idCart}:
+    get:
+      tags:
+        - Carts
+      summary: Obtener un carrito por ID
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito encontrado
+    delete:
+      tags:
+        - Carts
+      summary: Eliminar un carrito por ID
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito eliminado
+  /api/carts/add-subproducts/{idCart}:
+    post:
+      tags:
+        - Carts
+      summary: Agregar subproductos a un carrito
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subproductos agregados
+  /api/carts/clear-cart/{idCart}:
+    delete:
+      tags:
+        - Carts
+      summary: Vaciar un carrito
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito vaciado
+  /api/carts/delete-product-of-cart/{idCart}/{idSubProduct}:
+    delete:
+      tags:
+        - Carts
+      summary: Eliminar un subproducto de un carrito
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idSubProduct
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subproducto eliminado del carrito

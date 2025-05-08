@@ -1,0 +1,66 @@
+openapi: 3.0.0
+tags:
+  - name: Orders
+    description: Endpoints relacionados con órdenes
+paths:
+  /api/orders/{idOrder}:
+    get:
+      tags:
+        - Orders
+      summary: Obtener una orden (opcional)
+      parameters:
+        - name: idOrder
+          in: path
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Orden encontrada
+  /api/orders/user/{idUser}:
+    get:
+      tags:
+        - Orders
+      summary: Obtener órdenes por usuario
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Órdenes del usuario
+  /api/orders/state/{state}:
+    get:
+      tags:
+        - Orders
+      summary: Obtener órdenes por estado
+      parameters:
+        - name: state
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Órdenes encontradas
+  /api/orders/{idOrder}/state/{state}:
+    put:
+      tags:
+        - Orders
+      summary: Editar estado de una orden
+      parameters:
+        - name: idOrder
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Estado editado

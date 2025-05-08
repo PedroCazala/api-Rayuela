@@ -1,6 +1,5 @@
 import {
     ICompleteProduct,
-    IProduct,
     ISubProduct,
 } from "../interfaces/products.interface";
 import { ProductsService } from "../services/products.services";

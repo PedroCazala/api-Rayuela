@@ -11,4 +11,9 @@ SubProductsRoutes.put(
     passport.authenticate("jwt-admin", { session: false }),
     SubProductsController.updateSubProduct
 );
+SubProductsRoutes.delete(
+    "/:idSubProduct",
+    passport.authenticate("jwt-admin", { session: false }),
+    SubProductsController.deleteSubProduct
+);
 export { SubProductsRoutes };

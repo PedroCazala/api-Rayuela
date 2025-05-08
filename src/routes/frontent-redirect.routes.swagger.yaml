@@ -1,0 +1,13 @@
+openapi: 3.0.0
+tags:
+  - name: FrontendRedirect
+    description: Endpoints de redirección frontend
+paths:
+  /api/redirect:
+    get:
+      tags:
+        - FrontendRedirect
+      summary: Redirige al frontend
+      responses:
+        '302':
+          description: Redirección al frontend

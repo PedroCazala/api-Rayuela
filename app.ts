@@ -9,6 +9,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ---- Swagger UI ----
+import { setupSwaggerDocs } from './src/swagger-ui';
+setupSwaggerDocs(app);
+
 //---- Conexión a mongoAtlas ----
 import { connectMongoDb } from "./src/db/connectMongoDb";
 connectMongoDb();

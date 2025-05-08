@@ -19,6 +19,7 @@ const moment_1 = __importDefault(require("moment"));
 const ejs_1 = __importDefault(require("ejs"));
 const path_1 = __importDefault(require("path"));
 const user_services_1 = require("../services/user.services");
+const mongoose_1 = require("mongoose");
 // const idOrder = "679aac0c7bacf77daa5b2ec3";
 class MailController {
     constructor() {
@@ -39,16 +40,33 @@ class MailController {
     }
     testSendEmailToAdminNewSale(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idOrder } = req.params;
-            const order = yield order_model_1.OrderModel.findById(idOrder)
-                .populate("cartProducts.subProduct")
-                .populate("userId")
-                .exec();
-            // console.log("productos del carrito: ", order?.cartProducts);
-            console.log({ message: "mail service order", order });
-            const filePath = path_1.default.join(__dirname, "../views", "sendEmailToAdminNewSale.ejs");
-            const html = yield ejs_1.default.renderFile(filePath, { order, moment: moment_1.default });
-            res.send(html);
+            try {
+                const { idOrder } = req.params;
+                // Validar si idOrder es un ObjectId válido
+                if (!(0, mongoose_1.isValidObjectId)(idOrder)) {
+                    return res.status(400).json({ error: "ID de orden inválido" });
+                }
+                // Buscar la orden en la base de datos
+                const order = yield order_model_1.OrderModel.findById(idOrder)
+                    .populate("cartProducts.subProduct")
+                    .populate("userId")
+                    .exec();
+                // Si no se encuentra la orden, devolver error
+                if (!order) {
+                    return res.status(404).json({ error: "Orden no encontrada" });
+                }
+                console.log({ message: "mail service order", order });
+                // Construir la ruta de la plantilla
+                const filePath = path_1.default.resolve(__dirname, "../views/sendEmailToAdminNewSale.ejs");
+                const html = yield ejs_1.default.renderFile(filePath, { order, moment: moment_1.default });
+                return res.send(html);
+            }
+            catch (error) {
+                console.error("Error en testSendEmailToAdminNewSale:", error);
+                return res
+                    .status(500)
+                    .json({ error: "Error interno del servidor" });
+            }
         });
     }
     testSendEmailToNewUser(req, res) {

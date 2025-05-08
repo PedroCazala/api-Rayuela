@@ -1,0 +1,23 @@
+openapi: 3.0.0
+tags:
+  - name: Users
+    description: Endpoints relacionados con usuarios
+paths:
+  /api/user/profile:
+    get:
+      tags:
+        - Users
+      summary: Obtener perfil del usuario autenticado
+      responses:
+        '200':
+          description: Perfil de usuario
+  /api/user/signup:
+    post:
+      tags:
+        - Users
+      summary: Registrar usuario
+      responses:
+        '200':
+          description: Registro exitoso
+        '500':
+          description: Error de registro

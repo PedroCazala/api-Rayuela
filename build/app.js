@@ -11,6 +11,9 @@ dotenv_1.default.config({ path: '../.env' });
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+// ---- Swagger UI ----
+const swagger_ui_1 = require("./src/swagger-ui");
+(0, swagger_ui_1.setupSwaggerDocs)(app);
 //---- Conexión a mongoAtlas ----
 const connectMongoDb_1 = require("./src/db/connectMongoDb");
 (0, connectMongoDb_1.connectMongoDb)();

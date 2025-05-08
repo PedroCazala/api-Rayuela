@@ -96,5 +96,5 @@ export function send(
         };
 
         callback(json);
-    });
+    }); 
 }

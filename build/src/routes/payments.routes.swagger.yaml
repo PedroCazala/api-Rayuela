@@ -1,0 +1,6 @@
+openapi: 3.0.0
+tags:
+  - name: Payments
+    description: Endpoints relacionados con pagos
+paths:
+  # Agrega aquí los endpoints de payments.routes.ts

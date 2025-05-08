@@ -22,7 +22,7 @@ IndexRouter.use('/api/mail',MailRoutes)
 
 
 IndexRouter.get('/',(_,res)=>{
-    res.status(200).json({message:'Api de Rayuela',documentation_swagger:'Aquí ira la url'})
+    res.status(200).json({message:'Api de Rayuela',documentation_swagger:'Aquí ira la url - creo que no porque pasaré todo a graphql'})
 })
 
 

@@ -1,0 +1,15 @@
+openapi: 3.0.0
+tags:
+  - name: Mails
+    description: Endpoints relacionados con mails
+paths:
+  /api/mail/send-email:
+    get:
+      tags:
+        - Mails
+      summary: Enviar email de prueba
+      responses:
+        '200':
+          description: Correo enviado correctamente
+        '500':
+          description: Error al enviar el correo

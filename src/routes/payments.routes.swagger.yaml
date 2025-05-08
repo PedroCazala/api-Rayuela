@@ -1,0 +1,56 @@
+openapi: 3.0.0
+tags:
+  - name: Payments
+    description: Endpoints relacionados con pagos
+paths:
+  /api/payments/create-order/{idCart}/{idUser}:
+    post:
+      tags:
+        - Payments
+      summary: Crear orden de pago
+      parameters:
+        - name: idCart
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUser
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Orden creada
+  /api/payments/success:
+    get:
+      tags:
+        - Payments
+      summary: Notificación de pago exitoso
+      responses:
+        '200':
+          description: Success
+  /api/payments/failure:
+    get:
+      tags:
+        - Payments
+      summary: Notificación de pago fallido
+      responses:
+        '200':
+          description: Failure
+  /api/payments/pending:
+    get:
+      tags:
+        - Payments
+      summary: Notificación de pago pendiente
+      responses:
+        '200':
+          description: Pending
+  /api/payments/webhook:
+    post:
+      tags:
+        - Payments
+      summary: Webhook de pagos
+      responses:
+        '200':
+          description: Webhook recibido

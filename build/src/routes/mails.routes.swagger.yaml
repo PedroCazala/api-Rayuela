@@ -1,0 +1,6 @@
+openapi: 3.0.0
+tags:
+  - name: Mails
+    description: Endpoints relacionados con mails
+paths:
+  # Agrega aquí los endpoints de mails.routes.ts

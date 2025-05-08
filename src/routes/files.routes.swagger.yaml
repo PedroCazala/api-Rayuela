@@ -1,0 +1,55 @@
+openapi: 3.0.0
+tags:
+  - name: Files
+    description: Endpoints relacionados con archivos
+paths:
+  /api/files/img-user/{idUser}:
+    post:
+      tags:
+        - Files
+      summary: Subir imagen de usuario
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file-user:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Imagen subida
+  /api/files/imgs-subProduct/{idSubProduct}:
+    post:
+      tags:
+        - Files
+      summary: Subir imágenes de subproducto
+      parameters:
+        - name: idSubProduct
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files-img-subProduct:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Imágenes subidas

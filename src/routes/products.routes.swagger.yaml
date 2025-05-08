@@ -1,0 +1,128 @@
+openapi: 3.0.0
+tags:
+  - name: Products
+    description: Endpoints relacionados con productos
+paths:
+  /api/products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Obtener producto(s) por ID (opcional)
+      parameters:
+        - name: id
+          in: path
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto(s) encontrado(s)
+    delete:
+      tags:
+        - Products
+      summary: Eliminar producto por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado
+  /api/products/subproducts/{id}:
+    get:
+      tags:
+        - Products
+      summary: Obtener subproductos de un producto
+      parameters:
+        - name: id
+          in: path
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subproductos encontrados
+  /api/products/category/{category}:
+    get:
+      tags:
+        - Products
+      summary: Obtener productos por categoría
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Productos encontrados
+  /api/products/brand/{brand}:
+    get:
+      tags:
+        - Products
+      summary: Obtener productos por marca
+      parameters:
+        - name: brand
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Productos encontrados
+  /api/products:
+    post:
+      tags:
+        - Products
+      summary: Crear un producto
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files-img-subProduct:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '201':
+          description: Producto creado
+  /api/products/add-more-sub-product:
+    post:
+      tags:
+        - Products
+      summary: Agregar más subproductos a un producto
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files-img-subProduct:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Subproductos agregados
+  /api/products/{idProduct}:
+    put:
+      tags:
+        - Products
+      summary: Actualizar un producto
+      parameters:
+        - name: idProduct
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto actualizado

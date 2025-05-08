@@ -35,4 +35,34 @@ export class SubProductsController {
 
             }
         }
+        static async deleteSubProduct(req: Request, res: Response) {
+            const { idSubProduct } = req.params;
+        
+            if (!idSubProduct) {
+                return res.status(400).json({
+                    message: "ID del subproducto no proporcionado.",
+                });
+            }
+        
+            try {
+                const subProduct = await SubProductsService.deleteSubProduct(idSubProduct);
+        
+                if (subProduct) {
+                    return res.status(200).json({
+                        message: `Subproducto con id: ${idSubProduct} fue eliminado correctamente.`,
+                        subProduct,
+                    });
+                } else {
+                    return res.status(404).json({
+                        message: `Subproducto con id: ${idSubProduct} no fue encontrado.`,
+                    });
+                }
+            } catch (error) {
+                console.error(`Error al eliminar el subproducto con id: ${idSubProduct}`, error);
+                return res.status(500).json({
+                    message: `Error interno del servidor al intentar eliminar el subproducto con id: ${idSubProduct}.`,
+                    error: error, 
+                });
+            }
+        }
 }

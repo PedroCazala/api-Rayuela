@@ -1,0 +1,46 @@
+openapi: 3.0.0
+tags:
+  - name: SubProducts
+    description: Endpoints relacionados con sub-productos
+paths:
+  /api/subproducts/{id}:
+    get:
+      tags:
+        - SubProducts
+      summary: Obtener subproducto por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subproducto encontrado
+  /api/subproducts/{idSubProduct}:
+    put:
+      tags:
+        - SubProducts
+      summary: Actualizar subproducto
+      parameters:
+        - name: idSubProduct
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subproducto actualizado
+    delete:
+      tags:
+        - SubProducts
+      summary: Eliminar subproducto
+      parameters:
+        - name: idSubProduct
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subproducto eliminado

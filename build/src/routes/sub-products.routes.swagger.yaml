@@ -1,0 +1,6 @@
+openapi: 3.0.0
+tags:
+  - name: SubProducts
+    description: Endpoints relacionados con sub-productos
+paths:
+  # Agrega aquí los endpoints de sub-products.routes.ts
